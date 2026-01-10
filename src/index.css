@@ -143,11 +143,11 @@
   }
 
   .card-service {
-    @apply bg-card rounded-sm overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group;
+    @apply bg-card rounded-sm overflow-hidden shadow-md hover:shadow-xl transition-all duration-300;
   }
 
   .card-service-image {
-    @apply w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105;
+    @apply w-full h-48 object-cover transition-transform duration-500;
   }
 
   .link-underline {
