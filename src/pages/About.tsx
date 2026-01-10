@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
+import famagustaPainting from "@/assets/famagusta-painting.jpg";
 
 const About = () => {
   return (
@@ -22,17 +23,27 @@ const About = () => {
           <div className="lg:col-span-2 space-y-8">
             <section>
               <h2 className="section-title">Our History</h2>
-              <p className="text-muted-foreground mb-6">
-                Established in Famagusta in 1951, SHOHAM (CYPRUS) LTD is one of the main liner and 
-                tramp shipping agents in Cyprus. With our vast experience in every aspect of ship 
-                agency and cargo handling activity we serve with dedication the import, export and 
-                transhipment trade of Cyprus.
-              </p>
-              <p className="text-muted-foreground mb-6">
-                After the Turkish invasion of 1974, when the port of Famagusta was closed, the company 
-                moved to Limassol port. Today we are a team of more than 60 staff members working in 
-                all major ports of Cyprus: Limassol, Larnaca, Vassiliko and Dhekelia.
-              </p>
+              <div className="mb-6">
+                <img 
+                  src={famagustaPainting} 
+                  alt="Historic Port of Famagusta - Painting" 
+                  className="rounded-lg shadow-lg w-full max-w-md float-right ml-6 mb-4"
+                />
+                <p className="text-muted-foreground mb-4">
+                  Established in Famagusta in 1951, SHOHAM (CYPRUS) LTD is one of the main liner and 
+                  tramp shipping agents in Cyprus. With our vast experience in every aspect of ship 
+                  agency and cargo handling activity we serve with dedication the import, export and 
+                  transhipment trade of Cyprus.
+                </p>
+                <p className="text-muted-foreground mb-4">
+                  After the Turkish invasion of 1974, when the port of Famagusta was closed, the company 
+                  moved to Limassol port. Today we are a team of more than 60 staff members working in 
+                  all major ports of Cyprus: Limassol, Larnaca, Vassiliko and Dhekelia.
+                </p>
+                <p className="text-sm text-muted-foreground italic clear-both">
+                  Image: Historic Port of Famagusta
+                </p>
+              </div>
             </section>
 
             <section>
@@ -110,7 +121,7 @@ const About = () => {
                 Have questions about our services? Get in touch with our experienced team.
               </p>
               <Button asChild className="w-full bg-accent hover:bg-shoham-orange-dark">
-                <Link to="/contact">Contact Us</Link>
+                <Link to="/contact-us">Contact Us</Link>
               </Button>
             </div>
 
