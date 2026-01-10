@@ -151,7 +151,16 @@
   }
 
   .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-300 hover:after:w-full;
+    @apply relative;
+  }
+  
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300;
+  }
+  
+  .link-underline:hover::after {
+    @apply w-full;
   }
 }
 
@@ -184,14 +193,19 @@
 
 /* Service card hover effect */
 .service-card-hover {
-  @apply relative overflow-hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .service-card-hover::before {
   content: '';
-  @apply absolute inset-0 bg-gradient-to-t from-[hsl(var(--shoham-navy))] to-transparent opacity-60 transition-opacity duration-300;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, hsl(var(--shoham-navy)), transparent);
+  opacity: 0.6;
+  transition: opacity 0.3s;
 }
 
 .service-card-hover:hover::before {
-  @apply opacity-80;
+  opacity: 0.8;
 }
