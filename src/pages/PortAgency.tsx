@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import portAgency from "@/assets/port-agency.jpg";
+import famagustaPainting from "@/assets/famagusta-painting.jpg";
 
 const services = [
   { title: "Oil & Gas Agency", href: "/port-agency/oil-gas-agency", description: "Offshore operations and oil & gas support" },
@@ -50,7 +50,8 @@ const PortAgency = () => {
             </div>
           </div>
           <div>
-            <img src={portAgency} alt="Port Agency Services" className="rounded-lg shadow-xl" />
+            <img src={famagustaPainting} alt="Historic Port of Famagusta - Painting by George Pol Gheorghiou 1943" className="rounded-lg shadow-xl" />
+            <p className="text-sm text-muted-foreground text-center mt-2 italic">The port of Famagusta - Painting by George Pol Gheorghiou - 1943</p>
           </div>
         </div>
 

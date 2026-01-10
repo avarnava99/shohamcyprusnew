@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import zimShip from "@/assets/zim-ship.jpg";
+import zimShip from "@/assets/zim-samy-ofer.png";
 
 const stats = [
   { value: "180+", label: "Agents Worldwide" },
