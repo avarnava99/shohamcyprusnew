@@ -6,32 +6,32 @@ const ports = [
   {
     category: "Limassol",
     items: [
-      { slug: "limassol", title: "Limassol Port", description: "Cyprus' main commercial port", icon: Anchor },
-      { slug: "limassol-schedule", title: "Limassol Port Schedule", description: "Vessel arrivals and departures", icon: Ship },
-      { slug: "limassol-anchorage", title: "Limassol Port Anchorage", description: "Anchorage services", icon: Anchor },
-      { slug: "limassol-cruise", title: "Limassol Cruise Terminal", description: "Cruise ship services", icon: Ship },
+      { slug: "limassol-port", title: "Limassol Port", description: "Cyprus' main commercial port", icon: Anchor },
+      { slug: "limassol-port-schedule", title: "Limassol Port Schedule", description: "Vessel arrivals and departures", icon: Ship },
+      { slug: "limassol-port-anchorage", title: "Limassol Port Anchorage", description: "Anchorage services", icon: Anchor },
+      { slug: "limassol-cruise-terminal", title: "Limassol Cruise Terminal", description: "Cruise ship services", icon: Ship },
     ]
   },
   {
     category: "Larnaca",
     items: [
-      { slug: "larnaca", title: "Larnaca Port", description: "Secondary commercial port", icon: Anchor },
-      { slug: "larnaca-oil", title: "Larnaca Oil Terminal", description: "Petroleum products terminal", icon: Fuel },
+      { slug: "larnaca-port", title: "Larnaca Port", description: "Secondary commercial port", icon: Anchor },
+      { slug: "larnaca-oil-terminal", title: "Larnaca Oil Terminal", description: "Petroleum products terminal", icon: Fuel },
     ]
   },
   {
     category: "Vassiliko",
     items: [
-      { slug: "vassiliko", title: "Vassiliko Port", description: "Industrial and energy port", icon: Ship },
-      { slug: "vassiliko-oil", title: "Vassiliko Oil Terminal", description: "CPSC oil terminal", icon: Fuel },
-      { slug: "vttv", title: "VTTV Vassiliko Terminal", description: "Tank terminal for petroleum", icon: Fuel },
+      { slug: "vassiliko-port", title: "Vassiliko Port", description: "Industrial and energy port", icon: Ship },
+      { slug: "vassiliko-oil-terminal", title: "Vassiliko Oil Terminal", description: "CPSC oil terminal", icon: Fuel },
+      { slug: "vttv-vassiliko-terminal", title: "VTTV Vassiliko Terminal", description: "Tank terminal for petroleum", icon: Fuel },
     ]
   },
   {
     category: "British Forces",
     items: [
-      { slug: "dhekelia", title: "Dhekelia Oil Terminal", description: "British Forces oil terminal", icon: Fuel },
-      { slug: "akrotiri", title: "RAF Akrotiri Oil Terminal", description: "RAF base fuel terminal", icon: Fuel },
+      { slug: "dhekelia-oil-terminal", title: "Dhekelia Oil Terminal", description: "British Forces oil terminal", icon: Fuel },
+      { slug: "raf-akrotiri-oil-terminal", title: "RAF Akrotiri Oil Terminal", description: "RAF base fuel terminal", icon: Fuel },
     ]
   }
 ];
@@ -41,6 +41,11 @@ const Ports = () => {
     <Layout>
       <div className="bg-primary py-16">
         <div className="container-shoham">
+          <div className="mb-2">
+            <Link to="/port-agency" className="text-white/70 hover:text-white text-sm">
+              ← Back to Port Agency
+            </Link>
+          </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             Ports of Cyprus
           </h1>
@@ -66,7 +71,7 @@ const Ports = () => {
                 return (
                   <Link
                     key={port.slug}
-                    to={`/ports/${port.slug}`}
+                    to={`/port-agency/ports-in-cyprus/${port.slug}`}
                     className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-all group border border-transparent hover:border-primary"
                   >
                     <Icon className="w-10 h-10 text-primary mb-4 group-hover:text-accent transition-colors" />

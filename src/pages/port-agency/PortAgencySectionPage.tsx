@@ -13,7 +13,7 @@ interface SectionData {
 }
 
 const sectionsData: Record<string, SectionData> = {
-  "oil-gas": {
+  "oil-gas-agency": {
     title: "Oil & Gas Agency",
     subtitle: "Offshore Operations Support",
     icon: <Fuel className="w-12 h-12" />,
@@ -55,7 +55,7 @@ const sectionsData: Record<string, SectionData> = {
       "Documentation handling"
     ]
   },
-  sts: {
+  "sts-operations": {
     title: "STS Operations",
     subtitle: "Ship-to-Ship Transfer Services",
     icon: <Ship className="w-12 h-12" />,
@@ -76,7 +76,7 @@ const sectionsData: Record<string, SectionData> = {
       "24/7 operations monitoring"
     ]
   },
-  "owners-protecting": {
+  "owners-protecting-agency": {
     title: "Owners Protecting Agency",
     subtitle: "Independent Protecting Services",
     icon: <Shield className="w-12 h-12" />,
@@ -97,7 +97,7 @@ const sectionsData: Record<string, SectionData> = {
       "Proactive issue resolution"
     ]
   },
-  drydock: {
+  "drydock-service": {
     title: "DryDock Service",
     subtitle: "Drydock Coordination and Support",
     icon: <Wrench className="w-12 h-12" />,
@@ -118,7 +118,7 @@ const sectionsData: Record<string, SectionData> = {
       "Technical personnel assistance"
     ]
   },
-  repairs: {
+  "vessel-repairs": {
     title: "Vessel Repairs",
     subtitle: "Repair Coordination Services",
     icon: <Wrench className="w-12 h-12" />,
@@ -139,7 +139,7 @@ const sectionsData: Record<string, SectionData> = {
       "Full documentation and reporting"
     ]
   },
-  ownership: {
+  "change-of-ownership": {
     title: "Change of Ownership",
     subtitle: "Ownership Transfer Services",
     icon: <FileText className="w-12 h-12" />,
@@ -160,7 +160,7 @@ const sectionsData: Record<string, SectionData> = {
       "Post-sale support"
     ]
   },
-  yacht: {
+  "yacht-agency": {
     title: "Yacht Agency",
     subtitle: "Yacht and Superyacht Services",
     icon: <Anchor className="w-12 h-12" />,
@@ -260,7 +260,7 @@ const PortAgencySectionPage = () => {
                   <Link to="/quote">Request Quote</Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <Link to="/contact">Contact Us</Link>
+                  <Link to="/contact-us">Contact Us</Link>
                 </Button>
               </div>
             </div>

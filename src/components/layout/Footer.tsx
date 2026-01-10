@@ -29,10 +29,11 @@ const Footer = () => {
           <div>
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">ZIM Agency</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><Link to="/zim-agency" className="hover:text-[#f59e0b] transition-colors">ZIM Agency</Link></li>
-              <li><Link to="/zim-agency/marketing" className="hover:text-[#f59e0b] transition-colors">Marketing and Sales</Link></li>
-              <li><Link to="/zim-agency/containers" className="hover:text-[#f59e0b] transition-colors">Container Types</Link></li>
-              <li><Link to="/zim-agency/schedules" className="hover:text-[#f59e0b] transition-colors">Sailing Schedules</Link></li>
+              <li><Link to="/zim-agency-in-cyprus" className="hover:text-[#f59e0b] transition-colors">ZIM Agency</Link></li>
+              <li><Link to="/zim-agency-in-cyprus/zim-worldwide" className="hover:text-[#f59e0b] transition-colors">ZIM Worldwide</Link></li>
+              <li><Link to="/zim-agency-in-cyprus/zim-container-types" className="hover:text-[#f59e0b] transition-colors">Container Types</Link></li>
+              <li><Link to="/zim-agency-in-cyprus/sailing-schedules" className="hover:text-[#f59e0b] transition-colors">Sailing Schedules</Link></li>
+              <li><Link to="/zim-agency-in-cyprus/track-your-container" className="hover:text-[#f59e0b] transition-colors">Track Container</Link></li>
             </ul>
           </div>
 
@@ -41,9 +42,11 @@ const Footer = () => {
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Port Agency</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li><Link to="/port-agency" className="hover:text-[#f59e0b] transition-colors">Port Agency</Link></li>
-              <li><Link to="/port-agency/oil-gas" className="hover:text-[#f59e0b] transition-colors">Oil & Gas Agency</Link></li>
+              <li><Link to="/port-agency/oil-gas-agency" className="hover:text-[#f59e0b] transition-colors">Oil & Gas Agency</Link></li>
               <li><Link to="/port-agency/crew-changes" className="hover:text-[#f59e0b] transition-colors">Crew Changes</Link></li>
-              <li><Link to="/port-agency/yacht" className="hover:text-[#f59e0b] transition-colors">Yacht Agency</Link></li>
+              <li><Link to="/port-agency/sts-operations" className="hover:text-[#f59e0b] transition-colors">STS Operations</Link></li>
+              <li><Link to="/port-agency/yacht-agency" className="hover:text-[#f59e0b] transition-colors">Yacht Agency</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus" className="hover:text-[#f59e0b] transition-colors">Ports of Cyprus</Link></li>
             </ul>
           </div>
 
@@ -52,8 +55,9 @@ const Footer = () => {
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Services</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li><Link to="/services/freight-forwarding" className="hover:text-[#f59e0b] transition-colors">Freight Forwarding</Link></li>
-              <li><Link to="/services/customs" className="hover:text-[#f59e0b] transition-colors">Customs Clearing</Link></li>
-              <li><Link to="/services/haulage" className="hover:text-[#f59e0b] transition-colors">Haulage</Link></li>
+              <li><Link to="/services/customs-clearing" className="hover:text-[#f59e0b] transition-colors">Customs Clearing</Link></li>
+              <li><Link to="/services/haulage-container-transport" className="hover:text-[#f59e0b] transition-colors">Haulage</Link></li>
+              <li><Link to="/services/air-freight" className="hover:text-[#f59e0b] transition-colors">Air Freight</Link></li>
               <li><Link to="/chartering" className="hover:text-[#f59e0b] transition-colors">Chartering</Link></li>
             </ul>
           </div>
@@ -62,12 +66,12 @@ const Footer = () => {
           <div>
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Ports</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><Link to="/ports/limassol" className="hover:text-[#f59e0b] transition-colors">Limassol Port</Link></li>
-              <li><Link to="/ports/limassol-schedule" className="hover:text-[#f59e0b] transition-colors">Limassol Port Schedule</Link></li>
-              <li><Link to="/ports/larnaca" className="hover:text-[#f59e0b] transition-colors">Larnaca Port</Link></li>
-              <li><Link to="/ports/vassiliko" className="hover:text-[#f59e0b] transition-colors">Vassiliko Port</Link></li>
-              <li><Link to="/ports/vassiliko-oil" className="hover:text-[#f59e0b] transition-colors">Vassiliko Oil Terminal</Link></li>
-              <li><Link to="/ports/dhekelia" className="hover:text-[#f59e0b] transition-colors">Dhekelia Oil Terminal</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/limassol-port" className="hover:text-[#f59e0b] transition-colors">Limassol Port</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/larnaca-port" className="hover:text-[#f59e0b] transition-colors">Larnaca Port</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/larnaca-oil-terminal" className="hover:text-[#f59e0b] transition-colors">Larnaca Oil Terminal</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/vassiliko-port" className="hover:text-[#f59e0b] transition-colors">Vassiliko Port</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/vassiliko-oil-terminal" className="hover:text-[#f59e0b] transition-colors">Vassiliko Oil Terminal</Link></li>
+              <li><Link to="/port-agency/ports-in-cyprus/dhekelia-oil-terminal" className="hover:text-[#f59e0b] transition-colors">Dhekelia Oil Terminal</Link></li>
             </ul>
           </div>
 

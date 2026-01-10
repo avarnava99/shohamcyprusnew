@@ -33,18 +33,28 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/zim-agency" element={<ZimAgency />} />
-          <Route path="/zim-agency/:section" element={<ZimSectionPage />} />
+          
+          {/* About Us */}
+          <Route path="/about-us" element={<About />} />
+          
+          {/* ZIM Agency - Original URLs */}
+          <Route path="/zim-agency-in-cyprus" element={<ZimAgency />} />
+          <Route path="/zim-agency-in-cyprus/:section" element={<ZimSectionPage />} />
+          
+          {/* Port Agency - Original URLs */}
           <Route path="/port-agency" element={<PortAgency />} />
           <Route path="/port-agency/:section" element={<PortAgencySectionPage />} />
-          <Route path="/ports" element={<Ports />} />
-          <Route path="/ports/:slug" element={<PortPage />} />
+          <Route path="/port-agency/ports-in-cyprus" element={<Ports />} />
+          <Route path="/port-agency/ports-in-cyprus/:slug" element={<PortPage />} />
+          
+          {/* Services - Original URLs */}
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServicePage />} />
+          
+          {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact-us" element={<Contact />} />
           <Route path="/quote" element={<Quote />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
