@@ -13,7 +13,7 @@ interface PortData {
 }
 
 const portsData: Record<string, PortData> = {
-  limassol: {
+  "limassol-port": {
     title: "Limassol Port",
     subtitle: "Cyprus' Main Commercial Port",
     description: "Limassol Port is the largest and busiest port in Cyprus, handling the majority of the island's container traffic and general cargo. As the main commercial gateway, it serves as the primary hub for import and export activities.",
@@ -32,7 +32,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Anchor className="w-12 h-12" />
   },
-  "limassol-schedule": {
+  "limassol-port-schedule": {
     title: "Limassol Port Schedule",
     subtitle: "Vessel Arrivals and Departures",
     description: "Stay updated with real-time vessel schedules for Limassol Port. Our team provides accurate and timely information on all vessel movements.",
@@ -50,7 +50,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Calendar className="w-12 h-12" />
   },
-  "limassol-anchorage": {
+  "limassol-port-anchorage": {
     title: "Limassol Port Anchorage",
     subtitle: "Anchorage Services and Coordination",
     description: "Comprehensive anchorage services for vessels awaiting berth or conducting offshore operations in Limassol anchorage area.",
@@ -68,7 +68,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Anchor className="w-12 h-12" />
   },
-  "limassol-cruise": {
+  "limassol-cruise-terminal": {
     title: "Limassol Cruise Terminal",
     subtitle: "Premium Cruise Ship Services",
     description: "The Limassol Cruise Terminal welcomes cruise vessels with world-class facilities and services, offering passengers a gateway to Cyprus' rich cultural heritage.",
@@ -86,7 +86,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Ship className="w-12 h-12" />
   },
-  larnaca: {
+  "larnaca-port": {
     title: "Larnaca Port",
     subtitle: "Cyprus' Secondary Commercial Port",
     description: "Larnaca Port serves as Cyprus' secondary commercial port, handling general cargo, bulk commodities, and providing support for the offshore oil and gas industry.",
@@ -104,7 +104,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Anchor className="w-12 h-12" />
   },
-  "larnaca-oil": {
+  "larnaca-oil-terminal": {
     title: "Larnaca Oil Terminal",
     subtitle: "Petroleum Products Terminal",
     description: "The Larnaca Oil Terminal handles petroleum product imports and distribution, serving as a key facility for Cyprus' energy sector.",
@@ -122,7 +122,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Fuel className="w-12 h-12" />
   },
-  vassiliko: {
+  "vassiliko-port": {
     title: "Vassiliko Port",
     subtitle: "Industrial and Energy Port",
     description: "Vassiliko Port is Cyprus' main industrial port, serving the cement industry, power generation, and as a hub for oil and gas operations.",
@@ -140,7 +140,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Ship className="w-12 h-12" />
   },
-  "vassiliko-oil": {
+  "vassiliko-oil-terminal": {
     title: "Vassiliko Oil Terminal",
     subtitle: "Cyprus Petroleum Storage Company",
     description: "The Vassiliko Oil Terminal is operated by VTTV (Vassiliko Tank Terminal for Petroleum) providing storage and distribution of petroleum products.",
@@ -158,7 +158,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Fuel className="w-12 h-12" />
   },
-  vttv: {
+  "vttv-vassiliko-terminal": {
     title: "VTTV Vassiliko Terminal",
     subtitle: "Vassiliko Tank Terminal for Petroleum",
     description: "VTTV is a state-of-the-art petroleum storage terminal providing comprehensive storage and handling services for oil products in the Eastern Mediterranean.",
@@ -176,7 +176,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Fuel className="w-12 h-12" />
   },
-  dhekelia: {
+  "dhekelia-oil-terminal": {
     title: "Dhekelia Oil Terminal",
     subtitle: "British Forces Oil Terminal",
     description: "The Dhekelia Oil Terminal serves the British Forces Cyprus base, handling petroleum products for military and civilian use within the Sovereign Base Area.",
@@ -194,7 +194,7 @@ const portsData: Record<string, PortData> = {
     ],
     icon: <Fuel className="w-12 h-12" />
   },
-  akrotiri: {
+  "raf-akrotiri-oil-terminal": {
     title: "RAF Akrotiri Oil Terminal",
     subtitle: "Royal Air Force Base Terminal",
     description: "RAF Akrotiri Oil Terminal provides fuel supply services for the Royal Air Force base, one of the UK's most important overseas military installations.",
@@ -225,7 +225,7 @@ const PortPage = () => {
           <h1 className="text-2xl font-bold mb-4">Port Not Found</h1>
           <p className="text-muted-foreground mb-6">The requested port page could not be found.</p>
           <Button asChild>
-            <Link to="/ports">View All Ports</Link>
+            <Link to="/port-agency/ports-in-cyprus">View All Ports</Link>
           </Button>
         </div>
       </Layout>
@@ -236,7 +236,12 @@ const PortPage = () => {
     <Layout>
       <div className="bg-primary py-16">
         <div className="container-shoham">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="mb-2">
+            <Link to="/port-agency/ports-in-cyprus" className="text-white/70 hover:text-white text-sm">
+              ← Back to Ports of Cyprus
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
             <div className="text-white">{port.icon}</div>
             <div>
               <h1 className="font-heading text-3xl md:text-4xl font-bold text-white">
@@ -286,7 +291,7 @@ const PortPage = () => {
                   <Link to="/quote">Request Quote</Link>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <Link to="/contact">Contact Us</Link>
+                  <Link to="/contact-us">Contact Us</Link>
                 </Button>
               </div>
             </div>
@@ -302,7 +307,7 @@ const PortPage = () => {
               .map(([key, p]) => (
                 <Link
                   key={key}
-                  to={`/ports/${key}`}
+                  to={`/port-agency/ports-in-cyprus/${key}`}
                   className="px-4 py-2 bg-muted rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
                 >
                   {p.title}

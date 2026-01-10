@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
-// Service data
+// Service data with original URL slugs
 const servicesData: Record<string, { title: string; description: string; content: string[] }> = {
   "freight-forwarding": {
     title: "Freight Forwarding",
@@ -16,7 +16,7 @@ const servicesData: Record<string, { title: string; description: string; content
       "Real-time tracking and status updates for all shipments.",
     ],
   },
-  "customs": {
+  "customs-clearing": {
     title: "Customs Clearing",
     description: "Famagusta General Agency Ltd is the group's customs brokerage and clearing company.",
     content: [
@@ -26,8 +26,8 @@ const servicesData: Record<string, { title: string; description: string; content
       "Quick clearance times to minimize delays.",
     ],
   },
-  "haulage": {
-    title: "Haulage",
+  "haulage-container-transport": {
+    title: "Haulage & Container Transport",
     description: "Haulage for container and general cargo with extensive land transport services.",
     content: [
       "We provide extensive land transport and door-to-door services.",
@@ -66,6 +66,26 @@ const servicesData: Record<string, { title: string; description: string; content
       "Fast and reliable delivery to Cyprus.",
     ],
   },
+  "warehousing": {
+    title: "Warehousing",
+    description: "Secure storage and distribution services for your goods.",
+    content: [
+      "Modern warehouse facilities in strategic locations.",
+      "Short and long-term storage options.",
+      "Inventory management and distribution services.",
+      "Climate-controlled storage available.",
+    ],
+  },
+  "marine-insurance": {
+    title: "Marine Insurance",
+    description: "Comprehensive cargo insurance coverage for peace of mind.",
+    content: [
+      "All-risk cargo insurance available.",
+      "Coverage for sea, air, and land transport.",
+      "Quick claims processing.",
+      "Competitive premiums from leading insurers.",
+    ],
+  },
   "marine-logistics": {
     title: "Marine Logistics",
     description: "Ship spare parts handling and marine logistics services.",
@@ -74,16 +94,6 @@ const servicesData: Record<string, { title: string; description: string; content
       "Spare parts delivery to vessels.",
       "Urgent ship stores and provisions.",
       "24/7 service availability.",
-    ],
-  },
-  "cargo-insurance": {
-    title: "Cargo Insurance",
-    description: "Peace of mind with comprehensive cargo insurance coverage.",
-    content: [
-      "All-risk cargo insurance available.",
-      "Coverage for sea, air, and land transport.",
-      "Quick claims processing.",
-      "Competitive premiums.",
     ],
   },
   "tank-containers": {
@@ -116,16 +126,6 @@ const servicesData: Record<string, { title: string; description: string; content
       "Ideal for e-commerce businesses.",
     ],
   },
-  "travel": {
-    title: "Travel Agency",
-    description: "Book online flights, hotels and rental cars.",
-    content: [
-      "Flight bookings worldwide.",
-      "Hotel reservations.",
-      "Car rental services.",
-      "Travel packages and tours.",
-    ],
-  },
 };
 
 const ServicePage = () => {
@@ -150,6 +150,11 @@ const ServicePage = () => {
     <Layout>
       <div className="bg-primary py-16">
         <div className="container-shoham">
+          <div className="mb-2">
+            <Link to="/services" className="text-white/70 hover:text-white text-sm">
+              ← Back to Services
+            </Link>
+          </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             {service.title}
           </h1>
@@ -183,8 +188,26 @@ const ServicePage = () => {
               Contact our team for more information about our {service.title.toLowerCase()} services.
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact-us">Contact Us</Link>
             </Button>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t">
+          <h3 className="font-heading font-semibold text-lg mb-4">Other Services</h3>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(servicesData)
+              .filter(([key]) => key !== slug)
+              .slice(0, 6)
+              .map(([key, s]) => (
+                <Link
+                  key={key}
+                  to={`/services/${key}`}
+                  className="px-4 py-2 bg-muted rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
+                >
+                  {s.title}
+                </Link>
+              ))}
           </div>
         </div>
       </div>

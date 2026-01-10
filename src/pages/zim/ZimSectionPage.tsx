@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Package, Calendar, MapPin } from "lucide-react";
+import { ExternalLink, Package, Calendar, MapPin, Globe } from "lucide-react";
 
 interface SectionData {
   title: string;
@@ -21,15 +21,27 @@ const containerTypes = [
 ];
 
 const sectionsData: Record<string, SectionData> = {
-  marketing: {
-    title: "Marketing and Sales",
-    subtitle: "Commercial Services for ZIM Lines",
+  "zim-worldwide": {
+    title: "ZIM Worldwide",
+    subtitle: "Global Network of ZIM Agents",
     content: (
       <div className="space-y-6">
         <p className="text-muted-foreground">
-          As the official representative of ZIM Integrated Shipping Services Ltd in Cyprus, 
-          Shoham provides comprehensive marketing and sales support for all ZIM shipping services.
+          Zim Integrated Shipping Services Ltd is represented worldwide by approximately 180 Agents 
+          who will be happy to assist our customers, suppliers or receivers alike with any enquiries.
         </p>
+        <div className="bg-secondary p-8 rounded-lg text-center">
+          <Globe className="w-16 h-16 text-primary mx-auto mb-4" />
+          <h3 className="font-heading font-semibold text-xl mb-3">Find ZIM Agents Worldwide</h3>
+          <p className="text-muted-foreground mb-6">
+            Access the complete list of ZIM agents around the world through the official ZIM website.
+          </p>
+          <Button asChild className="bg-primary hover:bg-primary/90">
+            <a href="https://www.zim.com/contacts/worldwide-offices" target="_blank" rel="noopener noreferrer">
+              ZIM Worldwide Offices <ExternalLink className="w-4 h-4 ml-2" />
+            </a>
+          </Button>
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-secondary p-6 rounded-lg">
             <h3 className="font-heading font-semibold text-lg mb-3">Export Services</h3>
@@ -56,7 +68,7 @@ const sectionsData: Record<string, SectionData> = {
             ZIM offers containerized shipping services connecting Cyprus to:
           </p>
           <div className="flex flex-wrap gap-2">
-            {["Europe", "Israel", "USA", "Far East", "Mediterranean", "Black Sea"].map((route) => (
+            {["Europe", "Israel", "USA", "Far East", "Mediterranean", "Black Sea", "Middle East", "Africa"].map((route) => (
               <span key={route} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
                 {route}
               </span>
@@ -66,8 +78,8 @@ const sectionsData: Record<string, SectionData> = {
       </div>
     )
   },
-  containers: {
-    title: "Container Types",
+  "zim-container-types": {
+    title: "ZIM Container Types",
     subtitle: "Available Container Options",
     content: (
       <div className="space-y-6">
@@ -95,7 +107,7 @@ const sectionsData: Record<string, SectionData> = {
       </div>
     )
   },
-  schedules: {
+  "sailing-schedules": {
     title: "Sailing Schedules",
     subtitle: "ZIM Vessel Schedules",
     content: (
@@ -126,8 +138,8 @@ const sectionsData: Record<string, SectionData> = {
       </div>
     )
   },
-  track: {
-    title: "Track Container",
+  "track-your-container": {
+    title: "Track Your Container",
     subtitle: "Container Tracking Service",
     content: (
       <div className="space-y-6">
@@ -177,7 +189,7 @@ const ZimSectionPage = () => {
           <h1 className="text-2xl font-bold mb-4">Section Not Found</h1>
           <p className="text-muted-foreground mb-6">The requested section could not be found.</p>
           <Button asChild>
-            <Link to="/zim-agency">Back to ZIM Agency</Link>
+            <Link to="/zim-agency-in-cyprus">Back to ZIM Agency</Link>
           </Button>
         </div>
       </Layout>
@@ -189,7 +201,7 @@ const ZimSectionPage = () => {
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">
-            <Link to="/zim-agency" className="text-white/70 hover:text-white text-sm">
+            <Link to="/zim-agency-in-cyprus" className="text-white/70 hover:text-white text-sm">
               ← Back to ZIM Agency
             </Link>
           </div>
@@ -211,7 +223,7 @@ const ZimSectionPage = () => {
               .map(([key, s]) => (
                 <Link
                   key={key}
-                  to={`/zim-agency/${key}`}
+                  to={`/zim-agency-in-cyprus/${key}`}
                   className="px-4 py-2 bg-muted rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
                 >
                   {s.title}

@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import zimShip from "@/assets/zim-ship.jpg";
 
 const stats = [
-  { value: "60+", label: "Agents Worldwide" },
-  { value: "29", label: "Ships" },
-  { value: "59", label: "Ports Covered" },
-  { value: "25", label: "Lines" },
+  { value: "180+", label: "Agents Worldwide" },
+  { value: "100+", label: "Ships" },
+  { value: "300+", label: "Ports Covered" },
+  { value: "80+", label: "Countries" },
 ];
 
 const ZimAgency = () => {
@@ -16,7 +16,7 @@ const ZimAgency = () => {
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-            ZIM Agency
+            ZIM Agency in Cyprus
           </h1>
           <p className="text-white/90 text-lg max-w-2xl">
             Official representative of ZIM Integrated Shipping Services Ltd in Cyprus
@@ -35,7 +35,9 @@ const ZimAgency = () => {
             </p>
             <p className="text-muted-foreground mb-6">
               ZIM remains at the forefront of the carrier industry by rapidly adapting to 
-              commercial developments and emerging markets.
+              commercial developments and emerging markets. ZIM is represented worldwide by 
+              approximately 180 Agents who will be happy to assist our customers, suppliers 
+              or receivers alike with any enquiries.
             </p>
             <Button asChild className="bg-accent hover:bg-shoham-orange-dark">
               <Link to="/quote">Get A Quote</Link>
@@ -58,19 +60,19 @@ const ZimAgency = () => {
         </div>
 
         <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link to="/zim-agency/marketing" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-            <h3 className="font-heading font-semibold text-lg mb-2">Marketing and Sales</h3>
-            <p className="text-sm text-muted-foreground">Commercial services and sales support</p>
+          <Link to="/zim-agency-in-cyprus/zim-worldwide" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+            <h3 className="font-heading font-semibold text-lg mb-2">ZIM Worldwide</h3>
+            <p className="text-sm text-muted-foreground">Global network of ZIM agents</p>
           </Link>
-          <Link to="/zim-agency/containers" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <Link to="/zim-agency-in-cyprus/zim-container-types" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
             <h3 className="font-heading font-semibold text-lg mb-2">Container Types</h3>
             <p className="text-sm text-muted-foreground">View available container options</p>
           </Link>
-          <Link to="/zim-agency/schedules" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <Link to="/zim-agency-in-cyprus/sailing-schedules" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
             <h3 className="font-heading font-semibold text-lg mb-2">Sailing Schedules</h3>
             <p className="text-sm text-muted-foreground">View ZIM sailing schedules</p>
           </Link>
-          <Link to="/zim-agency/track" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <Link to="/zim-agency-in-cyprus/track-your-container" className="bg-card p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
             <h3 className="font-heading font-semibold text-lg mb-2">Track Container</h3>
             <p className="text-sm text-muted-foreground">Track your shipment</p>
           </Link>

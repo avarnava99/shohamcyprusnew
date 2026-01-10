@@ -1,20 +1,20 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
-import { Ship, Truck, Package, Plane, Car, Shield, Container, RefreshCw, Boxes, FileCheck, Anchor } from "lucide-react";
+import { Ship, Truck, Package, Plane, Car, Shield, Container, RefreshCw, Boxes, FileCheck, Anchor, Warehouse } from "lucide-react";
 
 const services = [
   { title: "Freight Forwarding", icon: Package, href: "/services/freight-forwarding", description: "Complete import and export freight forwarding" },
-  { title: "Customs Clearing", icon: FileCheck, href: "/services/customs", description: "Expert customs brokerage and clearance" },
-  { title: "Haulage", icon: Truck, href: "/services/haulage", description: "Container and general cargo transport" },
+  { title: "Customs Clearing", icon: FileCheck, href: "/services/customs-clearing", description: "Expert customs brokerage and clearance" },
+  { title: "Haulage", icon: Truck, href: "/services/haulage-container-transport", description: "Container and general cargo transport" },
   { title: "Air Freight", icon: Plane, href: "/services/air-freight", description: "Express air cargo services" },
   { title: "Car Shipping", icon: Car, href: "/services/car-shipping", description: "Vehicle shipping from UK and Europe" },
   { title: "Parcel Forwarding", icon: Package, href: "/services/parcel-forwarding", description: "Online shopping forwarding" },
+  { title: "Warehousing", icon: Warehouse, href: "/services/warehousing", description: "Storage and distribution services" },
+  { title: "Marine Insurance", icon: Shield, href: "/services/marine-insurance", description: "Comprehensive cargo coverage" },
   { title: "Marine Logistics", icon: Anchor, href: "/services/marine-logistics", description: "Ship spare parts and stores" },
-  { title: "Cargo Insurance", icon: Shield, href: "/services/cargo-insurance", description: "Comprehensive cargo coverage" },
   { title: "Tank Containers", icon: Container, href: "/services/tank-containers", description: "ISO tank solutions for liquids" },
   { title: "Used Containers", icon: Boxes, href: "/services/used-containers", description: "Buy used shipping containers" },
   { title: "Cross Shipments", icon: RefreshCw, href: "/services/cross-shipments", description: "Dropshipping and relabeling" },
-  { title: "Travel Agency", icon: Plane, href: "/services/travel", description: "Flights, hotels and car rentals" },
 ];
 
 const Services = () => {
