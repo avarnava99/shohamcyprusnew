@@ -6,7 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import ZimAgency from "./pages/ZimAgency";
+import ZimSectionPage from "./pages/zim/ZimSectionPage";
 import PortAgency from "./pages/PortAgency";
+import PortAgencySectionPage from "./pages/port-agency/PortAgencySectionPage";
+import Ports from "./pages/Ports";
+import PortPage from "./pages/ports/PortPage";
 import Services from "./pages/Services";
 import ServicePage from "./pages/services/ServicePage";
 import Chartering from "./pages/Chartering";
@@ -31,9 +35,11 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/zim-agency" element={<ZimAgency />} />
-          <Route path="/zim-agency/:section" element={<ZimAgency />} />
+          <Route path="/zim-agency/:section" element={<ZimSectionPage />} />
           <Route path="/port-agency" element={<PortAgency />} />
-          <Route path="/port-agency/:section" element={<PortAgency />} />
+          <Route path="/port-agency/:section" element={<PortAgencySectionPage />} />
+          <Route path="/ports" element={<Ports />} />
+          <Route path="/ports/:slug" element={<PortPage />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/chartering" element={<Chartering />} />
