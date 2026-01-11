@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Instagram, Phone, Mail, MapPin, Printer } from "lucide-react";
+import shohamLogo from "@/assets/shoham-logo.png";
 
 const Footer = () => {
   return (
     <footer className="bg-[#0a1628] text-white">
       <div className="container-shoham py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
-          {/* Follow Us */}
+          {/* Logo & Follow Us */}
           <div>
+            <Link to="/" className="inline-block mb-4">
+              <img 
+                src={shohamLogo} 
+                alt="Shoham Shipping & Logistics" 
+                className="h-12 w-auto bg-white p-2 rounded"
+              />
+            </Link>
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Follow Us</h3>
             <div className="flex gap-3">
               <a href="#" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Facebook">
