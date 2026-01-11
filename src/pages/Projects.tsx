@@ -3,107 +3,19 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-
-// Project images imports
-import italyTanks1 from "@/assets/projects/italy-tanks-1.jpg";
-import italyTanks2 from "@/assets/projects/italy-tanks-2.jpg";
-import italyTanks3 from "@/assets/projects/italy-tanks-3.jpg";
-import italyTanks4 from "@/assets/projects/italy-tanks-4.jpg";
-import transformers1 from "@/assets/projects/transformers-1.jpg";
-import transformers2 from "@/assets/projects/transformers-2.jpg";
-import transformers3 from "@/assets/projects/transformers-3.jpg";
-import transformers4 from "@/assets/projects/transformers-4.jpg";
-import transformers5 from "@/assets/projects/transformers-5.jpg";
-import transformers6 from "@/assets/projects/transformers-6.jpg";
-import transformers7 from "@/assets/projects/transformers-7.jpg";
-import transformers8 from "@/assets/projects/transformers-8.jpg";
-
-interface Project {
-  title: string;
-  description: string;
-  year: string;
-  location: string;
-  category: string;
-  images?: string[];
-}
-
-const projects: Project[] = [
-  {
-    title: "Door to Door Delivery from Italy to Cyprus - Out of Gauge Tank Units",
-    description: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the Electricity Authority station. The project involved handling oversized tank units requiring specialized flat rack containers and coordinated logistics from factory to final destination.",
-    year: "2019",
-    location: "Italy → Larnaca",
-    category: "Project Cargo",
-    images: [italyTanks1, italyTanks2, italyTanks3, italyTanks4],
-  },
-  {
-    title: "Heavy Lift Project - Industrial Equipment",
-    description: "Successful coordination of heavy lift operations for industrial equipment delivery to major manufacturing facility in Cyprus.",
-    year: "2024",
-    location: "Limassol Port",
-    category: "Heavy Lift",
-  },
-  {
-    title: "Offshore Support Operations",
-    description: "Comprehensive logistics support for offshore drilling operations including crew changes, supply vessel coordination, and cargo handling.",
-    year: "2024",
-    location: "Cyprus Offshore",
-    category: "Oil & Gas",
-  },
-  {
-    title: "Power Plant Equipment Transport",
-    description: "Transport and handling of power plant components including transformers and heavy machinery from port to installation site.",
-    year: "2023",
-    location: "Vassiliko",
-    category: "Project Cargo",
-  },
-  {
-    title: "Breakbulk Cargo Operations",
-    description: "Efficient handling of oversized machinery and equipment for construction projects throughout Cyprus.",
-    year: "2023",
-    location: "Limassol Port",
-    category: "Breakbulk",
-  },
-  {
-    title: "Offshore Cargo Baskets for ENI",
-    description: "Coordination of offshore cargo basket operations for ENI's drilling operations in Cyprus waters. We provided full logistics support including cargo handling and vessel coordination.",
-    year: "2019",
-    location: "Cyprus Offshore",
-    category: "Oil & Gas",
-  },
-  {
-    title: "Transport and Positioning of 4 x 60 Ton Transformers",
-    description: "In November 2018 we managed a project which involved transportation and positioning of 4 x 60 ton transformers to a new Electricity Authority substation. In addition we provided the transport and unloading of 15 open top and standard containers to the desired storage location.",
-    year: "2018",
-    location: "Cyprus",
-    category: "Heavy Lift",
-    images: [transformers1, transformers2, transformers3, transformers4, transformers5, transformers6, transformers7, transformers8],
-  },
-  {
-    title: "Loading Mobile Generators",
-    description: "In March 2013, we arranged the loading of mobile generators which were used by the Electricity of Cyprus during shortages. The project involved coordination of heavy lift operations and vessel loading at Limassol port.",
-    year: "2013",
-    location: "Limassol Port",
-    category: "Heavy Lift",
-  },
-  {
-    title: "Vassilikos Desalination Plant",
-    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. This major project required careful planning and coordination with multiple stakeholders.",
-    year: "2012",
-    location: "Vassiliko",
-    category: "Project Cargo",
-  },
-];
+import { projects } from "@/data/projects";
 
 const ProjectImageCarousel = ({ images }: { images: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrevious = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const goToNext = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
@@ -140,6 +52,7 @@ const ProjectImageCarousel = ({ images }: { images: string[] }) => {
               <button
                 key={index}
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   setCurrentIndex(index);
                 }}
@@ -172,35 +85,60 @@ const Projects = () => {
 
       <div className="container-shoham py-12">
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <div 
-              key={index} 
-              className="bg-card rounded-lg shadow border hover:shadow-lg transition-shadow overflow-hidden"
-            >
-              {project.images && project.images.length > 0 && (
-                <ProjectImageCarousel images={project.images} />
-              )}
-              <div className="p-6">
-                <div className="flex items-center gap-4 mb-3">
-                  <span className="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    {project.category}
-                  </span>
-                </div>
-                <h3 className="font-heading font-semibold text-lg mb-3">{project.title}</h3>
-                <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
-                    {project.year}
+          {projects.map((project, index) => {
+            const hasDetailPage = project.images && project.images.length > 0;
+            
+            const CardContent = (
+              <>
+                {project.images && project.images.length > 0 && (
+                  <ProjectImageCarousel images={project.images} />
+                )}
+                <div className="p-6">
+                  <div className="flex items-center gap-4 mb-3">
+                    <span className="bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">
+                      {project.category}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    {project.location}
+                  <h3 className="font-heading font-semibold text-lg mb-3">{project.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="h-4 w-4" />
+                      {project.year}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="h-4 w-4" />
+                      {project.location}
+                    </div>
                   </div>
+                  {hasDetailPage && (
+                    <div className="mt-4 pt-4 border-t">
+                      <span className="text-primary text-sm font-medium hover:underline">
+                        View Project Details →
+                      </span>
+                    </div>
+                  )}
                 </div>
+              </>
+            );
+
+            return hasDetailPage ? (
+              <Link 
+                key={index}
+                to={`/projects/${project.slug}`}
+                className="bg-card rounded-lg shadow border hover:shadow-lg transition-shadow overflow-hidden block"
+              >
+                {CardContent}
+              </Link>
+            ) : (
+              <div 
+                key={index} 
+                className="bg-card rounded-lg shadow border overflow-hidden"
+              >
+                {CardContent}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="text-center mt-12 bg-secondary p-8 rounded-lg">
@@ -215,7 +153,7 @@ const Projects = () => {
               <Link to="/quote">Request A Quote</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact-us">Contact Us</Link>
             </Button>
           </div>
         </div>
