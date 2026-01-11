@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Calendar, ArrowRight } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
 
 const Blog = () => {
   const { data: posts, isLoading } = useQuery({
@@ -10,7 +11,7 @@ const Blog = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, slug, excerpt, published_at, blog_categories(name, slug)")
+        .select("id, title, slug, excerpt, published_at, featured_image, blog_categories(name, slug)")
         .eq("published", true)
         .order("published_at", { ascending: false });
 
@@ -37,6 +38,7 @@ const Blog = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-card rounded-lg shadow p-6 animate-pulse">
+                <div className="h-40 bg-muted rounded mb-4" />
                 <div className="h-4 bg-muted rounded w-3/4 mb-4" />
                 <div className="h-3 bg-muted rounded w-full mb-2" />
                 <div className="h-3 bg-muted rounded w-2/3" />
@@ -51,7 +53,21 @@ const Blog = () => {
                 to={`/blog/${post.slug}`}
                 className="group bg-card rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden"
               >
+                {post.featured_image && (
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={post.featured_image}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
                 <div className="p-6">
+                  {post.blog_categories && (
+                    <Badge variant="secondary" className="mb-2 text-xs">
+                      {post.blog_categories.name}
+                    </Badge>
+                  )}
                   <h2 className="font-heading font-semibold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
                     {post.title}
                   </h2>
