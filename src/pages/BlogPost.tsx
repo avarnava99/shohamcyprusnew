@@ -1,9 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, ArrowLeft } from "lucide-react";
+import { Calendar, ArrowLeft, Tag } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,7 +14,7 @@ const BlogPost = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("*")
+        .select("*, blog_categories(name, slug)")
         .eq("slug", slug)
         .eq("published", true)
         .single();
@@ -67,19 +68,26 @@ const BlogPost = () => {
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             {post.title}
           </h1>
-          <div className="flex items-center text-white/80">
-            <Calendar className="h-4 w-4 mr-2" />
-            {post.published_at ? new Date(post.published_at).toLocaleDateString() : ""}
+          <div className="flex items-center gap-4 text-white/80 flex-wrap">
+            <span className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              {post.published_at ? new Date(post.published_at).toLocaleDateString() : ""}
+            </span>
+            {post.blog_categories && (
+              <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
+                <Tag className="h-3 w-3 mr-1" />
+                {post.blog_categories.name}
+              </Badge>
+            )}
           </div>
         </div>
       </div>
 
       <div className="container-shoham py-12">
-        <article className="max-w-3xl mx-auto prose prose-lg">
-          {post.content.split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
-        </article>
+        <article 
+          className="max-w-3xl mx-auto prose prose-lg prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-strong:text-foreground"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
       </div>
     </Layout>
   );
