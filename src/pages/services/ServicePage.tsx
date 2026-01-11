@@ -5,7 +5,37 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 // Service data with original URL slugs
-const servicesData: Record<string, { title: string; description: string; content: string[] }> = {
+const servicesData: Record<string, { title: string; description: string; content: string[]; subpages?: { label: string; href: string }[] }> = {
+  "container-tracking": {
+    title: "Container Tracking",
+    description: "Track your container shipments in real-time.",
+    content: [
+      "Access real-time container tracking through ZIM's tracking system.",
+      "Track by container number or Bill of Lading.",
+      "Get instant updates on cargo location and status.",
+      "Receive automated notifications for shipment milestones.",
+    ],
+  },
+  "shipping-rates": {
+    title: "Shipping Rates",
+    description: "Get competitive shipping rates for your cargo.",
+    content: [
+      "Competitive rates for all shipping routes.",
+      "Transparent pricing with no hidden fees.",
+      "Volume discounts for regular shippers.",
+      "Contact us for a personalized quote.",
+    ],
+  },
+  "sea-freight": {
+    title: "Sea Freight",
+    description: "Reliable sea freight services connecting Cyprus to the world.",
+    content: [
+      "FCL (Full Container Load) services.",
+      "LCL (Less than Container Load) consolidation.",
+      "Regular sailings to major ports worldwide.",
+      "Specialized handling for oversized cargo.",
+    ],
+  },
   "freight-forwarding": {
     title: "Freight Forwarding",
     description: "We are involved with dedication for over 60 years in freight forwarding for the benefit of our numerous customers.",
@@ -24,6 +54,12 @@ const servicesData: Record<string, { title: string; description: string; content
       "We handle all documentation and customs formalities.",
       "Expert knowledge of Cyprus customs regulations and procedures.",
       "Quick clearance times to minimize delays.",
+    ],
+    subpages: [
+      { label: "Duty Calculator for Cyprus", href: "/services/customs-clearing/duty-calculator-for-cyprus" },
+      { label: "EORI Registration Cyprus", href: "/services/customs-clearing/eori-registration-cyprus" },
+      { label: "Customs Authority Form 1002", href: "/services/customs-clearing/form-1002" },
+      { label: "Transfer of Residence", href: "/services/customs-clearing/transfer-of-residence" },
     ],
   },
   "haulage-container-transport": {
