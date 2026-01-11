@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { Button } from "@/components/ui/button";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -74,47 +71,38 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:block">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navItems.map((item) => (
-                  <NavigationMenuItem key={item.label}>
-                    {item.children ? (
-                      <>
-                        <NavigationMenuTrigger className="text-foreground hover:text-primary">
-                          {item.label}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid w-56 gap-1 p-2">
-                            {item.children.map((child) => (
-                              <li key={child.label}>
-                                <NavigationMenuLink asChild>
-                                  <Link
-                                    to={child.href}
-                                    className="block p-2 text-sm hover:bg-secondary rounded transition-colors"
-                                  >
-                                    {child.label}
-                                  </Link>
-                                </NavigationMenuLink>
-                              </li>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </>
-                    ) : (
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={item.href}
-                          className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </NavigationMenuLink>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => (
+              <div key={item.label}>
+                {item.children ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="inline-flex items-center gap-1 px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors outline-none">
+                      {item.label}
+                      <ChevronDown className="h-4 w-4" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-56 bg-white border shadow-lg z-50">
+                      {item.children.map((child) => (
+                        <DropdownMenuItem key={child.label} asChild>
+                          <Link
+                            to={child.href}
+                            className="w-full cursor-pointer"
+                          >
+                            {child.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </div>
+            ))}
           </nav>
 
           {/* CTA Button */}
