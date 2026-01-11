@@ -175,6 +175,72 @@ const sectionsData: Record<string, SectionData> = {
         </div>
       </div>
     )
+  },
+  "marketing-and-sales": {
+    title: "ZIM Marketing and Sales",
+    subtitle: "Commercial Services & Rate Quotations",
+    content: (
+      <div className="space-y-6">
+        <p className="text-muted-foreground">
+          Shoham Shipping & Logistics, as the exclusive ZIM agent in Cyprus, provides comprehensive 
+          marketing and sales support for all your shipping needs. Our dedicated commercial team is 
+          here to assist with rate quotations, service inquiries, and partnership opportunities.
+        </p>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-secondary p-6 rounded-lg">
+            <h3 className="font-heading font-semibold text-lg mb-3">Rate Quotations</h3>
+            <ul className="space-y-2 text-muted-foreground text-sm">
+              <li>• Competitive freight rates for all destinations</li>
+              <li>• FCL and LCL pricing</li>
+              <li>• Special cargo rates</li>
+              <li>• Volume contract negotiations</li>
+              <li>• Seasonal rate programs</li>
+            </ul>
+          </div>
+          <div className="bg-secondary p-6 rounded-lg">
+            <h3 className="font-heading font-semibold text-lg mb-3">Commercial Services</h3>
+            <ul className="space-y-2 text-muted-foreground text-sm">
+              <li>• New customer onboarding</li>
+              <li>• Service route consultations</li>
+              <li>• Transit time inquiries</li>
+              <li>• Equipment availability</li>
+              <li>• Partnership opportunities</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-card border p-6 rounded-lg">
+          <h3 className="font-heading font-semibold text-lg mb-3">Contact Our Sales Team</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium mb-2">For Rate Inquiries</h4>
+              <p className="text-muted-foreground text-sm mb-1">Email: sales@shoham.com.cy</p>
+              <p className="text-muted-foreground text-sm">Phone: +357-25-208700</p>
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">Business Hours</h4>
+              <p className="text-muted-foreground text-sm mb-1">Monday - Friday: 08:00 - 17:00</p>
+              <p className="text-muted-foreground text-sm">Saturday - Sunday: Closed</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-primary/5 p-6 rounded-lg">
+          <h3 className="font-heading font-semibold text-lg mb-3">Request a Quote</h3>
+          <p className="text-muted-foreground mb-4">
+            Need shipping rates? Contact our sales team with the following information:
+          </p>
+          <ul className="space-y-2 text-muted-foreground text-sm">
+            <li>• Origin and destination ports</li>
+            <li>• Cargo type and commodity</li>
+            <li>• Container type and quantity</li>
+            <li>• Estimated shipping date</li>
+            <li>• Any special requirements</li>
+          </ul>
+        </div>
+      </div>
+    )
   }
 };
 
