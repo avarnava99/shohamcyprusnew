@@ -28,12 +28,13 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch posts without featured images
+    // Fetch posts without featured images - limit to 5 per batch to avoid CPU timeout
     const { data: posts, error: fetchError } = await supabase
       .from("blog_posts")
       .select("id, slug, title, excerpt")
       .or("featured_image.is.null,featured_image.eq.")
-      .order("published_at", { ascending: false });
+      .order("published_at", { ascending: false })
+      .limit(5);
 
     if (fetchError) {
       throw new Error(`Failed to fetch posts: ${fetchError.message}`);
