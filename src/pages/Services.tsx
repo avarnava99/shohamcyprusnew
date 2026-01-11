@@ -12,7 +12,7 @@ const services = [
   { title: "Warehousing", icon: Warehouse, href: "/services/warehousing", description: "Storage and distribution services" },
   { title: "Marine Insurance", icon: Shield, href: "/services/marine-insurance", description: "Comprehensive cargo coverage" },
   { title: "Marine Logistics", icon: Anchor, href: "/services/marine-logistics", description: "Ship spare parts and stores" },
-  { title: "Tank Containers", icon: Container, href: "/services/tank-containers", description: "ISO tank solutions for liquids" },
+  { title: "Tank Containers", icon: Container, href: "/iso-tank", description: "ISO tank solutions for liquids" },
   { title: "Used Containers", icon: Boxes, href: "/services/used-containers", description: "Buy used shipping containers" },
   { title: "Cross Shipments", icon: RefreshCw, href: "/services/cross-shipments", description: "Dropshipping and relabeling" },
 ];

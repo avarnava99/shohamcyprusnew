@@ -52,6 +52,7 @@ const App = () => (
           {/* Services - Original URLs */}
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServicePage />} />
+          <Route path="/iso-tank" element={<ServicePage />} />
           
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />

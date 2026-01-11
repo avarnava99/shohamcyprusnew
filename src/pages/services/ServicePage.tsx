@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -96,7 +96,7 @@ const servicesData: Record<string, { title: string; description: string; content
       "24/7 service availability.",
     ],
   },
-  "tank-containers": {
+  "iso-tank": {
     title: "Tank Containers",
     description: "Liquid shipments in ISO tank containers.",
     content: [
@@ -130,7 +130,11 @@ const servicesData: Record<string, { title: string; description: string; content
 
 const ServicePage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const service = slug ? servicesData[slug] : null;
+  const location = useLocation();
+  
+  // Handle /iso-tank route separately
+  const effectiveSlug = location.pathname === "/iso-tank" ? "iso-tank" : slug;
+  const service = effectiveSlug ? servicesData[effectiveSlug] : null;
 
   if (!service) {
     return (

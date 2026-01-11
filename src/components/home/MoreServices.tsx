@@ -7,7 +7,7 @@ const moreServices = [
   { title: "Parcel Forwarding", description: "Amazon, eBay from UK & USA", icon: Package, href: "/services/parcel-forwarding" },
   { title: "Marine Logistics", description: "Ship spare parts handling", icon: Anchor, href: "/services/marine-logistics" },
   { title: "Cargo Insurance", description: "Peace of mind", icon: Shield, href: "/services/cargo-insurance" },
-  { title: "Tank Containers", description: "Liquid shipments in ISO tanks", icon: Container, href: "/services/tank-containers" },
+  { title: "Tank Containers", description: "Liquid shipments in ISO tanks", icon: Container, href: "/iso-tank" },
   { title: "Used Containers", description: "Buy used containers from us", icon: Boxes, href: "/services/used-containers" },
   { title: "Cross Shipments", description: "Dropshipping and relabeling", icon: RefreshCw, href: "/services/cross-shipments" },
   { title: "Travel Agency", description: "Book flights, hotels & cars", icon: Travel, href: "/services/travel" },
