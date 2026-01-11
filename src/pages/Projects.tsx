@@ -9,6 +9,14 @@ import italyTanks1 from "@/assets/projects/italy-tanks-1.jpg";
 import italyTanks2 from "@/assets/projects/italy-tanks-2.jpg";
 import italyTanks3 from "@/assets/projects/italy-tanks-3.jpg";
 import italyTanks4 from "@/assets/projects/italy-tanks-4.jpg";
+import transformers1 from "@/assets/projects/transformers-1.jpg";
+import transformers2 from "@/assets/projects/transformers-2.jpg";
+import transformers3 from "@/assets/projects/transformers-3.jpg";
+import transformers4 from "@/assets/projects/transformers-4.jpg";
+import transformers5 from "@/assets/projects/transformers-5.jpg";
+import transformers6 from "@/assets/projects/transformers-6.jpg";
+import transformers7 from "@/assets/projects/transformers-7.jpg";
+import transformers8 from "@/assets/projects/transformers-8.jpg";
 
 interface Project {
   title: string;
@@ -62,6 +70,14 @@ const projects: Project[] = [
     year: "2019",
     location: "Cyprus Offshore",
     category: "Oil & Gas",
+  },
+  {
+    title: "Transport and Positioning of 4 x 60 Ton Transformers",
+    description: "In November 2018 we managed a project which involved transportation and positioning of 4 x 60 ton transformers to a new Electricity Authority substation. In addition we provided the transport and unloading of 15 open top and standard containers to the desired storage location.",
+    year: "2018",
+    location: "Cyprus",
+    category: "Heavy Lift",
+    images: [transformers1, transformers2, transformers3, transformers4, transformers5, transformers6, transformers7, transformers8],
   },
   {
     title: "Loading Mobile Generators",
