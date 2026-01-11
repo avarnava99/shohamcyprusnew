@@ -14,6 +14,7 @@ import Ports from "./pages/Ports";
 import PortPage from "./pages/ports/PortPage";
 import Services from "./pages/Services";
 import ServicePage from "./pages/services/ServicePage";
+import CustomsSubpage from "./pages/services/CustomsSubpage";
 import Chartering from "./pages/Chartering";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
@@ -23,6 +24,11 @@ import BlogPost from "./pages/BlogPost";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import ContainerTypes from "./pages/ContainerTypes";
+import TravelAgency from "./pages/TravelAgency";
+import ContainerHomes from "./pages/ContainerHomes";
+import FAQ from "./pages/FAQ";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -52,7 +58,15 @@ const App = () => (
           {/* Services - Original URLs */}
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServicePage />} />
+          <Route path="/services/customs-clearing/:subpage" element={<CustomsSubpage />} />
           <Route path="/iso-tank" element={<ServicePage />} />
+          
+          {/* Standalone Pages */}
+          <Route path="/container-types" element={<ContainerTypes />} />
+          <Route path="/travel-agency" element={<TravelAgency />} />
+          <Route path="/container-homes" element={<ContainerHomes />} />
+          <Route path="/frequently-asked-questions" element={<FAQ />} />
+          <Route path="/about-us/privacy-policy" element={<PrivacyPolicy />} />
           
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />
