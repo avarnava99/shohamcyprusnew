@@ -12,7 +12,7 @@ const ProjectDetailPage = () => {
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   if (!project) {
-    return <Navigate to="/projects" replace />;
+    return <Navigate to="/project-cargo" replace />;
   }
 
   const openLightbox = (index: number) => {
@@ -48,9 +48,9 @@ const ProjectDetailPage = () => {
           <nav className="flex items-center gap-2 text-white/80 text-sm mb-4">
             <Link to="/" className="hover:text-white">Home</Link>
             <span>/</span>
-            <Link to="/projects" className="hover:text-white">Projects</Link>
+            <Link to="/project-cargo" className="hover:text-white">Project Cargo</Link>
             <span>/</span>
-            <span className="text-white">Transport of Transformers</span>
+            <span className="text-white">{project.title}</span>
           </nav>
           
           <h1 className="font-heading text-2xl md:text-4xl font-bold text-white uppercase tracking-wide">
@@ -66,11 +66,11 @@ const ProjectDetailPage = () => {
           <div className="lg:col-span-2">
             {/* Back Link */}
             <Link 
-              to="/projects" 
+              to="/project-cargo" 
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-6"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Projects
+              Back to Project Cargo
             </Link>
 
             {/* Project Title */}
@@ -164,7 +164,7 @@ const ProjectDetailPage = () => {
                 {otherProjects.map((p) => (
                   <li key={p.slug}>
                     <Link 
-                      to={`/projects/${p.slug}`}
+                      to={`/project-cargo/${p.slug}`}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors line-clamp-2"
                     >
                       {p.title}

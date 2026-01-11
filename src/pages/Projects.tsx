@@ -125,7 +125,7 @@ const Projects = () => {
             return hasDetailPage ? (
               <Link 
                 key={index}
-                to={`/projects/${project.slug}`}
+                to={`/project-cargo/${project.slug}`}
                 className="bg-card rounded-lg shadow border hover:shadow-lg transition-shadow overflow-hidden block"
               >
                 {CardContent}

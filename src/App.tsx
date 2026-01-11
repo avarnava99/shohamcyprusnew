@@ -77,8 +77,8 @@ const App = () => (
           
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+          <Route path="/project-cargo" element={<Projects />} />
+          <Route path="/project-cargo/:slug" element={<ProjectDetailPage />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/quote" element={<Quote />} />
           <Route path="/blog" element={<Blog />} />
