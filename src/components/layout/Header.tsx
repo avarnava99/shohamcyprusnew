@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import shohamLogo from "@/assets/shoham-logo.png";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -64,13 +65,12 @@ const Header = () => {
       <div className="container-shoham py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="bg-primary text-primary-foreground font-heading font-bold text-2xl px-3 py-2 rounded">
-              SHOHAM
-            </div>
-            <span className="hidden lg:block text-sm text-muted-foreground">
-              Shipping & Logistics
-            </span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={shohamLogo} 
+              alt="Shoham Shipping & Logistics" 
+              className="h-10 md:h-12 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
