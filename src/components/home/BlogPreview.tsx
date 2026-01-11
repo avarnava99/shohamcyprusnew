@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
 
 const BlogPreview = () => {
   const { data: posts, isLoading } = useQuery({
@@ -9,7 +10,7 @@ const BlogPreview = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("id, title, slug, excerpt, published_at")
+        .select("id, title, slug, excerpt, published_at, blog_categories(name, slug)")
         .eq("published", true)
         .order("published_at", { ascending: false })
         .limit(4);
@@ -51,6 +52,11 @@ const BlogPreview = () => {
               className="group bg-white rounded shadow-md hover:shadow-xl transition-shadow overflow-hidden"
             >
               <div className="p-6">
+                {post.blog_categories && (
+                  <Badge variant="secondary" className="mb-2 text-xs">
+                    {post.blog_categories.name}
+                  </Badge>
+                )}
                 <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-3">
                   {post.title}
                 </h3>
