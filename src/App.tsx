@@ -1,5 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import AmazonUK from "./pages/AmazonUK";
+import EcommerceGermany from "./pages/EcommerceGermany";
+import EcommerceUSA from "./pages/EcommerceUSA";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -69,6 +71,8 @@ const App = () => (
           <Route path="/frequently-asked-questions" element={<FAQ />} />
           <Route path="/about-us/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/online-purchases-shipped-to-cyprus-from-amazon-uk" element={<AmazonUK />} />
+          <Route path="/ecommerce-purchases-from-germany" element={<EcommerceGermany />} />
+          <Route path="/ecommerce-purchases-from-usa" element={<EcommerceUSA />} />
           
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />
