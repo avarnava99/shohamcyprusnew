@@ -11,6 +11,13 @@ import transformers5 from "@/assets/projects/transformers-5.jpg";
 import transformers6 from "@/assets/projects/transformers-6.jpg";
 import transformers7 from "@/assets/projects/transformers-7.jpg";
 import transformers8 from "@/assets/projects/transformers-8.jpg";
+import desalination1 from "@/assets/projects/desalination-1.jpg";
+import desalination2 from "@/assets/projects/desalination-2.jpg";
+import desalination3 from "@/assets/projects/desalination-3.jpg";
+import desalination4 from "@/assets/projects/desalination-4.jpg";
+import desalination5 from "@/assets/projects/desalination-5.jpg";
+import desalination6 from "@/assets/projects/desalination-6.jpg";
+import desalination7 from "@/assets/projects/desalination-7.jpg";
 
 export interface Project {
   slug: string;
@@ -92,6 +99,22 @@ export const projects: Project[] = [
     location: "Cyprus",
     category: "Heavy Lift",
     images: [transformers1, transformers2, transformers3, transformers4, transformers5, transformers6, transformers7, transformers8],
+  },
+  {
+    slug: "mobile-desalination",
+    title: "Mobile Desalination",
+    subtitle: "Vessel Chartering for shipping desalination plant from Cyprus",
+    description: "Chartering of vessel for shipping a Mobile Desalination Plant. In May 2018, our clients requested from us to arrange the immediate shipment of a mobile desalination plant to Saudi Arabia. As the cargo was out of gauge and a fast transit time was required, a voyage charter was effected.",
+    fullDescription: [
+      "Chartering of vessel for shipping a Mobile Desalination Plant.",
+      "In May 2018, our clients requested from us to arrange the immediate shipment of a mobile desalination plant to Saudi Arabia.",
+      "As the cargo was out of gauge and a fast transit time was required, a voyage charter was effected.",
+      "Our client was very satisfied by the quick response and delivery of the mobile desalination plant according to their contract."
+    ],
+    year: "2018",
+    location: "Cyprus → Saudi Arabia",
+    category: "Chartering",
+    images: [desalination1, desalination2, desalination3, desalination4, desalination5, desalination6, desalination7],
   },
   {
     slug: "loading-mobile-generators",
