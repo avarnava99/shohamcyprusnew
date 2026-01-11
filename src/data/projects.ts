@@ -1,0 +1,116 @@
+// Project images imports
+import italyTanks1 from "@/assets/projects/italy-tanks-1.jpg";
+import italyTanks2 from "@/assets/projects/italy-tanks-2.jpg";
+import italyTanks3 from "@/assets/projects/italy-tanks-3.jpg";
+import italyTanks4 from "@/assets/projects/italy-tanks-4.jpg";
+import transformers1 from "@/assets/projects/transformers-1.jpg";
+import transformers2 from "@/assets/projects/transformers-2.jpg";
+import transformers3 from "@/assets/projects/transformers-3.jpg";
+import transformers4 from "@/assets/projects/transformers-4.jpg";
+import transformers5 from "@/assets/projects/transformers-5.jpg";
+import transformers6 from "@/assets/projects/transformers-6.jpg";
+import transformers7 from "@/assets/projects/transformers-7.jpg";
+import transformers8 from "@/assets/projects/transformers-8.jpg";
+
+export interface Project {
+  slug: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+  fullDescription?: string[];
+  year: string;
+  location: string;
+  category: string;
+  images?: string[];
+}
+
+export const projects: Project[] = [
+  {
+    slug: "italy-tanks-delivery",
+    title: "Door to Door Delivery from Italy to Cyprus - Out of Gauge Tank Units",
+    subtitle: "Transportation of tanks from ex-works Italy to door delivery Larnaca",
+    description: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the Electricity Authority station. The project involved handling oversized tank units requiring specialized flat rack containers and coordinated logistics from factory to final destination.",
+    fullDescription: [
+      "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the Electricity Authority station.",
+      "The project involved handling oversized tank units requiring specialized flat rack containers and coordinated logistics from factory to final destination."
+    ],
+    year: "2019",
+    location: "Italy → Larnaca",
+    category: "Project Cargo",
+    images: [italyTanks1, italyTanks2, italyTanks3, italyTanks4],
+  },
+  {
+    slug: "heavy-lift-industrial-equipment",
+    title: "Heavy Lift Project - Industrial Equipment",
+    description: "Successful coordination of heavy lift operations for industrial equipment delivery to major manufacturing facility in Cyprus.",
+    year: "2024",
+    location: "Limassol Port",
+    category: "Heavy Lift",
+  },
+  {
+    slug: "offshore-support-operations",
+    title: "Offshore Support Operations",
+    description: "Comprehensive logistics support for offshore drilling operations including crew changes, supply vessel coordination, and cargo handling.",
+    year: "2024",
+    location: "Cyprus Offshore",
+    category: "Oil & Gas",
+  },
+  {
+    slug: "power-plant-equipment-transport",
+    title: "Power Plant Equipment Transport",
+    description: "Transport and handling of power plant components including transformers and heavy machinery from port to installation site.",
+    year: "2023",
+    location: "Vassiliko",
+    category: "Project Cargo",
+  },
+  {
+    slug: "breakbulk-cargo-operations",
+    title: "Breakbulk Cargo Operations",
+    description: "Efficient handling of oversized machinery and equipment for construction projects throughout Cyprus.",
+    year: "2023",
+    location: "Limassol Port",
+    category: "Breakbulk",
+  },
+  {
+    slug: "offshore-cargo-baskets-eni",
+    title: "Offshore Cargo Baskets for ENI",
+    description: "Coordination of offshore cargo basket operations for ENI's drilling operations in Cyprus waters. We provided full logistics support including cargo handling and vessel coordination.",
+    year: "2019",
+    location: "Cyprus Offshore",
+    category: "Oil & Gas",
+  },
+  {
+    slug: "transport-of-transformers",
+    title: "Transport and Positioning of 4 x 60 Ton Transformers",
+    subtitle: "Transport and positioning of 4 x 60 ton transformers",
+    description: "In November 2018 we managed a project which involved transportation and positioning of 4 x 60 ton transformers to a new Electricity Authority substation. In addition we provided the transport and unloading of 15 open top and standard containers to the desired storage location.",
+    fullDescription: [
+      "In November 2018 we have managed a project which we arranged transportation and positioning of 4 x 60 ton transformers to a new Electricity Authority substation.",
+      "In addition we have provided the transport and unloading of 15 open top and standard containers to the desired storage location."
+    ],
+    year: "2018",
+    location: "Cyprus",
+    category: "Heavy Lift",
+    images: [transformers1, transformers2, transformers3, transformers4, transformers5, transformers6, transformers7, transformers8],
+  },
+  {
+    slug: "loading-mobile-generators",
+    title: "Loading Mobile Generators",
+    description: "In March 2013, we arranged the loading of mobile generators which were used by the Electricity of Cyprus during shortages. The project involved coordination of heavy lift operations and vessel loading at Limassol port.",
+    year: "2013",
+    location: "Limassol Port",
+    category: "Heavy Lift",
+  },
+  {
+    slug: "vassilikos-desalination-plant",
+    title: "Vassilikos Desalination Plant",
+    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. This major project required careful planning and coordination with multiple stakeholders.",
+    year: "2012",
+    location: "Vassiliko",
+    category: "Project Cargo",
+  },
+];
+
+export const getProjectBySlug = (slug: string): Project | undefined => {
+  return projects.find(project => project.slug === slug);
+};

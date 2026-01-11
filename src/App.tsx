@@ -20,6 +20,7 @@ import ServicePage from "./pages/services/ServicePage";
 import CustomsSubpage from "./pages/services/CustomsSubpage";
 import Chartering from "./pages/Chartering";
 import Projects from "./pages/Projects";
+import ProjectDetailPage from "./pages/projects/ProjectDetailPage";
 import Contact from "./pages/Contact";
 import Quote from "./pages/Quote";
 import Blog from "./pages/Blog";
@@ -77,6 +78,7 @@ const App = () => (
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/quote" element={<Quote />} />
           <Route path="/blog" element={<Blog />} />
