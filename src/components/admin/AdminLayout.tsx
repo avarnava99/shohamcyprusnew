@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Mail, LogOut, Home, Package } from "lucide-react";
+import { LayoutDashboard, Mail, LogOut, Home, Package, Calculator } from "lucide-react";
 import { toast } from "sonner";
 
 interface AdminLayoutProps {
@@ -65,6 +65,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/admin/contacts", icon: Mail, label: "Contact Submissions" },
     { href: "/admin/container-orders", icon: Package, label: "Container Orders" },
+    { href: "/admin/duty-leads", icon: Calculator, label: "Duty Calculator Leads" },
   ];
 
   return (

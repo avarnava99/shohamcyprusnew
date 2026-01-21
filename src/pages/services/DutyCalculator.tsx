@@ -14,8 +14,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, Calculator, Loader2, Info } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { AlertTriangle, Calculator, Loader2, Info, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CalculationResult {
   productValue: number;
@@ -54,6 +62,7 @@ const DutyCalculator = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [showContactModal, setShowContactModal] = useState(false);
   
   const [formData, setFormData] = useState({
     productDescription: "",
@@ -63,11 +72,22 @@ const DutyCalculator = () => {
     countryOfOrigin: "",
   });
 
+  const [contactData, setContactData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+  });
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleCalculate = async (e: React.FormEvent) => {
+  const handleContactChange = (field: string, value: string) => {
+    setContactData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCalculateClick = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!acknowledged) {
@@ -88,10 +108,27 @@ const DutyCalculator = () => {
       return;
     }
 
+    // Show contact form modal
+    setShowContactModal(true);
+  };
+
+  const handleSubmitWithContact = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!contactData.name || !contactData.email) {
+      toast({
+        title: "Missing Contact Information",
+        description: "Please provide your name and email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
-    setResult(null);
+    setShowContactModal(false);
 
     try {
+      // Call the calculation API
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/calculate-duty`,
         {
@@ -115,8 +152,42 @@ const DutyCalculator = () => {
         throw new Error(errorData.error || "Failed to calculate duties");
       }
 
-      const data = await response.json();
-      setResult(data);
+      const calculationResult: CalculationResult = await response.json();
+      
+      // Save lead to database
+      const { error: dbError } = await supabase
+        .from("duty_calculator_leads")
+        .insert({
+          name: contactData.name.trim(),
+          email: contactData.email.trim(),
+          phone: contactData.phone?.trim() || null,
+          company: contactData.company?.trim() || null,
+          product_description: formData.productDescription.trim(),
+          product_value: parseFloat(formData.productValue),
+          shipping_cost: parseFloat(formData.shippingCost) || 0,
+          insurance_cost: parseFloat(formData.insuranceCost) || 0,
+          country_of_origin: formData.countryOfOrigin,
+          cif_value: calculationResult.cifValue,
+          estimated_duty_rate: calculationResult.estimatedDutyRate,
+          estimated_duty: calculationResult.estimatedDuty,
+          vat_amount: calculationResult.vatAmount,
+          total_cost: calculationResult.totalCost,
+          hs_code_estimate: calculationResult.hsCodeEstimate,
+          product_category: calculationResult.productCategory,
+          status: "new",
+        });
+
+      if (dbError) {
+        console.error("Error saving lead:", dbError);
+        // Continue showing results even if lead save fails
+      }
+
+      setResult(calculationResult);
+      
+      toast({
+        title: "Calculation Complete",
+        description: "Your estimated import costs are ready below.",
+      });
     } catch (error) {
       console.error("Calculation error:", error);
       toast({
@@ -179,7 +250,7 @@ const DutyCalculator = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleCalculate} className="space-y-6">
+                <form onSubmit={handleCalculateClick} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="productDescription">
                       Product Description <span className="text-destructive">*</span>
@@ -435,9 +506,8 @@ const DutyCalculator = () => {
               based on import costs.
             </p>
             <p>
-              <strong>Data Usage:</strong> Product descriptions entered into this calculator may be 
-              processed by AI systems for the purpose of providing estimates. No personal data is 
-              stored or shared.
+              <strong>Data Usage:</strong> Contact information provided is used to deliver your estimate 
+              and may be used by our team to follow up with official quotes and customs services.
             </p>
           </div>
         </div>
@@ -467,6 +537,92 @@ const DutyCalculator = () => {
           </div>
         </div>
       </div>
+
+      {/* Contact Form Modal */}
+      <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-accent" />
+              Get Your Results
+            </DialogTitle>
+            <DialogDescription>
+              To receive your duty estimate, please provide your contact details. 
+              Our team may follow up with an official quote if you need one.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmitWithContact} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="contact-name">
+                Full Name <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="contact-name"
+                placeholder="Your full name"
+                value={contactData.name}
+                onChange={(e) => handleContactChange("name", e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contact-email">
+                Email Address <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="contact-email"
+                type="email"
+                placeholder="your@email.com"
+                value={contactData.email}
+                onChange={(e) => handleContactChange("email", e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contact-phone">Phone Number</Label>
+              <Input
+                id="contact-phone"
+                type="tel"
+                placeholder="+357 99 123456"
+                value={contactData.phone}
+                onChange={(e) => handleContactChange("phone", e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="contact-company">Company Name</Label>
+              <Input
+                id="contact-company"
+                placeholder="Your company (optional)"
+                value={contactData.company}
+                onChange={(e) => handleContactChange("company", e.target.value)}
+              />
+            </div>
+            <div className="flex gap-3 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowContactModal(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-accent hover:bg-shoham-orange-dark"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  "Get My Estimate"
+                )}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };

@@ -199,6 +199,75 @@ export type Database = {
         }
         Relationships: []
       }
+      duty_calculator_leads: {
+        Row: {
+          cif_value: number | null
+          company: string | null
+          country_of_origin: string
+          created_at: string
+          email: string
+          estimated_duty: number | null
+          estimated_duty_rate: number | null
+          hs_code_estimate: string | null
+          id: string
+          insurance_cost: number | null
+          name: string
+          notes: string | null
+          phone: string | null
+          product_category: string | null
+          product_description: string
+          product_value: number
+          shipping_cost: number | null
+          status: string
+          total_cost: number | null
+          vat_amount: number | null
+        }
+        Insert: {
+          cif_value?: number | null
+          company?: string | null
+          country_of_origin: string
+          created_at?: string
+          email: string
+          estimated_duty?: number | null
+          estimated_duty_rate?: number | null
+          hs_code_estimate?: string | null
+          id?: string
+          insurance_cost?: number | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          product_category?: string | null
+          product_description: string
+          product_value: number
+          shipping_cost?: number | null
+          status?: string
+          total_cost?: number | null
+          vat_amount?: number | null
+        }
+        Update: {
+          cif_value?: number | null
+          company?: string | null
+          country_of_origin?: string
+          created_at?: string
+          email?: string
+          estimated_duty?: number | null
+          estimated_duty_rate?: number | null
+          hs_code_estimate?: string | null
+          id?: string
+          insurance_cost?: number | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          product_category?: string | null
+          product_description?: string
+          product_value?: number
+          shipping_cost?: number | null
+          status?: string
+          total_cost?: number | null
+          vat_amount?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

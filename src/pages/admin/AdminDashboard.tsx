@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Clock, CheckCircle, Reply, Package } from "lucide-react";
+import { Mail, Clock, CheckCircle, Reply, Package, Calculator } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
@@ -16,11 +16,16 @@ const AdminDashboard = () => {
     total: 0,
     pending: 0,
   });
+  const [dutyLeadStats, setDutyLeadStats] = useState({
+    total: 0,
+    new: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStats();
     fetchContainerStats();
+    fetchDutyLeadStats();
   }, []);
 
   const fetchStats = async () => {
@@ -63,11 +68,28 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchDutyLeadStats = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("duty_calculator_leads")
+        .select("status");
+
+      if (error) throw error;
+
+      setDutyLeadStats({
+        total: data?.length || 0,
+        new: data?.filter(l => l.status === "new").length || 0,
+      });
+    } catch (error) {
+      console.error("Error fetching duty lead stats:", error);
+    }
+  };
+
   const statCards = [
     { label: "Contact Submissions", value: stats.total, icon: Mail, color: "text-primary" },
     { label: "New Contacts", value: stats.new, icon: Clock, color: "text-blue-500" },
     { label: "Container Orders", value: containerStats.total, icon: Package, color: "text-purple-500" },
-    { label: "Pending Orders", value: containerStats.pending, icon: Package, color: "text-orange-500" },
+    { label: "Duty Calculator Leads", value: dutyLeadStats.total, icon: Calculator, color: "text-green-500" },
   ];
 
   return (
@@ -139,6 +161,26 @@ const AdminDashboard = () => {
                   {containerStats.pending > 0 && (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                       {containerStats.pending} pending order{containerStats.pending > 1 ? "s" : ""}
+                    </span>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/admin/duty-leads">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calculator className="h-5 w-5 text-green-500" />
+                    View Duty Calculator Leads
+                  </CardTitle>
+                  <CardDescription>
+                    Manage leads from the Cyprus duty calculator tool
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {dutyLeadStats.new > 0 && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {dutyLeadStats.new} new lead{dutyLeadStats.new > 1 ? "s" : ""}
                     </span>
                   )}
                 </CardContent>
