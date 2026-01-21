@@ -17,6 +17,7 @@ import Ports from "./pages/Ports";
 import PortPage from "./pages/ports/PortPage";
 import Services from "./pages/Services";
 import ServicePage from "./pages/services/ServicePage";
+import ContainerTracking from "./pages/services/ContainerTracking";
 import CustomsSubpage from "./pages/services/CustomsSubpage";
 import DutyCalculator from "./pages/services/DutyCalculator";
 import Chartering from "./pages/Chartering";
@@ -67,6 +68,7 @@ const App = () => (
           
           {/* Services - Original URLs */}
           <Route path="/services" element={<Services />} />
+          <Route path="/services/container-tracking" element={<ContainerTracking />} />
           <Route path="/services/used-containers" element={<UsedContainers />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/services/customs-clearing/duty-calculator-for-cyprus" element={<DutyCalculator />} />
