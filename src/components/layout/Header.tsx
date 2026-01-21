@@ -97,6 +97,7 @@ const Header = () => {
         { label: "Freight Forwarding", href: "/services/freight-forwarding" },
         { label: "Sea Freight", href: "/services/sea-freight" },
         { label: "Customs Clearing", href: "/services/customs-clearing" },
+        { label: "Duty Calculator", href: "/services/customs-clearing/duty-calculator-for-cyprus" },
         { label: "Haulage", href: "/services/haulage-container-transport" },
         { label: "Air Freight", href: "/services/air-freight" },
         { label: "Car Shipping", href: "/services/car-shipping" },
