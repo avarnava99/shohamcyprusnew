@@ -18,6 +18,7 @@ const ports = [
     items: [
       { slug: "larnaca-port", title: "Larnaca Port", description: "Secondary commercial port", icon: Anchor },
       { slug: "larnaca-oil-terminal", title: "Larnaca Oil Terminal", description: "Petroleum products terminal", icon: Fuel },
+      { slug: "dhekelia-oil-terminal", title: "Dhekelia Oil Terminal", description: "EAC power station fuel terminal", icon: Fuel },
     ]
   },
   {
@@ -31,7 +32,6 @@ const ports = [
   {
     category: "British Forces",
     items: [
-      { slug: "dhekelia-oil-terminal", title: "Dhekelia Oil Terminal", description: "British Forces oil terminal", icon: Fuel },
       { slug: "raf-akrotiri-oil-terminal", title: "RAF Akrotiri Oil Terminal", description: "RAF base fuel terminal", icon: Fuel },
     ]
   }
