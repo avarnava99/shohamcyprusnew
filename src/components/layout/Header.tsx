@@ -100,6 +100,7 @@ const Header = () => {
         { label: "Haulage", href: "/services/haulage-container-transport" },
         { label: "Air Freight", href: "/services/air-freight" },
         { label: "Car Shipping", href: "/services/car-shipping" },
+        { label: "Used Containers", href: "/used-containers" },
       ],
     },
     { label: "Chartering", href: "/chartering" },
