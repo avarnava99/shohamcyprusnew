@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LocationPickerProps {
   onLocationSelect: (location: {
@@ -13,7 +14,15 @@ interface LocationPickerProps {
   initialLongitude?: number;
 }
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
+const getEnvToken = () => {
+  const t = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN as string | undefined;
+  if (!t) return null;
+  // Guard against placeholders like "${MAPBOX_PUBLIC_TOKEN}"
+  if (t.includes("${")) return null;
+  // Mapbox public tokens usually start with pk.
+  if (!t.startsWith("pk.")) return t; // still allow (some accounts use different prefixes)
+  return t;
+};
 
 const LocationPicker = ({
   onLocationSelect,
@@ -25,11 +34,36 @@ const LocationPicker = ({
   const marker = useRef<mapboxgl.Marker | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [mapboxToken, setMapboxToken] = useState<string | null>(() => getEnvToken());
 
   useEffect(() => {
-    if (!mapContainer.current || !MAPBOX_TOKEN) return;
+    // If not provided via Vite env, fetch it from backend (still safe: it's a public token).
+    if (mapboxToken) return;
 
-    mapboxgl.accessToken = MAPBOX_TOKEN;
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("mapbox-public-token");
+        if (error) throw error;
+
+        const token = (data as any)?.token as string | undefined;
+        if (!token) throw new Error("No token returned from mapbox-public-token");
+
+        if (!cancelled) setMapboxToken(token);
+      } catch (e) {
+        console.warn("Mapbox token fetch failed:", e);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mapboxToken]);
+
+  useEffect(() => {
+    if (!mapContainer.current || !mapboxToken) return;
+
+    mapboxgl.accessToken = mapboxToken;
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -50,7 +84,7 @@ const LocationPicker = ({
     return () => {
       map.current?.remove();
     };
-  }, [initialLatitude, initialLongitude]);
+  }, [initialLatitude, initialLongitude, mapboxToken]);
 
   const placeMarker = (lng: number, lat: number) => {
     if (marker.current) {
@@ -70,10 +104,11 @@ const LocationPicker = ({
   };
 
   const reverseGeocode = async (lng: number, lat: number) => {
+    if (!mapboxToken) return;
     setIsLoading(true);
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${MAPBOX_TOKEN}`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}`
       );
       const data = await response.json();
 
@@ -99,7 +134,7 @@ const LocationPicker = ({
     }
   };
 
-  if (!MAPBOX_TOKEN) {
+  if (!mapboxToken) {
     return (
       <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
         <p className="text-muted-foreground">Map not available</p>
