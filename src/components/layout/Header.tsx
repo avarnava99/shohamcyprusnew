@@ -57,7 +57,7 @@ const Header = () => {
       ],
     },
     { label: "Chartering", href: "/chartering" },
-    { label: "Projects", href: "/projects" },
+    { label: "Project Cargo", href: "/project-cargo" },
   ];
 
   return (
