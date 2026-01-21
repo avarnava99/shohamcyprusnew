@@ -33,6 +33,8 @@ import TravelAgency from "./pages/TravelAgency";
 import ContainerHomes from "./pages/ContainerHomes";
 import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ContactSubmissions from "./pages/admin/ContactSubmissions";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +87,11 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/contacts" element={<ContactSubmissions />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
