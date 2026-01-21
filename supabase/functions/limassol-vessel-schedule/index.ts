@@ -38,14 +38,13 @@ async function fetchTextWithTimeout(url: string, init: RequestInit = {}, timeout
   }
 }
 
-async function tryDirectHtmlFetch(url: string): Promise<string | null> {
+async function tryDirectHtmlFetch(url: string): Promise<{ html: string; rejected: boolean; reason?: string } | null> {
   try {
     const res = await fetchTextWithTimeout(
       url,
       {
         method: 'GET',
         headers: {
-          // A realistic UA helps with some WAF/CDN configs.
           'User-Agent':
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -61,25 +60,37 @@ async function tryDirectHtmlFetch(url: string): Promise<string | null> {
     }
 
     const html = await res.text();
-    if (!html || html.trim().length < 500) {
+    console.log(`Direct fetch got ${html.length} chars from ${url}`);
+    
+    if (!html || html.trim().length < 200) {
       console.log(`Direct fetch returned too little HTML for ${url}`);
       return null;
     }
 
-    // Quick heuristic: the schedule page should include a table.
-    if (!html.toLowerCase().includes('<table') || !html.toLowerCase().includes('<tbody')) {
-      console.log(`Direct fetch did not look like a schedule table for ${url}`);
-      return null;
-    }
-
-    // Detect probable login page.
     const lower = html.toLowerCase();
+    
+    // Detect JS loader page - this is what InfoGate returns before JS executes
+    if (lower.includes('class="loader"') || (lower.includes('.loader{') && lower.includes('fingerprint'))) {
+      console.log(`Direct fetch returned a JS loader page for ${url} - need headless browser`);
+      return { html, rejected: true, reason: 'js_loader_page' };
+    }
+    
+    // Detect probable login page
     if (lower.includes('login') && (lower.includes('password') || lower.includes('username'))) {
       console.log(`Direct fetch appears to be a login page for ${url}`);
-      return null;
+      return { html, rejected: true, reason: 'login_page' };
     }
 
-    return html;
+    // Must have actual table content for vessel schedule
+    const hasTable = lower.includes('<table') && lower.includes('<tbody');
+    
+    if (!hasTable) {
+      console.log(`Direct fetch did not contain table markup for ${url}`);
+      return { html, rejected: true, reason: 'no_table' };
+    }
+
+    console.log(`Direct fetch found table content, accepting HTML`);
+    return { html, rejected: false };
   } catch (e) {
     console.error(`Direct fetch threw for ${url}:`, e);
     return null;
@@ -88,6 +99,8 @@ async function tryDirectHtmlFetch(url: string): Promise<string | null> {
 
 async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promise<{ html: string; markdown?: string } | null> {
   try {
+    console.log(`Trying Firecrawl for ${url} with extended wait time...`);
+    
     const firecrawlResponse = await fetchTextWithTimeout(
       'https://api.firecrawl.dev/v1/scrape',
       {
@@ -99,21 +112,18 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promis
         body: JSON.stringify({
           url,
           formats: ['html', 'markdown'],
-          // InfoGate can be temperamental / protected by network edge rules.
-          // Using Firecrawl's proxy mode significantly improves reliability.
-          proxy: 'auto',
-          skipTlsVerification: true,
-          timeout: 45000,
-          waitFor: 8000,
+          // The InfoGate page is JS-rendered with a loader, needs longer wait
+          waitFor: 15000,
+          timeout: 60000,
           onlyMainContent: false,
           headers: {
             'User-Agent':
-              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept-Language': 'en-GB,en;q=0.9',
           },
         }),
       },
-      45000
+      65000
     );
 
     const raw = await firecrawlResponse.text();
@@ -132,7 +142,17 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promis
 
     const html = firecrawlData.data?.html || firecrawlData.html || '';
     const markdown = firecrawlData.data?.markdown || firecrawlData.markdown || '';
-    if (!html || html.trim().length < 500) return null;
+    
+    console.log(`Firecrawl returned ${html.length} chars HTML, ${markdown.length} chars markdown`);
+    
+    if (html.length > 500) {
+      console.log('Firecrawl HTML snippet:', html.substring(0, 800));
+    }
+    
+    if (!html || html.trim().length < 500) {
+      console.log('Firecrawl returned insufficient HTML');
+      return null;
+    }
 
     return { html, markdown };
   } catch (e) {
@@ -150,11 +170,17 @@ async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | 
 
   // 1) Try direct HTML fetch first (no headless browser). This avoids Firecrawl browser load failures.
   for (const url of scheduleUrls) {
-    const html = await tryDirectHtmlFetch(url);
-    if (html) return { source: 'direct', url, html };
+    const result = await tryDirectHtmlFetch(url);
+    if (result && !result.rejected) {
+      return { source: 'direct', url, html: result.html };
+    }
+    // Log why it was rejected
+    if (result?.rejected) {
+      console.log(`Direct fetch rejected for ${url}: ${result.reason}`);
+    }
   }
 
-  // 2) Fallback to Firecrawl (headless browser).
+  // 2) Fallback to Firecrawl (headless browser) with longer wait for JS rendering.
   for (const url of scheduleUrls) {
     const res = await scrapeWithFirecrawl(firecrawlApiKey, url);
     if (res?.html) return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
