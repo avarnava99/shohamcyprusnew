@@ -130,6 +130,75 @@ export type Database = {
         }
         Relationships: []
       }
+      container_orders: {
+        Row: {
+          address_line_2: string | null
+          city: string
+          comments: string | null
+          company: string | null
+          container_type: string
+          country: string
+          crane_unloading: boolean
+          created_at: string
+          email: string
+          id: string
+          latitude: number | null
+          location_address: string | null
+          longitude: number | null
+          name: string
+          phone: string
+          postal_code: string
+          quantity: number
+          state_region: string | null
+          status: string
+          street_address: string
+        }
+        Insert: {
+          address_line_2?: string | null
+          city: string
+          comments?: string | null
+          company?: string | null
+          container_type: string
+          country?: string
+          crane_unloading?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          latitude?: number | null
+          location_address?: string | null
+          longitude?: number | null
+          name: string
+          phone: string
+          postal_code: string
+          quantity?: number
+          state_region?: string | null
+          status?: string
+          street_address: string
+        }
+        Update: {
+          address_line_2?: string | null
+          city?: string
+          comments?: string | null
+          company?: string | null
+          container_type?: string
+          country?: string
+          crane_unloading?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          latitude?: number | null
+          location_address?: string | null
+          longitude?: number | null
+          name?: string
+          phone?: string
+          postal_code?: string
+          quantity?: number
+          state_region?: string | null
+          status?: string
+          street_address?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

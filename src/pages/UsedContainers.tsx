@@ -23,8 +23,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Lock, Unlock, Phone, Mail, MapPin, Clock, CheckCircle, Package, Truck } from "lucide-react";
+import { Lock, Unlock, Phone, Mail, MapPin, Clock, CheckCircle, Package, Truck, ShoppingCart } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
+import ContainerOrderForm from "@/components/containers/ContainerOrderForm";
 
 const VAT_RATE = 0.19;
 
@@ -258,31 +259,44 @@ const UsedContainers = () => {
                 <p className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg flex items-start gap-2">
                   <Truck className="h-5 w-5 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Note:</strong> Prices exclude delivery and positioning. Please{" "}
-                    <Link to="/contact-us" className="text-primary hover:underline">
-                      contact us
-                    </Link>{" "}
-                    for a complete quote including transport to your location.
+                    <strong>Note:</strong> Prices exclude delivery and positioning. Fill out the order form below for a complete quote including transport to your location.
                   </span>
                 </p>
               )}
             </div>
 
-            {/* CTA */}
-            <div className="bg-primary/5 p-6 rounded-lg">
-              <h3 className="text-xl font-bold text-foreground mb-2">Need Help Choosing?</h3>
-              <p className="text-muted-foreground mb-4">
-                Our team can help you select the right container for your needs. Contact us for expert advice.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button asChild className="bg-accent hover:bg-accent/90">
-                  <Link to="/contact-us">Contact Us</Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/quote">Request Quote</Link>
+            {/* Container Order Form - Only shown when prices are unlocked */}
+            {pricesUnlocked && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <ShoppingCart className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">Request a Container Quote</h2>
+                    <p className="text-muted-foreground">Fill out the form below and we'll get back to you with a detailed quote.</p>
+                  </div>
+                </div>
+                <ContainerOrderForm />
+              </div>
+            )}
+
+            {/* CTA - Only shown when prices are locked */}
+            {!pricesUnlocked && (
+              <div className="bg-primary/5 p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-foreground mb-2">Need Help Choosing?</h3>
+                <p className="text-muted-foreground mb-4">
+                  Our team can help you select the right container for your needs. Unlock pricing first, then fill out the order form.
+                </p>
+                <Button
+                  className="bg-accent hover:bg-accent/90"
+                  onClick={() => setModalOpen(true)}
+                >
+                  <Unlock className="mr-2 h-5 w-5" />
+                  Unlock Pricing to Order
                 </Button>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar */}
