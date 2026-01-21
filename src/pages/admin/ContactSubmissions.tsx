@@ -96,6 +96,7 @@ const ContactSubmissions = () => {
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="contact">Contact</SelectItem>
                 <SelectItem value="quote">Quote Request</SelectItem>
+                <SelectItem value="container_pricing">Container Pricing</SelectItem>
               </SelectContent>
             </Select>
           </div>

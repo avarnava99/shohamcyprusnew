@@ -62,9 +62,14 @@ const SubmissionCard = ({ submission, onStatusChange }: SubmissionCardProps) => 
   };
 
   const getTypeBadge = (type: string) => {
-    return type === "quote" 
-      ? <Badge variant="outline" className="border-accent text-accent">Quote Request</Badge>
-      : <Badge variant="outline">Contact</Badge>;
+    switch (type) {
+      case "quote":
+        return <Badge variant="outline" className="border-accent text-accent">Quote Request</Badge>;
+      case "container_pricing":
+        return <Badge variant="outline" className="border-purple-500 text-purple-500">Container Pricing</Badge>;
+      default:
+        return <Badge variant="outline">Contact</Badge>;
+    }
   };
 
   return (

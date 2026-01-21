@@ -35,6 +35,7 @@ import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
+import UsedContainers from "./pages/UsedContainers";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const App = () => (
           
           {/* Services - Original URLs */}
           <Route path="/services" element={<Services />} />
+          <Route path="/services/used-containers" element={<UsedContainers />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/services/customs-clearing/:subpage" element={<CustomsSubpage />} />
           <Route path="/iso-tank" element={<ServicePage />} />
