@@ -24,7 +24,7 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.from("contact_submissions").insert({
+      const submissionData = {
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || null,
@@ -32,9 +32,29 @@ const Contact = () => {
         subject: formData.subject.trim() || null,
         message: formData.message.trim(),
         submission_type: "contact",
-      });
+      };
+
+      const { error } = await supabase.from("contact_submissions").insert(submissionData);
 
       if (error) throw error;
+
+      // Send email notification
+      try {
+        await supabase.functions.invoke("send-contact-notification", {
+          body: {
+            name: submissionData.name,
+            email: submissionData.email,
+            phone: submissionData.phone,
+            company: submissionData.company,
+            subject: submissionData.subject,
+            message: submissionData.message,
+            submissionType: "contact",
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError);
+        // Don't fail the whole submission if email fails
+      }
 
       toast.success("Message sent successfully! We'll get back to you soon.");
       setFormData({ name: "", email: "", phone: "", company: "", subject: "", message: "" });

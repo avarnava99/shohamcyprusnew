@@ -1,1 +1,10 @@
 project_id = "yobppwbtiqzsplifrtoz"
+
+[functions.send-contact-notification]
+verify_jwt = false
+
+[functions.import-blog-images]
+verify_jwt = false
+
+[functions.generate-blog-images]
+verify_jwt = false
