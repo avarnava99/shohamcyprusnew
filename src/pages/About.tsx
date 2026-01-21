@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
 import famagustaPainting from "@/assets/famagusta-painting.jpg";
+import { CONTACT } from "@/constants/contact";
 
 const About = () => {
   return (
@@ -140,15 +141,15 @@ const About = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <div className="font-semibold">Limassol (Head Office)</div>
-                  <div className="text-white/80">P.O. Box 50070, 3600 Limassol</div>
+                  <div className="text-white/80">{CONTACT.address.poBox}, {CONTACT.address.city}</div>
                 </div>
                 <div>
                   <div className="font-semibold">Phone</div>
-                  <div className="text-white/80">+357 25 878300</div>
+                  <div className="text-white/80">{CONTACT.departments.chartering.phone}</div>
                 </div>
                 <div>
                   <div className="font-semibold">Email</div>
-                  <div className="text-white/80">info@shoham.com.cy</div>
+                  <div className="text-white/80">{CONTACT.info.email}</div>
                 </div>
               </div>
             </div>

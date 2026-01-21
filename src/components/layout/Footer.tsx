@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Instagram, Phone, Mail, MapPin, Printer } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
+import { CONTACT } from "@/constants/contact";
 
 const Footer = () => {
   const zimAgencyLinks = [
@@ -93,19 +94,19 @@ const Footer = () => {
             <div className="mt-6 space-y-2 text-sm text-white/80">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-[#f59e0b]" />
-                <a href="tel:+357-25-208700" className="hover:text-[#f59e0b] transition-colors">+357-25-208700</a>
+                <a href={CONTACT.primary.phoneHref} className="hover:text-[#f59e0b] transition-colors">{CONTACT.primary.phone}</a>
               </div>
               <div className="flex items-center gap-2">
                 <Printer className="h-4 w-4 text-[#f59e0b]" />
-                <span>+357-25-568990</span>
+                <span>{CONTACT.primary.fax}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-[#f59e0b]" />
-                <a href="mailto:websales@shoham.com.cy" className="hover:text-[#f59e0b] transition-colors">websales@shoham.com.cy</a>
+                <a href={CONTACT.primary.emailHref} className="hover:text-[#f59e0b] transition-colors">{CONTACT.primary.email}</a>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-[#f59e0b] mt-0.5" />
-                <span>Limassol, Cyprus</span>
+                <span>{CONTACT.address.short}</span>
               </div>
             </div>
           </div>
