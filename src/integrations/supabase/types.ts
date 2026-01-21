@@ -268,6 +268,63 @@ export type Database = {
         }
         Relationships: []
       }
+      limassol_vessel_schedule: {
+        Row: {
+          agent: string | null
+          arrival_date: string | null
+          arrival_time: string | null
+          berth: string | null
+          callsign: string | null
+          created_at: string
+          delivery_start: string | null
+          etd_date: string | null
+          etd_time: string | null
+          id: string
+          operation: string | null
+          scraped_at: string
+          status: string | null
+          vessel_name: string
+          vessel_no: string | null
+          voyage_no: string | null
+        }
+        Insert: {
+          agent?: string | null
+          arrival_date?: string | null
+          arrival_time?: string | null
+          berth?: string | null
+          callsign?: string | null
+          created_at?: string
+          delivery_start?: string | null
+          etd_date?: string | null
+          etd_time?: string | null
+          id?: string
+          operation?: string | null
+          scraped_at?: string
+          status?: string | null
+          vessel_name: string
+          vessel_no?: string | null
+          voyage_no?: string | null
+        }
+        Update: {
+          agent?: string | null
+          arrival_date?: string | null
+          arrival_time?: string | null
+          berth?: string | null
+          callsign?: string | null
+          created_at?: string
+          delivery_start?: string | null
+          etd_date?: string | null
+          etd_time?: string | null
+          id?: string
+          operation?: string | null
+          scraped_at?: string
+          status?: string | null
+          vessel_name?: string
+          vessel_no?: string | null
+          voyage_no?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
