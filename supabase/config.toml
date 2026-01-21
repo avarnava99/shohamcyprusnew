@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.send-container-offer]
 verify_jwt = false
+
+[functions.calculate-duty]
+verify_jwt = false
