@@ -18,6 +18,7 @@ import PortPage from "./pages/ports/PortPage";
 import Services from "./pages/Services";
 import ServicePage from "./pages/services/ServicePage";
 import CustomsSubpage from "./pages/services/CustomsSubpage";
+import DutyCalculator from "./pages/services/DutyCalculator";
 import Chartering from "./pages/Chartering";
 import Projects from "./pages/Projects";
 import ProjectDetailPage from "./pages/projects/ProjectDetailPage";
@@ -67,6 +68,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/services/used-containers" element={<UsedContainers />} />
           <Route path="/services/:slug" element={<ServicePage />} />
+          <Route path="/services/customs-clearing/duty-calculator-for-cyprus" element={<DutyCalculator />} />
           <Route path="/services/customs-clearing/:subpage" element={<CustomsSubpage />} />
           <Route path="/iso-tank" element={<ServicePage />} />
           

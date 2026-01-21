@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calculator, FileText, Globe, Home } from "lucide-react";
+import { ArrowRight, FileText, Globe, Home } from "lucide-react";
 
 interface SubpageData {
   title: string;
@@ -10,63 +10,6 @@ interface SubpageData {
 }
 
 const subpagesData: Record<string, SubpageData> = {
-  "duty-calculator-for-cyprus": {
-    title: "Duty Calculator for Cyprus",
-    subtitle: "Calculate import duties and taxes",
-    content: (
-      <div className="space-y-6">
-        <div className="bg-secondary p-6 rounded-lg">
-          <Calculator className="w-12 h-12 text-primary mb-4" />
-          <h3 className="font-heading font-semibold text-xl mb-3">Need Help Calculating Duties?</h3>
-          <p className="text-muted-foreground mb-4">
-            Import duties and taxes in Cyprus depend on various factors including the type of goods, 
-            their value, and country of origin. Our customs experts can help you calculate the exact 
-            duties payable on your imports.
-          </p>
-        </div>
-
-        <div className="prose max-w-none">
-          <h3>What You Need to Know About Import Duties</h3>
-          <ul className="space-y-3">
-            <li className="flex items-start gap-3">
-              <ArrowRight className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-              <span><strong>HS Code:</strong> The Harmonized System code determines the duty rate applicable to your goods</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <ArrowRight className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-              <span><strong>VAT:</strong> Standard VAT rate in Cyprus is 19% on most imported goods</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <ArrowRight className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-              <span><strong>CIF Value:</strong> Duties are calculated on the Cost, Insurance, and Freight value</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <ArrowRight className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-              <span><strong>Origin:</strong> Preferential rates may apply for goods from certain countries</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="bg-card border p-6 rounded-lg">
-          <h3 className="font-heading font-semibold text-lg mb-3">AliExpress & Online Shopping</h3>
-          <p className="text-muted-foreground mb-4">
-            Ordering from AliExpress, Amazon, or other online retailers? Import duties and VAT apply 
-            to most orders shipped to Cyprus. Contact us to understand what duties you'll need to pay 
-            before your package arrives.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-4">
-          <Button asChild className="bg-accent hover:bg-shoham-orange-dark">
-            <Link to="/contact-us">Contact Us for Duty Calculation</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/quote">Request A Quote</Link>
-          </Button>
-        </div>
-      </div>
-    )
-  },
   "eori-registration-cyprus": {
     title: "EORI Registration Cyprus",
     subtitle: "Economic Operators Registration and Identification",
