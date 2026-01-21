@@ -6,7 +6,7 @@ const ports = [
   {
     category: "Limassol",
     items: [
-      { slug: "limassol-port", title: "Limassol Port", description: "Cyprus' main commercial port", icon: Anchor },
+      { slug: "limassol-port", title: "DP World Limassol", description: "Multipurpose & general cargo terminal", icon: Anchor },
       { slug: "limassol-container-terminal", title: "Limassol Container Terminal", description: "Eurogate container handling facility", icon: Container },
       { slug: "limassol-port-schedule", title: "Limassol Port Schedule", description: "Vessel arrivals and departures", icon: Ship },
       { slug: "limassol-port-anchorage", title: "Limassol Port Anchorage", description: "Anchorage services", icon: Anchor },
