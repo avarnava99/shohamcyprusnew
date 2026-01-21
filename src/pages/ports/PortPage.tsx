@@ -165,19 +165,21 @@ const portsData: Record<string, PortData> = {
   },
   "vassiliko-oil-terminal": {
     title: "Vassiliko Oil Terminal",
-    subtitle: "Cyprus Petroleum Storage Company",
-    description: "The Vassiliko Oil Terminal is operated by VTTV (Vassiliko Tank Terminal for Petroleum) providing storage and distribution of petroleum products.",
+    subtitle: "EAC Power Station Fuel Terminal (SBM)",
+    description: "The Vassiliko Oil Terminal serves the Electricity Authority of Cyprus (EAC) Vasilikos Power Station - Cyprus' largest power generation facility producing approximately 65% of the island's electricity. Vessel mooring is conducted via a Single Buoy Mooring (SBM) system, with fuel unloading carried out through submarine pipelines directly to the power station's storage tanks.",
     details: [
-      "Major oil storage facility",
-      "Multiple product grades",
-      "Modern safety systems",
-      "Strategic reserve storage"
+      "Single Buoy Mooring (SBM) offshore system",
+      "Submarine pipeline for fuel transfer to shore tanks",
+      "Supplies EAC Vasilikos Power Station (860 MW capacity)",
+      "Handles Heavy Fuel Oil (HFO) and Diesel fuel",
+      "Offshore mooring - no alongside berth"
     ],
     services: [
-      "Tanker agency",
-      "Cargo operations coordination",
-      "Documentation handling",
-      "Safety compliance"
+      "Tanker agency for SBM operations",
+      "Coordination with EAC power station",
+      "Offshore mooring assistance and supervision",
+      "Cargo documentation and customs clearance",
+      "Safety compliance and weather monitoring"
     ],
     icon: <Fuel className="w-12 h-12" />
   },
