@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.calculate-duty]
 verify_jwt = false
+
+[functions.limassol-vessel-schedule]
+verify_jwt = false

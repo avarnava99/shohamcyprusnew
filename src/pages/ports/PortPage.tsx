@@ -3,6 +3,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Anchor, Ship, Fuel, Calendar, MapPin, Container } from "lucide-react";
 import LimassolPortDetails from "@/components/port/LimassolPortDetails";
+import LimassolScheduleDetails from "@/components/port/LimassolScheduleDetails";
 import EurogatePortDetails from "@/components/port/EurogatePortDetails";
 import VassilikoPortDetails from "@/components/port/VassilikoPortDetails";
 import VTTVTerminalDetails from "@/components/port/VTTVTerminalDetails";
@@ -288,6 +289,8 @@ const PortPage = () => {
         {/* Show enhanced details for specific ports */}
         {slug === "limassol-port" ? (
           <LimassolPortDetails />
+        ) : slug === "limassol-port-schedule" ? (
+          <LimassolScheduleDetails />
         ) : slug === "limassol-container-terminal" ? (
           <EurogatePortDetails />
         ) : slug === "vassiliko-port" ? (
