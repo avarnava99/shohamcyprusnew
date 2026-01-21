@@ -98,6 +98,7 @@ const Header = () => {
         { label: "Sea Freight", href: "/services/sea-freight" },
         { label: "Customs Clearing", href: "/services/customs-clearing" },
         { label: "Duty Calculator", href: "/services/customs-clearing/duty-calculator-for-cyprus" },
+        { label: "Transfer of Residence", href: "/services/customs-clearing/transfer-of-normal-residence-from-a-country-outside-the-european-union-to-cyprus" },
         { label: "Haulage", href: "/services/haulage-container-transport" },
         { label: "Air Freight", href: "/services/air-freight" },
         { label: "Car Shipping", href: "/services/car-shipping" },
