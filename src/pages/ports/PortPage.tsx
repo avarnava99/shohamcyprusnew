@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Anchor, Ship, Fuel, Calendar, MapPin } from "lucide-react";
+import LimassolPortDetails from "@/components/port/LimassolPortDetails";
 
 interface PortData {
   title: string;
@@ -254,67 +255,74 @@ const PortPage = () => {
       </div>
 
       <div className="container-shoham py-12">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <h2 className="section-title">Overview</h2>
-            <p className="text-muted-foreground mb-8">{port.description}</p>
+        {/* Show enhanced details for Limassol Port */}
+        {slug === "limassol-port" ? (
+          <LimassolPortDetails />
+        ) : (
+          <>
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <h2 className="section-title">Overview</h2>
+                <p className="text-muted-foreground mb-8">{port.description}</p>
 
-            <h3 className="font-heading font-semibold text-xl mb-4">Key Information</h3>
-            <ul className="space-y-2 mb-8">
-              {port.details.map((detail, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">{detail}</span>
-                </li>
-              ))}
-            </ul>
+                <h3 className="font-heading font-semibold text-xl mb-4">Key Information</h3>
+                <ul className="space-y-2 mb-8">
+                  {port.details.map((detail, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
 
-            <h3 className="font-heading font-semibold text-xl mb-4">Our Services</h3>
-            <ul className="space-y-2">
-              {port.services.map((service, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <Ship className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">{service}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+                <h3 className="font-heading font-semibold text-xl mb-4">Our Services</h3>
+                <ul className="space-y-2">
+                  {port.services.map((service, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <Ship className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{service}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          <div className="lg:col-span-1">
-            <div className="bg-secondary p-6 rounded-lg sticky top-24">
-              <h3 className="font-heading font-semibold text-lg mb-4">Need Assistance?</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Contact our port agency team for comprehensive support at {port.title}.
-              </p>
-              <div className="space-y-3">
-                <Button asChild className="w-full bg-accent hover:bg-shoham-orange-dark">
-                  <Link to="/quote">Request Quote</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/contact-us">Contact Us</Link>
-                </Button>
+              <div className="lg:col-span-1">
+                <div className="bg-secondary p-6 rounded-lg sticky top-24">
+                  <h3 className="font-heading font-semibold text-lg mb-4">Need Assistance?</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Contact our port agency team for comprehensive support at {port.title}.
+                  </p>
+                  <div className="space-y-3">
+                    <Button asChild className="w-full bg-accent hover:bg-shoham-orange-dark">
+                      <Link to="/quote">Request Quote</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to="/contact-us">Contact Us</Link>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-12 pt-8 border-t">
-          <h3 className="font-heading font-semibold text-lg mb-4">Other Ports</h3>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(portsData)
-              .filter(([key]) => key !== slug)
-              .slice(0, 6)
-              .map(([key, p]) => (
-                <Link
-                  key={key}
-                  to={`/port-agency/ports-in-cyprus/${key}`}
-                  className="px-4 py-2 bg-muted rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
-                >
-                  {p.title}
-                </Link>
-              ))}
-          </div>
-        </div>
+            <div className="mt-12 pt-8 border-t">
+              <h3 className="font-heading font-semibold text-lg mb-4">Other Ports</h3>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(portsData)
+                  .filter(([key]) => key !== slug)
+                  .slice(0, 6)
+                  .map(([key, p]) => (
+                    <Link
+                      key={key}
+                      to={`/port-agency/ports-in-cyprus/${key}`}
+                      className="px-4 py-2 bg-muted rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
+                    >
+                      {p.title}
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </Layout>
   );
