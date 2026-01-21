@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { CONTACT } from "@/constants/contact";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -162,8 +163,8 @@ const Contact = () => {
                   <Phone className="h-5 w-5 text-accent mt-0.5" />
                   <div>
                     <div className="font-medium">Phone</div>
-                    <a href="tel:+357-25-208700" className="text-muted-foreground hover:text-primary">
-                      +357-25-208700
+                    <a href={CONTACT.primary.phoneHref} className="text-muted-foreground hover:text-primary">
+                      {CONTACT.primary.phone}
                     </a>
                   </div>
                 </li>
@@ -171,8 +172,8 @@ const Contact = () => {
                   <Mail className="h-5 w-5 text-accent mt-0.5" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <a href="mailto:websales@shoham.com.cy" className="text-muted-foreground hover:text-primary">
-                      websales@shoham.com.cy
+                    <a href={CONTACT.primary.emailHref} className="text-muted-foreground hover:text-primary">
+                      {CONTACT.primary.email}
                     </a>
                   </div>
                 </li>
@@ -180,14 +181,14 @@ const Contact = () => {
                   <MapPin className="h-5 w-5 text-accent mt-0.5" />
                   <div>
                     <div className="font-medium">Address</div>
-                    <span className="text-muted-foreground">Limassol, Cyprus</span>
+                    <span className="text-muted-foreground">{CONTACT.address.short}</span>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-accent mt-0.5" />
                   <div>
                     <div className="font-medium">Office Hours</div>
-                    <span className="text-muted-foreground">08:00 - 17:00</span>
+                    <span className="text-muted-foreground">{CONTACT.hours.display}</span>
                   </div>
                 </li>
               </ul>

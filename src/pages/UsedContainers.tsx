@@ -24,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Lock, Unlock, Phone, Mail, MapPin, Clock, CheckCircle, Package, Truck } from "lucide-react";
+import { CONTACT } from "@/constants/contact";
 
 const VAT_RATE = 0.19;
 
@@ -299,8 +300,8 @@ const UsedContainers = () => {
                   <Phone className="h-5 w-5 text-primary" />
                   <div>
                     <div className="text-sm text-muted-foreground">Phone</div>
-                    <a href="tel:+357-25-208700" className="font-medium hover:text-primary">
-                      +357-25-208700
+                    <a href={CONTACT.primary.phoneHref} className="font-medium hover:text-primary">
+                      {CONTACT.primary.phone}
                     </a>
                   </div>
                 </div>
@@ -308,8 +309,8 @@ const UsedContainers = () => {
                   <Mail className="h-5 w-5 text-primary" />
                   <div>
                     <div className="text-sm text-muted-foreground">Email</div>
-                    <a href="mailto:websales@shoham.com.cy" className="font-medium hover:text-primary">
-                      websales@shoham.com.cy
+                    <a href={CONTACT.primary.emailHref} className="font-medium hover:text-primary">
+                      {CONTACT.primary.email}
                     </a>
                   </div>
                 </div>
@@ -317,14 +318,14 @@ const UsedContainers = () => {
                   <MapPin className="h-5 w-5 text-primary shrink-0" />
                   <div>
                     <div className="text-sm text-muted-foreground">Address</div>
-                    <span className="font-medium">Limassol, Cyprus</span>
+                    <span className="font-medium">{CONTACT.address.short}</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-primary shrink-0" />
                   <div>
                     <div className="text-sm text-muted-foreground">Hours</div>
-                    <span className="font-medium">Mon-Fri: 8:00 - 17:00</span>
+                    <span className="font-medium">{CONTACT.hours.weekdays}</span>
                   </div>
                 </div>
               </CardContent>

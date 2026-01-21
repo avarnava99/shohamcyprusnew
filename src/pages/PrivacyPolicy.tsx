@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
+import { CONTACT } from "@/constants/contact";
 
 const PrivacyPolicy = () => {
   return (
@@ -121,12 +122,12 @@ const PrivacyPolicy = () => {
           </p>
           <address className="not-italic">
             <strong>Shoham Shipping & Logistics</strong><br />
-            3 Anexartisias Street<br />
-            P.O. Box 50084<br />
-            3600 Limassol, Cyprus<br />
+            {CONTACT.address.street}<br />
+            {CONTACT.address.poBox}<br />
+            {CONTACT.address.city}<br />
             <br />
-            Email: <a href="mailto:info@shoham.com.cy">info@shoham.com.cy</a><br />
-            Phone: <a href="tel:+35725355000">+357 25 355000</a>
+            Email: <a href={CONTACT.info.emailHref}>{CONTACT.info.email}</a><br />
+            Phone: <a href={CONTACT.primary.phoneHref}>{CONTACT.primary.phone}</a>
           </address>
 
           <p className="text-sm text-muted-foreground mt-8">

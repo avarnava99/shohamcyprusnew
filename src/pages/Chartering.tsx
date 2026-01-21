@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Ship, Globe, Users, Clock } from "lucide-react";
+import { CONTACT } from "@/constants/contact";
 
 const Chartering = () => {
   return (
@@ -125,8 +126,8 @@ const Chartering = () => {
                 the perfect solution for your cargo.
               </p>
               <div className="space-y-2 text-sm mb-4">
-                <p><strong>Phone:</strong> +357 25 878300</p>
-                <p><strong>Email:</strong> chartering@shoham.com.cy</p>
+                <p><strong>Phone:</strong> {CONTACT.departments.chartering.phone}</p>
+                <p><strong>Email:</strong> {CONTACT.departments.chartering.email}</p>
               </div>
               <Button asChild variant="outline" className="w-full">
                 <Link to="/contact">Get In Touch</Link>

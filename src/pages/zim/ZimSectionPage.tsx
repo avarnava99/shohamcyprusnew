@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Package, Calendar, MapPin, Globe } from "lucide-react";
+import { CONTACT } from "@/constants/contact";
 
 interface SectionData {
   title: string;
@@ -215,13 +216,13 @@ const sectionsData: Record<string, SectionData> = {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium mb-2">For Rate Inquiries</h4>
-              <p className="text-muted-foreground text-sm mb-1">Email: sales@shoham.com.cy</p>
-              <p className="text-muted-foreground text-sm">Phone: +357-25-208700</p>
+              <p className="text-muted-foreground text-sm mb-1">Email: {CONTACT.departments.sales.email}</p>
+              <p className="text-muted-foreground text-sm">Phone: {CONTACT.primary.phone}</p>
             </div>
             <div>
               <h4 className="font-medium mb-2">Business Hours</h4>
-              <p className="text-muted-foreground text-sm mb-1">Monday - Friday: 08:00 - 17:00</p>
-              <p className="text-muted-foreground text-sm">Saturday - Sunday: Closed</p>
+              <p className="text-muted-foreground text-sm mb-1">{CONTACT.hours.weekdays}</p>
+              <p className="text-muted-foreground text-sm">{CONTACT.hours.weekend}</p>
             </div>
           </div>
         </div>
