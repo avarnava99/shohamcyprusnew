@@ -24,7 +24,7 @@ const ports = [
     category: "Vassiliko",
     items: [
       { slug: "vassiliko-port", title: "Vassiliko Port", description: "Industrial and energy port", icon: Ship },
-      { slug: "vassiliko-oil-terminal", title: "Vassiliko Oil Terminal", description: "CPSC oil terminal", icon: Fuel },
+      { slug: "vassiliko-oil-terminal", title: "Vassiliko Oil Terminal", description: "EAC power station fuel terminal (SBM)", icon: Fuel },
       { slug: "vttv-vassiliko-terminal", title: "VTTV Vassiliko Terminal", description: "Tank terminal for petroleum", icon: Fuel },
     ]
   },
