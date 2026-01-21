@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Clock, CheckCircle, Reply } from "lucide-react";
+import { Mail, Clock, CheckCircle, Reply, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
@@ -12,10 +12,15 @@ const AdminDashboard = () => {
     read: 0,
     replied: 0,
   });
+  const [containerStats, setContainerStats] = useState({
+    total: 0,
+    pending: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStats();
+    fetchContainerStats();
   }, []);
 
   const fetchStats = async () => {
@@ -41,11 +46,28 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchContainerStats = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("container_orders")
+        .select("status");
+
+      if (error) throw error;
+
+      setContainerStats({
+        total: data?.length || 0,
+        pending: data?.filter(o => o.status === "new" || o.status === "contacted").length || 0,
+      });
+    } catch (error) {
+      console.error("Error fetching container stats:", error);
+    }
+  };
+
   const statCards = [
-    { label: "Total Submissions", value: stats.total, icon: Mail, color: "text-primary" },
-    { label: "New", value: stats.new, icon: Clock, color: "text-blue-500" },
-    { label: "Read", value: stats.read, icon: CheckCircle, color: "text-yellow-500" },
-    { label: "Replied", value: stats.replied, icon: Reply, color: "text-green-500" },
+    { label: "Contact Submissions", value: stats.total, icon: Mail, color: "text-primary" },
+    { label: "New Contacts", value: stats.new, icon: Clock, color: "text-blue-500" },
+    { label: "Container Orders", value: containerStats.total, icon: Package, color: "text-purple-500" },
+    { label: "Pending Orders", value: containerStats.pending, icon: Package, color: "text-orange-500" },
   ];
 
   return (
@@ -83,7 +105,7 @@ const AdminDashboard = () => {
           <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Link to="/admin/contacts">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Mail className="h-5 w-5 text-primary" />
@@ -97,6 +119,26 @@ const AdminDashboard = () => {
                   {stats.new > 0 && (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                       {stats.new} new submission{stats.new > 1 ? "s" : ""}
+                    </span>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/admin/container-orders">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Package className="h-5 w-5 text-purple-500" />
+                    View Container Orders
+                  </CardTitle>
+                  <CardDescription>
+                    Manage container purchase requests and send offers
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {containerStats.pending > 0 && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                      {containerStats.pending} pending order{containerStats.pending > 1 ? "s" : ""}
                     </span>
                   )}
                 </CardContent>
