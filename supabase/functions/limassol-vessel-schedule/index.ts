@@ -97,9 +97,32 @@ async function tryDirectHtmlFetch(url: string): Promise<{ html: string; rejected
   }
 }
 
-async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promise<{ html: string; markdown?: string } | null> {
+async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActions = false): Promise<{ html: string; markdown?: string } | null> {
   try {
-    console.log(`Trying Firecrawl for ${url} with extended wait time...`);
+    console.log(`Trying Firecrawl for ${url} (useActions=${useActions})...`);
+    
+    // Build request body - use actions to establish session if needed
+    const requestBody: any = {
+      url,
+      formats: ['html', 'markdown'],
+      waitFor: 20000,
+      timeout: 90000,
+      onlyMainContent: false,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+    };
+    
+    // If using actions, start from the base URL and navigate to schedule
+    if (useActions) {
+      requestBody.url = 'https://infogate.eurogate-limassol.eu';
+      requestBody.actions = [
+        { type: 'wait', milliseconds: 5000 },
+        { type: 'click', selector: 'a[href*="segelliste"], a:contains("Schedule"), .nav-link, .menu-item' },
+        { type: 'wait', milliseconds: 8000 },
+      ];
+    }
     
     const firecrawlResponse = await fetchTextWithTimeout(
       'https://api.firecrawl.dev/v1/scrape',
@@ -109,21 +132,9 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promis
           'Authorization': `Bearer ${firecrawlApiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          url,
-          formats: ['html', 'markdown'],
-          // The InfoGate page is JS-rendered with a loader, needs longer wait
-          waitFor: 15000,
-          timeout: 60000,
-          onlyMainContent: false,
-          headers: {
-            'User-Agent':
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-GB,en;q=0.9',
-          },
-        }),
+        body: JSON.stringify(requestBody),
       },
-      65000
+      95000
     );
 
     const raw = await firecrawlResponse.text();
@@ -162,28 +173,43 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promis
 }
 
 async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | null> {
-  // Prefer the InfoGate page. We try multiple variants because InfoGate sometimes drops the session.
+  // URLs with the full parameters from the user's working URL
   const scheduleUrls = [
-    'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&locationCode=CYLMS&languageNo=31',
-    'https://infogate.eurogate-limassol.eu/segelliste/state/show?locationCode=CYLMS&languageNo=31',
+    // Full URL with all required params (from user's working URL)
+    'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0',
+    // Fallback variants
+    'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&locationCode=CYLMS&languageNo=30',
+    'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30',
   ];
 
-  // 1) Try direct HTML fetch first (no headless browser). This avoids Firecrawl browser load failures.
+  // 1) Try direct HTML fetch first (no headless browser)
   for (const url of scheduleUrls) {
     const result = await tryDirectHtmlFetch(url);
     if (result && !result.rejected) {
       return { source: 'direct', url, html: result.html };
     }
-    // Log why it was rejected
     if (result?.rejected) {
       console.log(`Direct fetch rejected for ${url}: ${result.reason}`);
     }
   }
 
-  // 2) Fallback to Firecrawl (headless browser) with longer wait for JS rendering.
+  // 2) Fallback to Firecrawl with standard approach
   for (const url of scheduleUrls) {
     const res = await scrapeWithFirecrawl(firecrawlApiKey, url);
-    if (res?.html) return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
+    if (res?.html) {
+      // Validate it has table content
+      if (res.html.toLowerCase().includes('<table') && res.html.toLowerCase().includes('<tbody')) {
+        return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
+      }
+      console.log(`Firecrawl returned HTML without table for ${url}`);
+    }
+  }
+
+  // 3) Last resort: Use Firecrawl with navigation actions to establish session
+  console.log('Trying Firecrawl with navigation actions...');
+  const actionsRes = await scrapeWithFirecrawl(firecrawlApiKey, '', true);
+  if (actionsRes?.html && actionsRes.html.toLowerCase().includes('<table')) {
+    return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (with navigation)', html: actionsRes.html, markdown: actionsRes.markdown };
   }
 
   return null;
