@@ -299,8 +299,8 @@ const UsedContainers = () => {
                   <Phone className="h-5 w-5 text-primary" />
                   <div>
                     <div className="text-sm text-muted-foreground">Phone</div>
-                    <a href="tel:+35725342424" className="font-medium hover:text-primary">
-                      +357 25 342424
+                    <a href="tel:+357-25-208700" className="font-medium hover:text-primary">
+                      +357-25-208700
                     </a>
                   </div>
                 </div>
