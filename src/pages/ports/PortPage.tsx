@@ -1,8 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Anchor, Ship, Fuel, Calendar, MapPin } from "lucide-react";
+import { Anchor, Ship, Fuel, Calendar, MapPin, Container } from "lucide-react";
 import LimassolPortDetails from "@/components/port/LimassolPortDetails";
+import EurogatePortDetails from "@/components/port/EurogatePortDetails";
 
 interface PortData {
   title: string;
@@ -16,7 +17,7 @@ interface PortData {
 const portsData: Record<string, PortData> = {
   "limassol-port": {
     title: "Limassol Port",
-    subtitle: "Cyprus' Main Commercial Port",
+    subtitle: "Cyprus' Main Commercial Port - DP World Multipurpose Terminal",
     description: "Limassol Port is the largest and busiest port in Cyprus, handling the majority of the island's container traffic and general cargo. As the main commercial gateway, it serves as the primary hub for import and export activities.",
     details: [
       "Main container terminal with modern handling facilities",
@@ -32,6 +33,25 @@ const portsData: Record<string, PortData> = {
       "Stevedoring services"
     ],
     icon: <Anchor className="w-12 h-12" />
+  },
+  "limassol-container-terminal": {
+    title: "Limassol Container Terminal",
+    subtitle: "Eurogate Container Terminal - Cyprus' Dedicated Container Hub",
+    description: "EUROGATE Container Terminal Limassol (CTL) is Cyprus' dedicated container handling facility, operated by EUROGATE since 2016. With state-of-the-art STS gantry cranes and modern yard equipment, CTL handles container traffic with efficiency and precision.",
+    details: [
+      "5 STS gantry cranes including Super Post-Panamax",
+      "800m total quay length with 16m maximum draft",
+      "12,000 TEU yard capacity with 140 reefer plugs",
+      "Annual capacity of approximately 750,000 TEU"
+    ],
+    services: [
+      "Container loading and discharging",
+      "Reefer container services with 24/7 monitoring",
+      "IMDG dangerous goods handling",
+      "90-day customs bonded storage",
+      "EDI interfaces via INFOGATE portal"
+    ],
+    icon: <Container className="w-12 h-12" />
   },
   "limassol-port-schedule": {
     title: "Limassol Port Schedule",
@@ -255,9 +275,11 @@ const PortPage = () => {
       </div>
 
       <div className="container-shoham py-12">
-        {/* Show enhanced details for Limassol Port */}
+        {/* Show enhanced details for Limassol Port and Eurogate Container Terminal */}
         {slug === "limassol-port" ? (
           <LimassolPortDetails />
+        ) : slug === "limassol-container-terminal" ? (
+          <EurogatePortDetails />
         ) : (
           <>
             <div className="grid lg:grid-cols-3 gap-8">

@@ -86,6 +86,7 @@ const Header = () => {
         { label: "Change of Ownership", href: "/port-agency/change-of-ownership" },
         { label: "Yacht Agency", href: "/port-agency/yacht-agency" },
         { label: "Ports of Cyprus", href: "/port-agency/ports-in-cyprus" },
+        { label: "Limassol Container Terminal", href: "/port-agency/ports-in-cyprus/limassol-container-terminal" },
       ],
     },
     {
