@@ -5,6 +5,8 @@ import { Anchor, Ship, Fuel, Calendar, MapPin, Container } from "lucide-react";
 import LimassolPortDetails from "@/components/port/LimassolPortDetails";
 import EurogatePortDetails from "@/components/port/EurogatePortDetails";
 import VassilikoPortDetails from "@/components/port/VassilikoPortDetails";
+import VTTVTerminalDetails from "@/components/port/VTTVTerminalDetails";
+
 interface PortData {
   title: string;
   subtitle: string;
@@ -181,19 +183,19 @@ const portsData: Record<string, PortData> = {
   },
   "vttv-vassiliko-terminal": {
     title: "VTTV Vassiliko Terminal",
-    subtitle: "Vassiliko Tank Terminal for Petroleum",
-    description: "VTTV is a state-of-the-art petroleum storage terminal providing comprehensive storage and handling services for oil products in the Eastern Mediterranean.",
+    subtitle: "Petroleum Tank Terminal - VTT Vasiliko Ltd",
+    description: "VTT Vasiliko Ltd operates a state-of-the-art petroleum tank terminal with a single 'T' formation jetty featuring 4 berths. The terminal handles clean products via shore tanks and both clean and dirty products (fuel oil/crude) via ship-to-ship transfers, operating 24/7/365.",
     details: [
-      "Modern tank farm facilities",
-      "Multiple berth capabilities",
-      "International safety standards",
-      "24/7 operations"
+      "4 berths with max 160,000 DWT capacity",
+      "Max draft 17m, max LOA 280m",
+      "ISPS Code compliant with 24/7 operations",
+      "Channel allowable draft: 30m"
     ],
     services: [
-      "Terminal coordination",
-      "Vessel scheduling",
-      "Cargo quantity surveys",
-      "Documentation services"
+      "Clean and dirty petroleum product handling",
+      "Ship-to-ship transfer operations",
+      "Pigging facilities at Berths 3 & 4",
+      "12\" ASME B16.5 Class 150# loading arm connections"
     ],
     icon: <Fuel className="w-12 h-12" />
   },
@@ -282,6 +284,8 @@ const PortPage = () => {
           <EurogatePortDetails />
         ) : slug === "vassiliko-port" ? (
           <VassilikoPortDetails />
+        ) : slug === "vttv-vassiliko-terminal" ? (
+          <VTTVTerminalDetails />
         ) : (
           <>
             <div className="grid lg:grid-cols-3 gap-8">
