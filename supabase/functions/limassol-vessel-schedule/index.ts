@@ -101,26 +101,31 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActi
   try {
     console.log(`Trying Firecrawl for ${url} (useActions=${useActions})...`);
     
-    // Build request body - use actions to establish session if needed
+    // Build request body with settings optimized for JS-heavy pages
     const requestBody: any = {
       url,
       formats: ['html', 'markdown'],
-      waitFor: 20000,
-      timeout: 90000,
+      waitFor: 25000, // Wait longer for JS to fully render
+      timeout: 120000, // 2 minute timeout
       onlyMainContent: false,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-GB,en;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-GB,en;q=0.9,en-US;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
       },
     };
     
-    // If using actions, start from the base URL and navigate to schedule
+    // If using actions, navigate from the portal homepage to the schedule
     if (useActions) {
       requestBody.url = 'https://infogate.eurogate-limassol.eu';
+      requestBody.waitFor = 30000;
       requestBody.actions = [
-        { type: 'wait', milliseconds: 5000 },
-        { type: 'click', selector: 'a[href*="segelliste"], a:contains("Schedule"), .nav-link, .menu-item' },
-        { type: 'wait', milliseconds: 8000 },
+        { type: 'wait', milliseconds: 8000 }, // Wait for initial page load
+        { type: 'click', selector: 'a[href*="segelliste"]' }, // Click schedule link
+        { type: 'wait', milliseconds: 12000 }, // Wait for schedule to load
       ];
     }
     
@@ -134,7 +139,7 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActi
         },
         body: JSON.stringify(requestBody),
       },
-      95000
+      130000 // Slightly more than the Firecrawl timeout
     );
 
     const raw = await firecrawlResponse.text();
@@ -156,11 +161,14 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActi
     
     console.log(`Firecrawl returned ${html.length} chars HTML, ${markdown.length} chars markdown`);
     
-    if (html.length > 500) {
-      console.log('Firecrawl HTML snippet:', html.substring(0, 800));
+    // Log more context for debugging
+    if (html.length > 100) {
+      console.log('Firecrawl HTML title:', html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || 'no title');
+      console.log('Firecrawl has table:', html.toLowerCase().includes('<table'));
+      console.log('Firecrawl has tbody:', html.toLowerCase().includes('<tbody'));
     }
     
-    if (!html || html.trim().length < 500) {
+    if (!html || html.trim().length < 300) {
       console.log('Firecrawl returned insufficient HTML');
       return null;
     }
@@ -173,16 +181,16 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActi
 }
 
 async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | null> {
-  // URLs with the full parameters from the user's working URL
+  // Primary URL - the exact working pattern from user's browser
+  // Note: _state and _unique are session tokens that may expire, but the server might accept requests without them
   const scheduleUrls = [
-    // Full URL with all required params (from user's working URL)
+    // Try without session tokens first (server may generate new ones)
     'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0',
-    // Fallback variants
-    'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&locationCode=CYLMS&languageNo=30',
-    'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30',
+    // Base entry point
+    'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30&period=1',
   ];
 
-  // 1) Try direct HTML fetch first (no headless browser)
+  // 1) Try direct HTML fetch first (unlikely to work due to JS requirements)
   for (const url of scheduleUrls) {
     const result = await tryDirectHtmlFetch(url);
     if (result && !result.rejected) {
@@ -193,23 +201,32 @@ async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | 
     }
   }
 
-  // 2) Fallback to Firecrawl with standard approach
+  // 2) Use Firecrawl with extended wait time for JS rendering
+  // The key is to let the page fully render its JavaScript
   for (const url of scheduleUrls) {
-    const res = await scrapeWithFirecrawl(firecrawlApiKey, url);
+    console.log(`Trying Firecrawl with extended JS wait for ${url}...`);
+    const res = await scrapeWithFirecrawl(firecrawlApiKey, url, false);
     if (res?.html) {
-      // Validate it has table content
-      if (res.html.toLowerCase().includes('<table') && res.html.toLowerCase().includes('<tbody')) {
+      const lower = res.html.toLowerCase();
+      // Check for actual vessel data indicators
+      if (lower.includes('<table') && (lower.includes('vessel') || lower.includes('<tbody'))) {
+        console.log('Firecrawl found table with vessel data');
         return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
       }
-      console.log(`Firecrawl returned HTML without table for ${url}`);
+      console.log(`Firecrawl returned HTML but no vessel table for ${url}`);
+      // Log a snippet to help debug
+      console.log('HTML snippet:', res.html.substring(0, 1500));
     }
   }
 
-  // 3) Last resort: Use Firecrawl with navigation actions to establish session
-  console.log('Trying Firecrawl with navigation actions...');
-  const actionsRes = await scrapeWithFirecrawl(firecrawlApiKey, '', true);
-  if (actionsRes?.html && actionsRes.html.toLowerCase().includes('<table')) {
-    return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (with navigation)', html: actionsRes.html, markdown: actionsRes.markdown };
+  // 3) Try Firecrawl starting from the main portal and navigating
+  console.log('Trying Firecrawl with portal navigation...');
+  const navRes = await scrapeWithFirecrawl(firecrawlApiKey, 'https://infogate.eurogate-limassol.eu', true);
+  if (navRes?.html) {
+    const lower = navRes.html.toLowerCase();
+    if (lower.includes('<table') && lower.includes('<tbody')) {
+      return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navRes.html, markdown: navRes.markdown };
+    }
   }
 
   return null;
