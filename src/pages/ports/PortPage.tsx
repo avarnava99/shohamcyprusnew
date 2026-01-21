@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Anchor, Ship, Fuel, Calendar, MapPin, Container } from "lucide-react";
 import LimassolPortDetails from "@/components/port/LimassolPortDetails";
 import EurogatePortDetails from "@/components/port/EurogatePortDetails";
-
+import VassilikoPortDetails from "@/components/port/VassilikoPortDetails";
 interface PortData {
   title: string;
   subtitle: string;
@@ -144,20 +144,20 @@ const portsData: Record<string, PortData> = {
     icon: <Fuel className="w-12 h-12" />
   },
   "vassiliko-port": {
-    title: "Vassiliko Port",
-    subtitle: "Industrial and Energy Port",
-    description: "Vassiliko Port is Cyprus' main industrial port, serving the cement industry, power generation, and as a hub for oil and gas operations.",
+    title: "Vassiliko Cement Port Facility",
+    subtitle: "Industrial Bulk & Liquid Cargo Terminal",
+    description: "Vassiliko Cement Port Facility is an industrial harbor on the South Coast of Cyprus, operated by Vassiliko Cement Works Public Company Ltd. The port handles dry bulk cargoes (clinker, cement, scrap iron, pet coke), liquid cargoes (fuels, chemicals, LPG), and features Ro-Ro capabilities.",
     details: [
-      "Industrial cargo handling",
-      "Cement export terminal",
-      "Power station coal/fuel imports",
-      "LNG terminal operations"
+      "565m total quay length with 9.0m depth at LW",
+      "4 tugboats available (up to 80 BPT)",
+      "45,000 m² open storage area",
+      "Annual traffic: 300-400 vessels, 1.5-2.5M tons cargo"
     ],
     services: [
-      "Industrial vessel agency",
-      "Bulk cargo coordination",
-      "Terminal operations support",
-      "Documentation and clearance"
+      "Dry bulk cargo handling (cement, clinker, scrap)",
+      "Liquid & LPG cargo operations",
+      "Ro-Ro berth facilities",
+      "ISPS compliant terminal operations"
     ],
     icon: <Ship className="w-12 h-12" />
   },
@@ -275,11 +275,13 @@ const PortPage = () => {
       </div>
 
       <div className="container-shoham py-12">
-        {/* Show enhanced details for Limassol Port and Eurogate Container Terminal */}
+        {/* Show enhanced details for specific ports */}
         {slug === "limassol-port" ? (
           <LimassolPortDetails />
         ) : slug === "limassol-container-terminal" ? (
           <EurogatePortDetails />
+        ) : slug === "vassiliko-port" ? (
+          <VassilikoPortDetails />
         ) : (
           <>
             <div className="grid lg:grid-cols-3 gap-8">
