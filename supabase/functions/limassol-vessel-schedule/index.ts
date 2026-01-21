@@ -21,6 +21,148 @@ interface VesselData {
   agent: string | null;
 }
 
+type ScrapeResult = {
+  source: 'direct' | 'firecrawl';
+  url: string;
+  html: string;
+  markdown?: string;
+};
+
+async function fetchTextWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 25000): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function tryDirectHtmlFetch(url: string): Promise<string | null> {
+  try {
+    const res = await fetchTextWithTimeout(
+      url,
+      {
+        method: 'GET',
+        headers: {
+          // A realistic UA helps with some WAF/CDN configs.
+          'User-Agent':
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-GB,en;q=0.9',
+        },
+      },
+      25000
+    );
+
+    if (!res.ok) {
+      console.log(`Direct fetch failed (${res.status}) for ${url}`);
+      return null;
+    }
+
+    const html = await res.text();
+    if (!html || html.trim().length < 500) {
+      console.log(`Direct fetch returned too little HTML for ${url}`);
+      return null;
+    }
+
+    // Quick heuristic: the schedule page should include a table.
+    if (!html.toLowerCase().includes('<table') || !html.toLowerCase().includes('<tbody')) {
+      console.log(`Direct fetch did not look like a schedule table for ${url}`);
+      return null;
+    }
+
+    // Detect probable login page.
+    const lower = html.toLowerCase();
+    if (lower.includes('login') && (lower.includes('password') || lower.includes('username'))) {
+      console.log(`Direct fetch appears to be a login page for ${url}`);
+      return null;
+    }
+
+    return html;
+  } catch (e) {
+    console.error(`Direct fetch threw for ${url}:`, e);
+    return null;
+  }
+}
+
+async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string): Promise<{ html: string; markdown?: string } | null> {
+  try {
+    const firecrawlResponse = await fetchTextWithTimeout(
+      'https://api.firecrawl.dev/v1/scrape',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${firecrawlApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+          formats: ['html', 'markdown'],
+          // InfoGate can be temperamental / protected by network edge rules.
+          // Using Firecrawl's proxy mode significantly improves reliability.
+          proxy: 'auto',
+          skipTlsVerification: true,
+          timeout: 45000,
+          waitFor: 8000,
+          onlyMainContent: false,
+          headers: {
+            'User-Agent':
+              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept-Language': 'en-GB,en;q=0.9',
+          },
+        }),
+      },
+      45000
+    );
+
+    const raw = await firecrawlResponse.text();
+    let firecrawlData: any;
+    try {
+      firecrawlData = JSON.parse(raw);
+    } catch {
+      console.error('Firecrawl returned non-JSON response:', raw?.slice?.(0, 500));
+      return null;
+    }
+
+    if (!firecrawlResponse.ok || !firecrawlData?.success) {
+      console.error('Firecrawl error:', firecrawlData);
+      return null;
+    }
+
+    const html = firecrawlData.data?.html || firecrawlData.html || '';
+    const markdown = firecrawlData.data?.markdown || firecrawlData.markdown || '';
+    if (!html || html.trim().length < 500) return null;
+
+    return { html, markdown };
+  } catch (e) {
+    console.error('Firecrawl scrape threw:', e);
+    return null;
+  }
+}
+
+async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | null> {
+  // Prefer the InfoGate page. We try multiple variants because InfoGate sometimes drops the session.
+  const scheduleUrls = [
+    'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&locationCode=CYLMS&languageNo=31',
+    'https://infogate.eurogate-limassol.eu/segelliste/state/show?locationCode=CYLMS&languageNo=31',
+  ];
+
+  // 1) Try direct HTML fetch first (no headless browser). This avoids Firecrawl browser load failures.
+  for (const url of scheduleUrls) {
+    const html = await tryDirectHtmlFetch(url);
+    if (html) return { source: 'direct', url, html };
+  }
+
+  // 2) Fallback to Firecrawl (headless browser).
+  for (const url of scheduleUrls) {
+    const res = await scrapeWithFirecrawl(firecrawlApiKey, url);
+    if (res?.html) return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
+  }
+
+  return null;
+}
+
 function parseDateTime(dateStr: string, timeStr: string): { date: string | null; time: string | null } {
   // Parse date format: "20/01/2026" -> "2026-01-20"
   // Parse time format: "06.30" or "06:30" -> "06:30:00"
@@ -227,40 +369,26 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // The Eurogate Limassol schedule URL - using the start transition which generates a fresh session
-    const scheduleUrl = 'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&locationCode=CYLMS&languageNo=31';
+    console.log('Fetching Eurogate InfoGate Limassol schedule (direct fetch → Firecrawl fallback)...');
 
-    console.log('Scraping Eurogate Limassol schedule...');
-
-    // Call Firecrawl to scrape the page
-    const firecrawlResponse = await fetch('https://api.firecrawl.dev/v1/scrape', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${firecrawlApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: scheduleUrl,
-        formats: ['html', 'markdown'],
-        waitFor: 3000, // Wait for dynamic content to load
-      }),
-    });
-
-    const firecrawlData = await firecrawlResponse.json();
-
-    if (!firecrawlResponse.ok || !firecrawlData.success) {
-      console.error('Firecrawl error:', firecrawlData);
+    const scrape = await getScheduleHtml(firecrawlApiKey);
+    if (!scrape) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to scrape schedule page', details: firecrawlData }),
+        JSON.stringify({
+          success: false,
+          error: 'Failed to load Eurogate InfoGate schedule page',
+          hint: 'If InfoGate requires authentication from your network, we may need credentials or an allow-listed IP.',
+        }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const html = firecrawlData.data?.html || firecrawlData.html || '';
-    const markdown = firecrawlData.data?.markdown || firecrawlData.markdown || '';
-    
+    const html = scrape.html;
+    const markdown = scrape.markdown || '';
+
+    console.log(`Schedule loaded via ${scrape.source}. URL: ${scrape.url}`);
     console.log('Received HTML length:', html.length);
-    console.log('Received Markdown length:', markdown.length);
+    if (markdown) console.log('Received Markdown length:', markdown.length);
 
     // Parse vessels from HTML
     let vessels = parseVesselsFromHtml(html);
@@ -322,6 +450,8 @@ Deno.serve(async (req) => {
         JSON.stringify({ 
           success: true, 
           message: 'Scrape completed but no vessels parsed',
+          scrape_source: scrape.source,
+          scrape_url: scrape.url,
           html_preview: html.substring(0, 2000),
           markdown_preview: markdown.substring(0, 2000)
         }),
@@ -381,6 +511,8 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         message: `Scraped ${vessels.length} vessels`,
+        scrape_source: scrape.source,
+        scrape_url: scrape.url,
         vessels: insertedData 
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
