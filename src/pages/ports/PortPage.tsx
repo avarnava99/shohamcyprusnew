@@ -203,19 +203,25 @@ const portsData: Record<string, PortData> = {
   },
   "dhekelia-oil-terminal": {
     title: "Dhekelia Oil Terminal",
-    subtitle: "British Forces Oil Terminal",
-    description: "The Dhekelia Oil Terminal serves the British Forces Cyprus base, handling petroleum products for military and civilian use within the Sovereign Base Area.",
+    subtitle: "EAC Dhekelia Power Station Oil Terminal",
+    description: "The Dhekelia Oil Terminal serves the Electricity Authority of Cyprus (EAC) Dhekelia Power Station. Installations are used for unloading fuel from oil tankers for the needs of the power station. Mooring is effected on buoys with unloading carried out through submarine pipelines.",
     details: [
-      "Military installation terminal",
-      "Controlled access facility",
-      "Specialized security protocols",
-      "Regular tanker calls"
+      "Location: Southern coast, approx. 7km E of Larnaca",
+      "Open roadstead - no port limits, sea berth only",
+      "Controlling depth: 14m",
+      "Max vessel: 12.0m draught, 225m L.O.A.",
+      "Water density: 1025 kg/m³",
+      "Mean tidal levels: 0.30m (abnormal: 0.60m)",
+      "Buoy mooring with submarine pipeline unloading",
+      "Traffic: ~510,254 tons (2010)"
     ],
     services: [
-      "Tanker agency services",
-      "Military liaison coordination",
-      "Cargo documentation",
-      "Security clearance assistance"
+      "Tanker agency for buoy mooring operations",
+      "Oil receiving coordination for EAC Power Station",
+      "Cyprus Ports Authority liaison",
+      "Cargo documentation and customs clearance",
+      "VTS coordination via Larnaca Port Control (VHF Ch. 14, 16)",
+      "24-hour ETA notice coordination"
     ],
     icon: <Fuel className="w-12 h-12" />
   },
