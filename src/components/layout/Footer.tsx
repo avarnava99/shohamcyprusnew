@@ -27,7 +27,7 @@ const Footer = () => {
   const servicesLinks = [
     { label: "All Services", href: "/services" },
     { label: "Freight Forwarding", href: "/services/freight-forwarding" },
-    { label: "Projects", href: "/projects" },
+    { label: "Project Cargo", href: "/project-cargo" },
     { label: "Chartering", href: "/chartering" },
     { label: "Air Freight", href: "/services/air-freight" },
     { label: "Sea Freight", href: "/services/sea-freight" },
