@@ -4,15 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
 import famagustaPainting from "@/assets/famagusta-painting.jpg";
 import { CONTACT } from "@/constants/contact";
-
 const About = () => {
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-primary py-16">
         <div className="container-shoham">
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-            About Shoham
-          </h1>
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">About us</h1>
           <p className="text-white/90 text-lg max-w-2xl">
             Shipping and freight forwarding agent in Cyprus since 1951
           </p>
@@ -25,11 +21,7 @@ const About = () => {
             <section>
               <h2 className="section-title">Our History</h2>
               <div className="mb-6">
-                <img 
-                  src={famagustaPainting} 
-                  alt="Historic Port of Famagusta - Painting" 
-                  className="rounded-lg shadow-lg w-full max-w-md float-right ml-6 mb-4"
-                />
+                <img src={famagustaPainting} alt="Historic Port of Famagusta - Painting" className="rounded-lg shadow-lg w-full max-w-md float-right ml-6 mb-4" />
                 <p className="text-muted-foreground mb-4">
                   Established in Famagusta in 1951, SHOHAM (CYPRUS) LTD is one of the main liner and 
                   tramp shipping agents in Cyprus. With our vast experience in every aspect of ship 
@@ -156,8 +148,6 @@ const About = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default About;
