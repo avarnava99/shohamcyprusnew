@@ -35,6 +35,7 @@ import TravelAgency from "./pages/TravelAgency";
 import ContainerHomes from "./pages/ContainerHomes";
 import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
 import ContainerOrders from "./pages/admin/ContainerOrders";
@@ -81,6 +82,7 @@ const App = () => (
           <Route path="/container-homes" element={<ContainerHomes />} />
           <Route path="/frequently-asked-questions" element={<FAQ />} />
           <Route path="/about-us/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/about-us/terms-of-service" element={<TermsOfService />} />
           <Route path="/online-purchases-shipped-to-cyprus-from-amazon-uk" element={<AmazonUK />} />
           <Route path="/ecommerce-purchases-from-germany" element={<EcommerceGermany />} />
           <Route path="/ecommerce-purchases-from-usa" element={<EcommerceUSA />} />
