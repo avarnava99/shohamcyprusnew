@@ -133,7 +133,6 @@ const About = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <div className="font-semibold">Limassol (Head Office)</div>
-                  <div className="text-white/80">{CONTACT.address.city}</div>
                 </div>
                 <div>
                   <div className="font-semibold">Phone</div>
