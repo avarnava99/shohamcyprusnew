@@ -2,13 +2,23 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { CONTACT } from "@/constants/contact";
+import portAgencyHero from "@/assets/port-agency.jpg";
 
 const TermsOfService = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-shoham-navy text-white py-16">
-        <div className="container-shoham">
+      <section className="relative h-[300px] md:h-[350px] flex items-center">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${portAgencyHero})` }}
+        />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-shoham-navy/80" />
+        
+        {/* Content */}
+        <div className="container-shoham relative z-10 text-white">
           <Link to="/about-us" className="inline-flex items-center text-white/80 hover:text-white mb-4 transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to About Us
