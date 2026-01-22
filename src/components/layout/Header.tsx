@@ -108,6 +108,7 @@ const Header = () => {
     },
     { label: "Chartering", href: "/chartering" },
     { label: "Project Cargo", href: "/project-cargo" },
+    { label: "News", href: "/blog" },
   ];
 
   return (
