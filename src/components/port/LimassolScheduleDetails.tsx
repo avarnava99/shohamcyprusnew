@@ -1,55 +1,88 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ship, ExternalLink, Calendar, Info } from "lucide-react";
+import { Ship, ExternalLink, Calendar, Info, RefreshCw } from "lucide-react";
+import { useVesselSchedule } from "@/hooks/useVesselSchedule";
+import VesselScheduleTable from "./VesselScheduleTable";
+import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
 
 const INFOGATE_URL = "https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0";
 
 export default function LimassolScheduleDetails() {
+  const { data: vessels, isLoading, error, dataUpdatedAt, refetch, isRefetching } = useVesselSchedule();
+
+  const lastUpdated = vessels && vessels.length > 0 
+    ? new Date(vessels[0].scraped_at) 
+    : dataUpdatedAt ? new Date(dataUpdatedAt) : null;
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Ship className="w-6 h-6 text-primary" />
             Vessel Schedule
           </h2>
           <p className="text-muted-foreground mt-1">
-            Real-time arrivals and departures at Eurogate Container Terminal Limassol
+            Arrivals and departures at Eurogate Container Terminal Limassol
           </p>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetch()}
+            disabled={isRefetching}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isRefetching ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button size="sm" variant="secondary" asChild>
+            <a href={INFOGATE_URL} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="w-4 h-4 mr-2" />
+              InfoGate
+            </a>
+          </Button>
         </div>
       </div>
 
-      {/* Main CTA Card */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex items-start gap-4">
-              <div className="bg-primary/10 p-3 rounded-full">
-                <Calendar className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Eurogate InfoGate Portal</h3>
-                <p className="text-muted-foreground mt-1 max-w-md">
-                  View the live vessel schedule directly on Eurogate's official InfoGate system. 
-                  The portal shows real-time arrivals, departures, berth assignments, and vessel details.
-                </p>
-              </div>
-            </div>
-            
-            <Button 
-              size="lg" 
-              className="gap-2 shrink-0"
-              asChild
-            >
-              <a href={INFOGATE_URL} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4" />
-                Open Vessel Schedule
-              </a>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Last Updated Info */}
+      {lastUpdated && (
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Calendar className="w-4 h-4" />
+          <span>
+            Last updated: {format(lastUpdated, "dd MMM yyyy 'at' HH:mm")}
+          </span>
+        </div>
+      )}
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="space-y-3">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <Card className="border-destructive/50 bg-destructive/5">
+          <CardContent className="pt-6">
+            <p className="text-destructive">
+              Failed to load vessel schedule. Please try again or use the InfoGate link above.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Data Table */}
+      {!isLoading && !error && vessels && (
+        <VesselScheduleTable vessels={vessels} />
+      )}
 
       {/* Schedule Features */}
       <div className="grid md:grid-cols-3 gap-4">
@@ -74,7 +107,7 @@ export default function LimassolScheduleDetails() {
               <div>
                 <h4 className="font-medium">Arrival & Departure Times</h4>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Real-time ETA and ETD information with berth assignments for each vessel.
+                  ETA and ETD information with berth assignments for each vessel.
                 </p>
               </div>
             </div>
@@ -104,10 +137,10 @@ export default function LimassolScheduleDetails() {
               <Info className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h4 className="font-medium">About InfoGate</h4>
+              <h4 className="font-medium">About This Schedule</h4>
               <p className="text-sm text-muted-foreground mt-1">
-                InfoGate is Eurogate Container Terminal Limassol's official portal for vessel schedules and container tracking. 
-                The schedule typically shows vessels for the upcoming 1-4 weeks and is updated in real-time as vessel movements change.
+                Data is sourced from Eurogate Container Terminal Limassol's InfoGate portal and refreshed twice daily. 
+                For the most current information, click the InfoGate button above to view the official schedule.
               </p>
             </div>
           </div>
