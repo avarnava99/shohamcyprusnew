@@ -1,20 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ship, ExternalLink, Calendar, Info, RefreshCw } from "lucide-react";
-import { useVesselSchedule } from "@/hooks/useVesselSchedule";
-import VesselScheduleTable from "./VesselScheduleTable";
-import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
+import { Ship, ExternalLink, Calendar, Info } from "lucide-react";
 
 const INFOGATE_URL = "https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0";
 
 export default function LimassolScheduleDetails() {
-  const { data: vessels, isLoading, error, dataUpdatedAt, refetch, isRefetching } = useVesselSchedule();
-
-  const lastUpdated = vessels && vessels.length > 0 
-    ? new Date(vessels[0].scraped_at) 
-    : dataUpdatedAt ? new Date(dataUpdatedAt) : null;
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -28,61 +18,31 @@ export default function LimassolScheduleDetails() {
             Arrivals and departures at Eurogate Container Terminal Limassol
           </p>
         </div>
-        
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => refetch()}
-            disabled={isRefetching}
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${isRefetching ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Button size="sm" variant="secondary" asChild>
-            <a href={INFOGATE_URL} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              InfoGate
-            </a>
-          </Button>
-        </div>
       </div>
 
-      {/* Last Updated Info */}
-      {lastUpdated && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="w-4 h-4" />
-          <span>
-            Last updated: {format(lastUpdated, "dd MMM yyyy 'at' HH:mm")}
-          </span>
-        </div>
-      )}
-
-      {/* Loading State */}
-      {isLoading && (
-        <div className="space-y-3">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && (
-        <Card className="border-destructive/50 bg-destructive/5">
-          <CardContent className="pt-6">
-            <p className="text-destructive">
-              Failed to load vessel schedule. Please try again or use the InfoGate link above.
-            </p>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Data Table */}
-      {!isLoading && !error && vessels && (
-        <VesselScheduleTable vessels={vessels} />
-      )}
+      {/* Main CTA Card */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardContent className="pt-6">
+          <div className="flex flex-col items-center text-center gap-4 py-4">
+            <div className="bg-primary/10 p-4 rounded-full">
+              <Ship className="w-10 h-10 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-2">View Official Vessel Schedule</h3>
+              <p className="text-muted-foreground max-w-md">
+                Access the real-time vessel schedule directly from Eurogate's official InfoGate portal 
+                for the most accurate and up-to-date arrival and departure information.
+              </p>
+            </div>
+            <Button size="lg" asChild className="mt-2">
+              <a href={INFOGATE_URL} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-5 h-5 mr-2" />
+                Open InfoGate Portal
+              </a>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Schedule Features */}
       <div className="grid md:grid-cols-3 gap-4">
@@ -137,10 +97,10 @@ export default function LimassolScheduleDetails() {
               <Info className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h4 className="font-medium">About This Schedule</h4>
+              <h4 className="font-medium">About InfoGate Portal</h4>
               <p className="text-sm text-muted-foreground mt-1">
-                Data is sourced from Eurogate Container Terminal Limassol's InfoGate portal and refreshed twice daily. 
-                For the most current information, click the InfoGate button above to view the official schedule.
+                The InfoGate portal is the official source for vessel schedule information at Eurogate Container Terminal Limassol. 
+                It provides real-time updates on vessel arrivals, departures, berth assignments, and cargo operations.
               </p>
             </div>
           </div>
