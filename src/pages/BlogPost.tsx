@@ -83,11 +83,37 @@ const BlogPost = () => {
         </div>
       </div>
 
+      {post.featured_image && (
+        <div className="container-shoham -mt-8 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <img
+              src={post.featured_image}
+              alt={post.title}
+              className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      )}
+
       <div className="container-shoham py-12">
-        <article 
-          className="max-w-3xl mx-auto prose prose-lg prose-headings:font-heading prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-strong:text-foreground"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-sm p-8 md:p-12">
+          <article 
+            className="prose prose-lg 
+              prose-headings:font-heading 
+              prose-headings:text-foreground 
+              prose-headings:mt-8 
+              prose-headings:mb-4
+              prose-p:text-foreground 
+              prose-p:leading-relaxed
+              prose-p:mb-6
+              prose-a:text-primary 
+              prose-a:underline
+              prose-strong:text-foreground
+              prose-li:text-foreground
+              prose-li:my-2"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </div>
       </div>
     </Layout>
   );
