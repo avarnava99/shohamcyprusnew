@@ -23,7 +23,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="bg-accent hover:bg-shoham-orange-dark text-white font-semibold uppercase tracking-wide">
-              <Link to="/contact">Get In Touch</Link>
+              <Link to="/contact-us">Get In Touch</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-shoham-navy font-semibold uppercase tracking-wide">
               <Link to="/quote">Online Rates</Link>
