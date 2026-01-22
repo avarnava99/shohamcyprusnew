@@ -22,7 +22,7 @@ interface VesselData {
 }
 
 type ScrapeResult = {
-  source: 'direct' | 'firecrawl';
+  source: 'direct' | 'firecrawl' | 'scrapingbee';
   url: string;
   html: string;
   markdown?: string;
@@ -35,6 +35,56 @@ async function fetchTextWithTimeout(url: string, init: RequestInit = {}, timeout
     return await fetch(url, { ...init, signal: controller.signal });
   } finally {
     clearTimeout(timeout);
+  }
+}
+
+async function scrapeWithScrapingBee(apiKey: string, url: string): Promise<{ html: string } | null> {
+  try {
+    console.log(`Trying ScrapingBee with residential proxy for ${url}...`);
+    
+    // ScrapingBee API with premium proxy (residential IPs) and JS rendering
+    const params = new URLSearchParams({
+      api_key: apiKey,
+      url: url,
+      render_js: 'true',
+      premium_proxy: 'true', // Use residential proxies to bypass IP blocks
+      wait: '15000', // Wait 15s for JS to render
+      wait_for: 'table', // Wait until table element appears
+      country_code: 'cy', // Request from Cyprus if possible
+    });
+    
+    const response = await fetchTextWithTimeout(
+      `https://app.scrapingbee.com/api/v1/?${params.toString()}`,
+      { method: 'GET' },
+      60000 // 60 second timeout
+    );
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`ScrapingBee error (${response.status}):`, errorText.substring(0, 500));
+      return null;
+    }
+    
+    const html = await response.text();
+    console.log(`ScrapingBee returned ${html.length} chars HTML`);
+    
+    if (!html || html.trim().length < 300) {
+      console.log('ScrapingBee returned insufficient HTML');
+      return null;
+    }
+    
+    // Check for table content
+    const lower = html.toLowerCase();
+    if (lower.includes('<table') && lower.includes('<tbody')) {
+      console.log('ScrapingBee found table content');
+    } else {
+      console.log('ScrapingBee HTML preview:', html.substring(0, 1000));
+    }
+    
+    return { html };
+  } catch (e) {
+    console.error('ScrapingBee scrape threw:', e);
+    return null;
   }
 }
 
@@ -180,52 +230,57 @@ async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActi
   }
 }
 
-async function getScheduleHtml(firecrawlApiKey: string): Promise<ScrapeResult | null> {
+async function getScheduleHtml(scrapingBeeApiKey: string | null, firecrawlApiKey: string | null): Promise<ScrapeResult | null> {
   // Primary URL - the exact working pattern from user's browser
-  // Note: _state and _unique are session tokens that may expire, but the server might accept requests without them
   const scheduleUrls = [
-    // Try without session tokens first (server may generate new ones)
     'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0',
-    // Base entry point
     'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30&period=1',
   ];
 
-  // 1) Try direct HTML fetch first (unlikely to work due to JS requirements)
+  // 1) Try ScrapingBee FIRST - uses residential proxies to bypass IP blocks
+  if (scrapingBeeApiKey) {
+    for (const url of scheduleUrls) {
+      const res = await scrapeWithScrapingBee(scrapingBeeApiKey, url);
+      if (res?.html) {
+        const lower = res.html.toLowerCase();
+        if (lower.includes('<table') && lower.includes('<tbody')) {
+          console.log('ScrapingBee successfully retrieved vessel schedule');
+          return { source: 'scrapingbee', url, html: res.html };
+        }
+        console.log(`ScrapingBee returned HTML but no vessel table for ${url}`);
+      }
+    }
+  }
+
+  // 2) Try direct HTML fetch (unlikely to work due to JS requirements)
   for (const url of scheduleUrls) {
     const result = await tryDirectHtmlFetch(url);
     if (result && !result.rejected) {
       return { source: 'direct', url, html: result.html };
     }
-    if (result?.rejected) {
-      console.log(`Direct fetch rejected for ${url}: ${result.reason}`);
-    }
   }
 
-  // 2) Use Firecrawl with extended wait time for JS rendering
-  // The key is to let the page fully render its JavaScript
-  for (const url of scheduleUrls) {
-    console.log(`Trying Firecrawl with extended JS wait for ${url}...`);
-    const res = await scrapeWithFirecrawl(firecrawlApiKey, url, false);
-    if (res?.html) {
-      const lower = res.html.toLowerCase();
-      // Check for actual vessel data indicators
-      if (lower.includes('<table') && (lower.includes('vessel') || lower.includes('<tbody'))) {
-        console.log('Firecrawl found table with vessel data');
-        return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
+  // 3) Fallback to Firecrawl if ScrapingBee didn't work
+  if (firecrawlApiKey) {
+    for (const url of scheduleUrls) {
+      console.log(`Trying Firecrawl with extended JS wait for ${url}...`);
+      const res = await scrapeWithFirecrawl(firecrawlApiKey, url, false);
+      if (res?.html) {
+        const lower = res.html.toLowerCase();
+        if (lower.includes('<table') && (lower.includes('vessel') || lower.includes('<tbody'))) {
+          return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
+        }
       }
-      console.log(`Firecrawl returned HTML but no vessel table for ${url}`);
-      // Log a snippet to help debug
-      console.log('HTML snippet:', res.html.substring(0, 1500));
     }
-  }
 
-  // 3) Try Firecrawl starting from the main portal and navigating
-  console.log('Trying Firecrawl with portal navigation...');
-  const navRes = await scrapeWithFirecrawl(firecrawlApiKey, 'https://infogate.eurogate-limassol.eu', true);
-  if (navRes?.html) {
-    const lower = navRes.html.toLowerCase();
-    if (lower.includes('<table') && lower.includes('<tbody')) {
-      return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navRes.html, markdown: navRes.markdown };
+    // Try Firecrawl with portal navigation
+    console.log('Trying Firecrawl with portal navigation...');
+    const navRes = await scrapeWithFirecrawl(firecrawlApiKey, 'https://infogate.eurogate-limassol.eu', true);
+    if (navRes?.html) {
+      const lower = navRes.html.toLowerCase();
+      if (lower.includes('<table') && lower.includes('<tbody')) {
+        return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navRes.html, markdown: navRes.markdown };
+      }
     }
   }
 
@@ -425,11 +480,13 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const scrapingBeeApiKey = Deno.env.get('SCRAPINGBEE_API_KEY');
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
-    if (!firecrawlApiKey) {
-      console.error('FIRECRAWL_API_KEY not configured');
+    
+    if (!scrapingBeeApiKey && !firecrawlApiKey) {
+      console.error('No scraping API keys configured (need SCRAPINGBEE_API_KEY or FIRECRAWL_API_KEY)');
       return new Response(
-        JSON.stringify({ success: false, error: 'Firecrawl API key not configured' }),
+        JSON.stringify({ success: false, error: 'No scraping API key configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -438,9 +495,9 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    console.log('Fetching Eurogate InfoGate Limassol schedule (direct fetch → Firecrawl fallback)...');
+    console.log('Fetching Eurogate InfoGate Limassol schedule (ScrapingBee → direct → Firecrawl)...');
 
-    const scrape = await getScheduleHtml(firecrawlApiKey);
+    const scrape = await getScheduleHtml(scrapingBeeApiKey || null, firecrawlApiKey || null);
     if (!scrape) {
       return new Response(
         JSON.stringify({
