@@ -21,6 +21,10 @@ export const CONTACT = {
       email: "sales@shoham.com.cy",
       emailHref: "mailto:sales@shoham.com.cy",
     },
+    marketing: {
+      email: "marketing@shoham.com.cy",
+      emailHref: "mailto:marketing@shoham.com.cy",
+    },
     chartering: {
       phone: "+357-25-878300",
       phoneHref: "tel:+35725878300",
