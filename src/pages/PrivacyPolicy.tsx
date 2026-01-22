@@ -122,11 +122,8 @@ const PrivacyPolicy = () => {
           </p>
           <address className="not-italic">
             <strong>Shoham Shipping & Logistics</strong><br />
-            {CONTACT.address.street}<br />
-            {CONTACT.address.poBox}<br />
-            {CONTACT.address.city}<br />
             <br />
-            Email: <a href={CONTACT.info.emailHref}>{CONTACT.info.email}</a><br />
+            Email: <a href={CONTACT.primary.emailHref}>{CONTACT.primary.email}</a><br />
             Phone: <a href={CONTACT.primary.phoneHref}>{CONTACT.primary.phone}</a>
           </address>
 
