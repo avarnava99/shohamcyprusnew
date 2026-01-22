@@ -398,41 +398,206 @@ function extractAgent(text: string): string | null {
   return null;
 }
 
-// Parse InfoGate HTML - handles table.resultlist with rowspan
+// Parse InfoGate HTML - looks for vessel data in any table
+// InfoGate 7-column format: Date | Time(Etd) | Vessel | Callsign | Berth | Operation | Voyage
 function parseVesselsFromHtml(html: string): VesselData[] {
-  const vessels: VesselData[] = [];
   const seenVessels = new Map<string, VesselData>();
   
   console.log('Parsing vessels from HTML...');
   console.log('HTML length:', html.length);
   
-  // Find the resultlist table
-  const tableMatch = html.match(/<table[^>]*class\s*=\s*["'][^"']*resultlist[^"']*["'][^>]*>([\s\S]*?)<\/table>/i);
+  // Check if HTML contains known vessel names or operations (English or German)
+  const vesselIndicators = ['Discharge', 'Load', 'Entladung', 'Beladung', 'Löschen', 'Laden'];
+  const hasOperations = vesselIndicators.some(ind => html.includes(ind));
+  console.log(`HTML contains operation keywords: ${hasOperations}`);
   
-  if (!tableMatch) {
-    console.log('No resultlist table found, trying any table...');
-    // Fallback: try any table with vessel data
-    const anyTable = html.match(/<table[^>]*>([\s\S]*?)<\/table>/gi);
-    if (anyTable) {
-      console.log(`Found ${anyTable.length} tables`);
-      for (const table of anyTable) {
-        if (table.includes('BORCHARD') || table.includes('CMA CGM') || table.includes('MSC')) {
-          console.log('Found table with vessel names');
-          return parseTableRows(table, seenVessels);
-        }
-      }
-    }
+  // Try to find resultlist table first
+  let tableMatch = html.match(/<table[^>]*class\s*=\s*["'][^"']*resultlist[^"']*["'][^>]*>([\s\S]*?)<\/table>/i);
+  
+  if (tableMatch) {
+    console.log('Found resultlist table');
+    const result = parseTableRowsV2(tableMatch[0], seenVessels);
+    if (result.length > 0) return result;
+  }
+  
+  // Fallback: extract ALL table rows from the entire HTML and look for vessel patterns
+  console.log('Searching all rows in HTML for vessel data...');
+  
+  // Extract all <tr> elements from the entire HTML
+  const allRows = html.match(/<tr[^>]*>[\s\S]*?<\/tr>/gi);
+  if (!allRows) {
+    console.log('No rows found in HTML');
     return [];
   }
   
-  console.log('Found resultlist table');
-  const tableHtml = tableMatch[0];
+  console.log(`Found ${allRows.length} total rows in HTML`);
   
-  return parseTableRows(tableHtml, seenVessels);
+  // Filter rows that look like vessel data (contain dates and operations)
+  const vesselRows: string[] = [];
+  for (const row of allRows) {
+    // Look for date patterns (DD.MM.YYYY or DD/MM/YYYY) and operation keywords (EN/DE)
+    const hasDate = /\d{1,2}[./]\d{1,2}[./]\d{4}/.test(row);
+    const hasOp = /(Discharge|Load|Entladung|Beladung|Löschen|Laden)/i.test(row);
+    
+    if (hasDate && hasOp) {
+      vesselRows.push(row);
+    }
+  }
+  
+  console.log(`Found ${vesselRows.length} rows with vessel data patterns`);
+  
+  if (vesselRows.length === 0) {
+    // Last resort: try rows with just dates
+    for (const row of allRows) {
+      if (/\d{1,2}[./]\d{1,2}[./]\d{4}/.test(row) && !/<th/i.test(row)) {
+        vesselRows.push(row);
+      }
+    }
+    console.log(`Found ${vesselRows.length} rows with date patterns`);
+  }
+  
+  // Parse the filtered rows
+  return parseFilteredRows(vesselRows, seenVessels);
 }
 
-// Parse rows from a table, handling rowspan
-function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>): VesselData[] {
+// Parse pre-filtered rows that contain vessel data
+function parseFilteredRows(rows: string[], seenVessels: Map<string, VesselData>): VesselData[] {
+  const vessels: VesselData[] = [];
+  
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    
+    // Extract cells
+    const cellMatches = row.match(/<td[^>]*>[\s\S]*?<\/td>/gi);
+    if (!cellMatches || cellMatches.length < 4) continue;
+    
+    const cells = cellMatches.map(c => extractText(c));
+    
+    // Debug first few rows
+    if (i < 5) {
+      console.log(`DataRow ${i}: [${cells.slice(0, 7).join(' | ')}]`);
+    }
+    
+    // Find date column
+    let dateIdx = -1;
+    for (let j = 0; j < cells.length; j++) {
+      if (/^\d{1,2}[./]\d{1,2}[./]\d{4}$/.test(cells[j].trim())) {
+        dateIdx = j;
+        break;
+      }
+    }
+    
+    if (dateIdx === -1) continue;
+    
+    // Find operation column
+    let opIdx = -1;
+    for (let j = 0; j < cells.length; j++) {
+      if (/(Discharge|Load|Entladung|Beladung)/i.test(cells[j])) {
+        opIdx = j;
+        break;
+      }
+    }
+    
+    // Parse based on found indices
+    const arrivalDate = parseDate(cells[dateIdx]);
+    
+    // Determine layout based on operation position
+    let vesselName = '';
+    let callsign: string | null = null;
+    let berth: string | null = null;
+    let voyageNo: string | null = null;
+    let operation: string | null = null;
+    let vesselNo: string | null = null;
+    let arrivalTime: string | null = null;
+    
+    if (opIdx > 0) {
+      // Time is usually after date
+      const timeCell = cells[dateIdx + 1] || '';
+      if (/^\d{1,2}[.:]\d{2}$/.test(timeCell.trim())) {
+        arrivalTime = parseTime(timeCell);
+      }
+      
+      // Vessel name is typically 2 positions after date (or 1 if no time)
+      const vesselIdx = arrivalTime ? dateIdx + 2 : dateIdx + 1;
+      vesselName = (cells[vesselIdx] || '').toUpperCase().trim();
+      
+      // Callsign is after vessel
+      const callsignRaw = cells[vesselIdx + 1] || '';
+      callsign = /^[A-Z0-9]{4,10}$/i.test(callsignRaw) ? callsignRaw.toUpperCase() : null;
+      
+      // Berth is before operation
+      berth = cells[opIdx - 1] || null;
+      
+      // Parse operation
+      const opResult = parseOperation(cells[opIdx]);
+      operation = opResult.operation;
+      vesselNo = opResult.vesselNo;
+      
+      // Voyage is after operation
+      voyageNo = cells[opIdx + 1] || null;
+    }
+    
+    if (!vesselName || vesselName.length < 3) continue;
+    
+    // Skip invalid vessel names
+    const lower = vesselName.toLowerCase();
+    if (['date', 'time', 'vessel', 'name', 'berth', 'load', 'discharge'].includes(lower)) continue;
+    
+    const key = `${vesselName}|${arrivalDate || ''}|${voyageNo || ''}`;
+    
+    if (seenVessels.has(key)) {
+      const existing = seenVessels.get(key)!;
+      if (operation && existing.operation && !existing.operation.includes(operation)) {
+        existing.operation = `${existing.operation}/${operation}`;
+      }
+    } else {
+      const vessel: VesselData = {
+        vessel_name: vesselName,
+        callsign,
+        voyage_no: voyageNo,
+        vessel_no: vesselNo,
+        arrival_date: arrivalDate,
+        arrival_time: arrivalTime,
+        etd_date: null,
+        etd_time: null,
+        berth,
+        operation,
+        delivery_start: null,
+        status: null,
+        agent: null,
+      };
+      
+      seenVessels.set(key, vessel);
+      vessels.push(vessel);
+    }
+  }
+  
+  console.log(`Parsed ${vessels.length} unique vessels from filtered rows`);
+  return vessels;
+}
+
+// Parse operation string like "Discharge 3958", "Load 3959", "Löschen", "Laden"
+function parseOperation(text: string): { operation: string | null; vesselNo: string | null } {
+  if (!text) return { operation: null, vesselNo: null };
+  
+  // Match English or German operation terms with optional number
+  const match = text.match(/(Discharge|Load|Entladung|Beladung|Löschen|Laden)\s*(\d+)?/i);
+  if (match) {
+    let operation = match[1];
+    // Normalize German to English
+    const lower = operation.toLowerCase();
+    if (lower === 'entladung' || lower === 'löschen') operation = 'Discharge';
+    if (lower === 'beladung' || lower === 'laden') operation = 'Load';
+    return { 
+      operation, 
+      vesselNo: match[2] || null 
+    };
+  }
+  return { operation: null, vesselNo: null };
+}
+
+// Parse rows from InfoGate table - 7 column format with rowspan
+function parseTableRowsV2(tableHtml: string, seenVessels: Map<string, VesselData>): VesselData[] {
   const vessels: VesselData[] = [];
   
   // Extract all rows
@@ -444,8 +609,9 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
   
   console.log(`Found ${rowMatches.length} rows`);
   
-  // Track rowspan cells that carry over
+  // Track rowspan cells that carry over to next rows
   const rowspanCarry: { value: string; remaining: number }[] = [];
+  let rowCount = 0;
   
   for (let rowIdx = 0; rowIdx < rowMatches.length; rowIdx++) {
     const row = rowMatches[rowIdx];
@@ -453,16 +619,16 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
     // Skip header rows
     if (row.includes('<th')) continue;
     
-    // Extract cells
+    // Extract cells (both td tags)
     const cellMatches = row.match(/<td[^>]*>[\s\S]*?<\/td>/gi);
-    if (!cellMatches) continue;
+    if (!cellMatches || cellMatches.length < 3) continue;
     
     // Build effective cell array with rowspan tracking
+    // InfoGate uses rowspan for vessel info across Discharge/Load rows
     const effectiveCells: string[] = [];
     let cellIdx = 0;
     
-    for (let colIdx = 0; colIdx < 15; colIdx++) {
-      // Check if we have a carried rowspan value for this column
+    for (let colIdx = 0; colIdx < 10; colIdx++) {
       if (rowspanCarry[colIdx] && rowspanCarry[colIdx].remaining > 0) {
         effectiveCells.push(rowspanCarry[colIdx].value);
         rowspanCarry[colIdx].remaining--;
@@ -471,95 +637,81 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
         const text = extractText(cell);
         effectiveCells.push(text);
         
-        // Check for rowspan
         const rowspan = getRowspan(cell);
         if (rowspan > 1) {
           rowspanCarry[colIdx] = { value: text, remaining: rowspan - 1 };
         }
-        
         cellIdx++;
+      } else {
+        effectiveCells.push('');
       }
     }
     
-    if (effectiveCells.length < 5) continue;
-    
-    // Debug first few rows
-    if (rowIdx < 5) {
-      console.log(`Row ${rowIdx}: ${effectiveCells.slice(0, 8).join(' | ')}`);
+    // Log first few data rows for debugging
+    if (rowCount < 5) {
+      console.log(`Row ${rowCount}: [${effectiveCells.slice(0, 7).join(' | ')}]`);
     }
+    rowCount++;
     
-    // InfoGate column structure (from infogate.md):
+    // InfoGate 7-column format:
     // 0: Date (21/01/2026)
-    // 1: Time (05.45)
-    // 2: ETD (21/01/2026 15.00)
-    // 3: Vessel Name
-    // 4: Callsign
-    // 5: Berth
-    // 6: Operation (Discharge/Load)
-    // 7: Vessel No
-    // 8: Voyage No
-    // 9: Delivery Start
-    // 10: Status
-    // 11: Agent
+    // 1: Time / ETD (05.45 or combined like "21/01/2026 15.00")
+    // 2: Vessel Name (LUCY, BORCHARD, CMA CGM, etc.)
+    // 3: Callsign (V2CK9)
+    // 4: Berth (2, 1 / 2, etc.)
+    // 5: Operation (Discharge 3958, Load 3959)
+    // 6: Voyage No (717A, 0IQ2KE1MA)
     
-    // Find vessel name - look in expected position first, then search all cells
-    let vesselName = '';
-    let vesselIdx = 3;
+    // Parse date - column 0
+    const dateStr = effectiveCells[0] || '';
+    const arrivalDate = parseDate(dateStr);
     
-    if (effectiveCells[3] && isValidVesselName(effectiveCells[3])) {
-      vesselName = effectiveCells[3].toUpperCase().trim();
-    } else {
-      // Search for vessel name in other cells
-      for (let i = 0; i < effectiveCells.length; i++) {
-        const cell = effectiveCells[i];
-        if (cell && isValidVesselName(cell) && cell.length > vesselName.length) {
-          vesselName = cell.toUpperCase().trim();
-          vesselIdx = i;
-        }
-      }
-    }
-    
-    if (!vesselName) continue;
-    
-    // Parse date and time
-    let arrivalDate: string | null = null;
+    // Parse time/ETD - column 1 (may contain just time or date+time)
+    const timeStr = effectiveCells[1] || '';
     let arrivalTime: string | null = null;
     let etdDate: string | null = null;
     let etdTime: string | null = null;
     
-    // Column 0: Date
-    if (effectiveCells[0]) {
-      arrivalDate = parseDate(effectiveCells[0]);
-    }
-    
-    // Column 1: Time
-    if (effectiveCells[1]) {
-      arrivalTime = parseTime(effectiveCells[1]);
-    }
-    
-    // Column 2: ETD (combined date and time like "21/01/2026 15.00")
-    if (effectiveCells[2]) {
-      const etdParts = effectiveCells[2].trim().split(/\s+/);
-      if (etdParts.length >= 1) {
-        etdDate = parseDate(etdParts[0]);
+    // Check if it's a combined date+time or just time
+    if (timeStr.includes('/') || timeStr.includes('.') && timeStr.length > 6) {
+      // It's ETD with date+time like "21/01/2026 15.00"
+      const parts = timeStr.split(/\s+/);
+      if (parts.length >= 2) {
+        etdDate = parseDate(parts[0]);
+        etdTime = parseTime(parts[1]);
+      } else {
+        etdTime = parseTime(parts[0]);
       }
-      if (etdParts.length >= 2) {
-        etdTime = parseTime(etdParts[1]);
-      }
+    } else {
+      // Just arrival time
+      arrivalTime = parseTime(timeStr);
     }
     
-    // Other fields
-    const callsign = effectiveCells[4]?.match(/^[A-Z0-9]{4,8}$/i) ? effectiveCells[4].toUpperCase() : null;
-    const berth = effectiveCells[5] || null;
-    const operation = effectiveCells[6] || null;
-    const vesselNo = effectiveCells[7] || null;
-    const voyageNo = effectiveCells[8] || null;
-    const deliveryStart = effectiveCells[9] || null;
-    const status = effectiveCells[10] || null;
-    const agent = effectiveCells[11] ? extractAgent(effectiveCells[11]) || effectiveCells[11] : null;
+    // Vessel name - column 2
+    const vesselName = (effectiveCells[2] || '').toUpperCase().trim();
     
-    // Create vessel key for deduplication (vessel + date)
-    const key = `${vesselName}|${arrivalDate || ''}`;
+    // Skip if no vessel name and not a continuation row
+    if (!vesselName && !effectiveCells[5]) continue;
+    
+    // Callsign - column 3
+    const callsignRaw = effectiveCells[3] || '';
+    const callsign = callsignRaw.match(/^[A-Z0-9]{4,10}$/i) ? callsignRaw.toUpperCase() : null;
+    
+    // Berth - column 4
+    const berth = effectiveCells[4] || null;
+    
+    // Operation - column 5 (e.g., "Discharge 3958" or "Load 3959")
+    const operationRaw = effectiveCells[5] || '';
+    const { operation, vesselNo } = parseOperation(operationRaw);
+    
+    // Voyage - column 6
+    const voyageNo = effectiveCells[6] || null;
+    
+    // Skip rows without meaningful data
+    if (!vesselName && !operation) continue;
+    
+    // Create vessel key for deduplication (vessel + date + voyage)
+    const key = `${vesselName || 'UNKNOWN'}|${arrivalDate || ''}|${voyageNo || ''}`;
     
     if (seenVessels.has(key)) {
       // Merge operations (e.g., combine Discharge and Load)
@@ -567,12 +719,15 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
       if (operation && existing.operation && !existing.operation.includes(operation)) {
         existing.operation = `${existing.operation}/${operation}`;
       }
-      // Fill in any missing fields
+      // Fill in any missing fields from this row
       if (!existing.callsign && callsign) existing.callsign = callsign;
       if (!existing.berth && berth) existing.berth = berth;
-      if (!existing.agent && agent) existing.agent = agent;
       if (!existing.voyage_no && voyageNo) existing.voyage_no = voyageNo;
-    } else {
+      if (!existing.arrival_time && arrivalTime) existing.arrival_time = arrivalTime;
+      if (!existing.etd_date && etdDate) existing.etd_date = etdDate;
+      if (!existing.etd_time && etdTime) existing.etd_time = etdTime;
+    } else if (vesselName) {
+      // Only create new entry if we have a vessel name
       const vessel: VesselData = {
         vessel_name: vesselName,
         callsign,
@@ -584,9 +739,9 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
         etd_time: etdTime,
         berth,
         operation,
-        delivery_start: deliveryStart,
-        status,
-        agent,
+        delivery_start: null,
+        status: null,
+        agent: null,
       };
       
       seenVessels.set(key, vessel);
@@ -594,11 +749,11 @@ function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>)
     }
   }
   
-  console.log(`Parsed ${vessels.length} vessels`);
+  console.log(`Parsed ${vessels.length} unique vessels`);
   
-  // Log first 3 vessels
+  // Log first 3 vessels for debugging
   vessels.slice(0, 3).forEach((v, i) => {
-    console.log(`Vessel ${i + 1}: ${v.vessel_name} (${v.callsign}) - ${v.arrival_date} ${v.arrival_time} - Agent: ${v.agent}`);
+    console.log(`Vessel ${i + 1}: ${v.vessel_name} (${v.callsign}) - ${v.arrival_date} - ${v.operation} - Voyage: ${v.voyage_no}`);
   });
   
   return vessels;
