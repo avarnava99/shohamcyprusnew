@@ -2,16 +2,25 @@ import { ReactNode } from "react";
 import TopBar from "./TopBar";
 import Header from "./Header";
 import Footer from "./Footer";
+import Breadcrumbs from "./Breadcrumbs";
 
 interface LayoutProps {
   children: ReactNode;
+  hideBreadcrumbs?: boolean;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, hideBreadcrumbs = false }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar />
       <Header />
+      {!hideBreadcrumbs && (
+        <div className="bg-secondary border-b">
+          <div className="container-shoham">
+            <Breadcrumbs />
+          </div>
+        </div>
+      )}
       <main className="flex-1">{children}</main>
       <Footer />
     </div>
