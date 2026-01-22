@@ -96,9 +96,9 @@ const BlogPost = () => {
       )}
 
       <div className="container-shoham py-12">
-        <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-sm p-8 md:p-12">
+        <div className="max-w-4xl mx-auto bg-card rounded-lg shadow-sm p-8 md:p-12">
           <article 
-            className="prose prose-lg 
+            className="prose prose-lg max-w-none
               prose-headings:font-heading 
               prose-headings:text-foreground 
               prose-headings:mt-8 
@@ -109,8 +109,18 @@ const BlogPost = () => {
               prose-a:text-primary 
               prose-a:underline
               prose-strong:text-foreground
+              prose-ul:list-disc
+              prose-ul:pl-6
+              prose-ul:my-6
+              prose-ol:list-decimal
+              prose-ol:pl-6
               prose-li:text-foreground
-              prose-li:my-2"
+              prose-li:my-2
+              prose-li:marker:text-primary
+              prose-blockquote:border-l-4
+              prose-blockquote:border-primary
+              prose-blockquote:pl-4
+              prose-blockquote:italic"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
