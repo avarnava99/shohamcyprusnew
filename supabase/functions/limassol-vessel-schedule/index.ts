@@ -50,34 +50,139 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
   }
 }
 
-// Scrape with Firecrawl - PRIMARY METHOD
+// Scrape with ScrapingBee - ALTERNATIVE METHOD with JS rendering
+async function scrapeWithScrapingBee(
+  apiKey: string,
+  url: string,
+  options: { premium?: boolean; waitMs?: number } = {}
+): Promise<string | null> {
+  const { premium = true, waitMs = 10000 } = options;
+  
+  try {
+    console.log(`ScrapingBee scraping ${url} (premium=${premium}, wait=${waitMs})...`);
+    
+    const params = new URLSearchParams({
+      api_key: apiKey,
+      url: url,
+      render_js: 'true',
+      premium_proxy: premium ? 'true' : 'false',
+      country_code: 'cy',
+      wait: waitMs.toString(),
+      wait_for: 'table.resultlist',
+      block_ads: 'true',
+      block_resources: 'false',
+    });
+    
+    const response = await fetchWithTimeout(
+      `https://app.scrapingbee.com/api/v1/?${params.toString()}`,
+      {},
+      60000
+    );
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`ScrapingBee error ${response.status}:`, errorText.slice(0, 500));
+      return null;
+    }
+    
+    const html = await response.text();
+    console.log(`ScrapingBee returned ${html.length} chars`);
+    
+    if (html.length < 1000) {
+      console.log('ScrapingBee returned insufficient HTML');
+      return null;
+    }
+    
+    // Check for schedule indicators
+    const hasSchedule = html.includes('resultlist') || html.includes('segelliste') || 
+                        html.includes('BORCHARD') || html.includes('CMA') || html.includes('MSC');
+    console.log(`ScrapingBee HTML contains schedule indicators: ${hasSchedule}`);
+    
+    return html;
+  } catch (e) {
+    console.error('ScrapingBee threw:', e);
+    return null;
+  }
+}
+
+// Action strategies for Firecrawl browser automation
+type ActionStrategy = 'direct' | 'navigate-click' | 'scroll-wait' | 'form-submit';
+
+// Scrape with Firecrawl - PRIMARY METHOD with multiple strategies
 async function scrapeWithFirecrawl(
   apiKey: string, 
   url: string, 
-  options: { useActions?: boolean; format?: 'rawHtml' | 'html' | 'markdown' } = {}
+  options: { 
+    strategy?: ActionStrategy; 
+    format?: 'rawHtml' | 'html' | 'markdown';
+  } = {}
 ): Promise<{ html: string; markdown?: string } | null> {
-  const { useActions = false, format = 'rawHtml' } = options;
+  const { strategy = 'direct', format = 'rawHtml' } = options;
   
   try {
-    console.log(`Firecrawl scraping ${url} (useActions=${useActions}, format=${format})...`);
+    console.log(`Firecrawl scraping with strategy=${strategy}, format=${format}...`);
     
     const requestBody: Record<string, unknown> = {
       url,
       formats: [format, 'html'],
-      waitFor: 20000,
-      timeout: 90000,
+      timeout: 120000,
       onlyMainContent: false,
+      // Geo-location for Cyprus
+      location: {
+        country: 'CY',
+        languages: ['en'],
+      },
     };
     
-    // If useActions, navigate from portal homepage
-    if (useActions) {
-      requestBody.url = 'https://infogate.eurogate-limassol.eu';
-      requestBody.waitFor = 25000;
-      requestBody.actions = [
-        { type: 'wait', milliseconds: 5000 },
-        { type: 'click', selector: 'a[href*="segelliste"]' },
-        { type: 'wait', milliseconds: 15000 },
-      ];
+    // Different action strategies
+    switch (strategy) {
+      case 'direct':
+        // Direct scrape with extended wait for JS rendering
+        requestBody.waitFor = 15000;
+        break;
+        
+      case 'navigate-click':
+        // Start from portal homepage and navigate
+        requestBody.url = 'https://infogate.eurogate-limassol.eu';
+        requestBody.actions = [
+          { type: 'wait', milliseconds: 3000 },
+          // Click on the sailing list link
+          { type: 'click', selector: 'a[href*="segelliste"], a:contains("Sailing"), a:contains("Schedule")' },
+          { type: 'wait', milliseconds: 8000 },
+          // Scroll to load any lazy content
+          { type: 'scroll', direction: 'down', amount: 500 },
+          { type: 'wait', milliseconds: 3000 },
+        ];
+        break;
+        
+      case 'scroll-wait':
+        // Direct URL with scroll actions to trigger lazy loading
+        requestBody.actions = [
+          { type: 'wait', milliseconds: 5000 },
+          { type: 'scroll', direction: 'down', amount: 300 },
+          { type: 'wait', milliseconds: 2000 },
+          { type: 'scroll', direction: 'down', amount: 600 },
+          { type: 'wait', milliseconds: 3000 },
+          { type: 'scroll', direction: 'up', amount: 900 },
+          { type: 'wait', milliseconds: 2000 },
+        ];
+        break;
+        
+      case 'form-submit':
+        // Start at base URL and submit the form
+        requestBody.url = 'https://infogate.eurogate-limassol.eu/segelliste';
+        requestBody.actions = [
+          { type: 'wait', milliseconds: 3000 },
+          // Try to find and click any "show" or "submit" button
+          { type: 'click', selector: 'input[type="submit"], button[type="submit"], .submit-btn, a.show' },
+          { type: 'wait', milliseconds: 8000 },
+        ];
+        break;
+    }
+    
+    console.log(`Request URL: ${requestBody.url || url}`);
+    if (requestBody.actions) {
+      console.log(`Actions: ${JSON.stringify(requestBody.actions)}`);
     }
     
     const response = await fetchWithTimeout(
@@ -90,7 +195,7 @@ async function scrapeWithFirecrawl(
         },
         body: JSON.stringify(requestBody),
       },
-      100000
+      130000
     );
 
     const raw = await response.text();
@@ -120,10 +225,10 @@ async function scrapeWithFirecrawl(
       return null;
     }
 
-    // Check for vessel table
-    if (html.includes('resultlist') || html.includes('BORCHARD') || html.includes('vessel')) {
-      console.log('Firecrawl HTML contains schedule indicators');
-    }
+    // Check for vessel table indicators
+    const hasSchedule = html.includes('resultlist') || html.includes('segelliste') || 
+                        html.includes('BORCHARD') || html.includes('CMA') || html.includes('MSC');
+    console.log(`HTML contains schedule indicators: ${hasSchedule}`);
 
     return { html, markdown };
   } catch (e) {
@@ -132,41 +237,82 @@ async function scrapeWithFirecrawl(
   }
 }
 
-// Main function to get schedule HTML using Firecrawl
-async function getScheduleHtml(firecrawlApiKey: string): Promise<{ source: string; url: string; html: string } | null> {
+// Main function to get schedule HTML using multiple scrapers
+async function getScheduleHtml(
+  firecrawlApiKey: string | undefined,
+  scrapingBeeApiKey: string | undefined
+): Promise<{ source: string; url: string; html: string } | null> {
   const scheduleUrls = [
     'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0',
     'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30&period=1',
   ];
 
-  // 1) Try direct scrape with rawHtml format
-  for (const url of scheduleUrls) {
-    const result = await scrapeWithFirecrawl(firecrawlApiKey, url, { format: 'rawHtml' });
-    if (result?.html && result.html.length > 3000) {
-      // Check for actual table content
-      if (result.html.includes('resultlist') || result.html.includes('<table')) {
-        console.log('Direct Firecrawl scrape successful');
-        return { source: 'firecrawl-direct', url, html: result.html };
+  // Try ScrapingBee FIRST since Firecrawl is failing
+  if (scrapingBeeApiKey) {
+    console.log('\n=== Trying ScrapingBee (primary) ===');
+    
+    for (const url of scheduleUrls) {
+      const html = await scrapeWithScrapingBee(scrapingBeeApiKey, url, { 
+        premium: true, 
+        waitMs: 12000 
+      });
+      
+      if (html && html.length > 2000) {
+        const hasTable = html.includes('resultlist') || html.includes('<table');
+        const hasVessels = html.includes('BORCHARD') || html.includes('CMA CGM') || html.includes('MSC');
+        
+        if (hasTable || hasVessels) {
+          console.log(`✓ ScrapingBee successful! HTML: ${html.length} chars`);
+          return { source: 'scrapingbee', url, html };
+        }
+      }
+    }
+    
+    // Try without premium proxy
+    console.log('Trying ScrapingBee without premium proxy...');
+    for (const url of scheduleUrls) {
+      const html = await scrapeWithScrapingBee(scrapingBeeApiKey, url, { 
+        premium: false, 
+        waitMs: 8000 
+      });
+      
+      if (html && html.length > 2000) {
+        console.log(`✓ ScrapingBee (non-premium) successful! HTML: ${html.length} chars`);
+        return { source: 'scrapingbee-standard', url, html };
       }
     }
   }
 
-  // 2) Try with navigation actions from portal
-  console.log('Trying Firecrawl with portal navigation...');
-  const navResult = await scrapeWithFirecrawl(firecrawlApiKey, '', { useActions: true, format: 'rawHtml' });
-  if (navResult?.html && navResult.html.length > 3000) {
-    if (navResult.html.includes('resultlist') || navResult.html.includes('<table')) {
-      console.log('Firecrawl navigation scrape successful');
-      return { source: 'firecrawl-navigation', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navResult.html };
-    }
-  }
+  // Fallback to Firecrawl
+  if (firecrawlApiKey) {
+    console.log('\n=== Trying Firecrawl (fallback) ===');
+    
+    const strategies: { strategy: ActionStrategy; urls: string[] }[] = [
+      { strategy: 'direct', urls: scheduleUrls },
+      { strategy: 'scroll-wait', urls: scheduleUrls },
+      { strategy: 'navigate-click', urls: [''] },
+    ];
 
-  // 3) Try html format as fallback
-  for (const url of scheduleUrls) {
-    const result = await scrapeWithFirecrawl(firecrawlApiKey, url, { format: 'html' });
-    if (result?.html && result.html.length > 2000) {
-      console.log('Firecrawl html format scrape successful');
-      return { source: 'firecrawl-html', url, html: result.html };
+    for (const { strategy, urls } of strategies) {
+      console.log(`Trying Firecrawl strategy: ${strategy}`);
+      
+      for (const url of urls) {
+        const targetUrl = url || scheduleUrls[0];
+        const result = await scrapeWithFirecrawl(firecrawlApiKey, targetUrl, { 
+          strategy, 
+          format: 'rawHtml' 
+        });
+        
+        if (result?.html && result.html.length > 2000) {
+          const hasTable = result.html.includes('resultlist') || result.html.includes('<table');
+          const hasVessels = result.html.includes('BORCHARD') || result.html.includes('CMA CGM');
+          
+          if (hasTable || hasVessels) {
+            console.log(`✓ Firecrawl ${strategy} successful!`);
+            return { source: `firecrawl-${strategy}`, url: targetUrl, html: result.html };
+          }
+        }
+      }
     }
   }
 
@@ -465,11 +611,12 @@ Deno.serve(async (req) => {
 
   try {
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
+    const scrapingBeeApiKey = Deno.env.get('SCRAPINGBEE_API_KEY');
     
-    if (!firecrawlApiKey) {
-      console.error('FIRECRAWL_API_KEY not configured');
+    if (!firecrawlApiKey && !scrapingBeeApiKey) {
+      console.error('No scraping API keys configured');
       return new Response(
-        JSON.stringify({ success: false, error: 'Firecrawl API key not configured' }),
+        JSON.stringify({ success: false, error: 'No scraping API key configured (FIRECRAWL_API_KEY or SCRAPINGBEE_API_KEY)' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -478,9 +625,10 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    console.log('Fetching Eurogate InfoGate Limassol schedule with Firecrawl...');
+    console.log('Fetching Eurogate InfoGate Limassol schedule...');
+    console.log(`Available scrapers: Firecrawl=${!!firecrawlApiKey}, ScrapingBee=${!!scrapingBeeApiKey}`);
 
-    const scrape = await getScheduleHtml(firecrawlApiKey);
+    const scrape = await getScheduleHtml(firecrawlApiKey, scrapingBeeApiKey);
     
     if (!scrape) {
       return new Response(
