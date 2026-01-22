@@ -8,7 +8,7 @@ import ContactCTA from "@/components/home/ContactCTA";
 
 const Index = () => {
   return (
-    <Layout>
+    <Layout hideBreadcrumbs>
       <Hero />
       <MainServices />
       <ZimSection />
