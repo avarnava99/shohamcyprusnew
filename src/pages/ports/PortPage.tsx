@@ -1,12 +1,13 @@
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Anchor, Ship, Fuel, Calendar, MapPin, Container } from "lucide-react";
+import { Anchor, Ship, Fuel, Calendar, MapPin, Container, Phone, Mail } from "lucide-react";
 import LimassolPortDetails from "@/components/port/LimassolPortDetails";
 import LimassolScheduleDetails from "@/components/port/LimassolScheduleDetails";
 import EurogatePortDetails from "@/components/port/EurogatePortDetails";
 import VassilikoPortDetails from "@/components/port/VassilikoPortDetails";
 import VTTVTerminalDetails from "@/components/port/VTTVTerminalDetails";
+import { CONTACT } from "@/constants/contact";
 
 interface PortData {
   title: string;
@@ -331,6 +332,16 @@ const PortPage = () => {
                   <p className="text-sm text-muted-foreground mb-4">
                     Contact our port agency team for comprehensive support at {port.title}.
                   </p>
+                  <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                    <a href={CONTACT.primary.phoneHref} className="flex items-center gap-2 hover:underline">
+                      <Phone className="h-4 w-4" />
+                      {CONTACT.primary.phone}
+                    </a>
+                    <a href={CONTACT.primary.emailHref} className="flex items-center gap-2 hover:underline">
+                      <Mail className="h-4 w-4" />
+                      {CONTACT.primary.email}
+                    </a>
+                  </div>
                   <div className="space-y-3">
                     <Button asChild className="w-full bg-accent hover:bg-shoham-orange-dark">
                       <Link to="/quote">Request Quote</Link>

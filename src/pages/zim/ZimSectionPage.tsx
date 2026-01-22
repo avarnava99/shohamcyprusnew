@@ -696,7 +696,7 @@ const sectionsData: Record<string, SectionData> = {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium mb-2">For Rate Inquiries</h4>
-              <p className="text-muted-foreground text-sm mb-1">Email: {CONTACT.departments.marketing.email}</p>
+              <p className="text-muted-foreground text-sm mb-1">Email: {CONTACT.primary.email}</p>
               <p className="text-muted-foreground text-sm">Phone: {CONTACT.primary.phone}</p>
             </div>
             <div>

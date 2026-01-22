@@ -140,7 +140,7 @@ const About = () => {
                 </div>
                 <div>
                   <div className="font-semibold">Email</div>
-                  <div className="text-white/80">{CONTACT.mail.email}</div>
+                  <div className="text-white/80">{CONTACT.primary.email}</div>
                 </div>
               </div>
             </div>
