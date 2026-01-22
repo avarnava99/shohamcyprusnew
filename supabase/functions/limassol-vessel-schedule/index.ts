@@ -21,20 +21,15 @@ interface VesselData {
   agent: string | null;
 }
 
-type ScrapeResult = {
-  source: 'direct' | 'firecrawl' | 'scrapingbee';
-  url: string;
-  html: string;
-  markdown?: string;
-};
-
 // Known shipping agents in Cyprus
 const KNOWN_AGENTS = [
   'The Cyprus Shipping Co. Ltd',
+  'The Cyprus Shipping Co.',
   'Cyprus Shipping Co',
   'CMA CGM Cyprus Ltd',
   'CMA CGM',
   'Mediterranean Shipping Co.Cyprus Ltd',
+  'Mediterranean Shipping Co.',
   'Mediterranean Shipping',
   'MSC',
   'SBS Shipping',
@@ -45,17 +40,7 @@ const KNOWN_AGENTS = [
   'Inchcape',
 ];
 
-// Invalid vessel names to filter out
-const INVALID_VESSEL_NAMES = [
-  'swipe to go',
-  'vessel',
-  'name',
-  'ship',
-  'n/a',
-  '',
-];
-
-async function fetchTextWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 25000): Promise<Response> {
+async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 30000): Promise<Response> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -65,338 +50,142 @@ async function fetchTextWithTimeout(url: string, init: RequestInit = {}, timeout
   }
 }
 
-async function scrapeWithScrapingBee(apiKey: string, url: string, useScenario = false): Promise<{ html: string } | null> {
+// Scrape with Firecrawl - PRIMARY METHOD
+async function scrapeWithFirecrawl(
+  apiKey: string, 
+  url: string, 
+  options: { useActions?: boolean; format?: 'rawHtml' | 'html' | 'markdown' } = {}
+): Promise<{ html: string; markdown?: string } | null> {
+  const { useActions = false, format = 'rawHtml' } = options;
+  
   try {
-    console.log(`Trying ScrapingBee for ${url} (useScenario=${useScenario})...`);
+    console.log(`Firecrawl scraping ${url} (useActions=${useActions}, format=${format})...`);
     
-    // Base parameters
-    const params: Record<string, string> = {
-      api_key: apiKey,
-      url: url,
-      render_js: 'true',
-      premium_proxy: 'true',
-      wait_browser: 'networkidle2',
-      wait: '25000',
-      country_code: 'de',
-    };
-    
-    // If using scenario, add JS to scroll and wait for vessel table
-    if (useScenario) {
-      // Use js_scenario to scroll and interact with the page
-      const jsScenario = JSON.stringify({
-        instructions: [
-          { wait: 5000 },
-          { scroll_y: 500 },
-          { wait: 3000 },
-          { scroll_y: 0 },
-          { wait: 5000 },
-          // Wait for table with vessel data
-          { wait_for_and_click: 'table tbody tr' },
-          { wait: 3000 }
-        ]
-      });
-      params.js_scenario = jsScenario;
-    }
-    
-    const urlParams = new URLSearchParams(params);
-    
-    const response = await fetchTextWithTimeout(
-      `https://app.scrapingbee.com/api/v1/?${urlParams.toString()}`,
-      { method: 'GET' },
-      120000 // 120 second timeout
-    );
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`ScrapingBee error (${response.status}):`, errorText.substring(0, 500));
-      return null;
-    }
-    
-    const html = await response.text();
-    console.log(`ScrapingBee returned ${html.length} chars HTML`);
-    
-    if (!html || html.trim().length < 300) {
-      console.log('ScrapingBee returned insufficient HTML');
-      return null;
-    }
-    
-    // Check for actual vessel schedule content
-    const hasVesselContent = checkForVesselContent(html);
-    console.log(`ScrapingBee analysis: hasVesselContent=${hasVesselContent}`);
-    
-    // Log a sample of the HTML for debugging
-    console.log('ScrapingBee HTML sample:', html.substring(0, 2000));
-    
-    return { html };
-  } catch (e) {
-    console.error('ScrapingBee scrape threw:', e);
-    return null;
-  }
-}
-
-// Check if HTML contains actual vessel schedule data
-function checkForVesselContent(html: string): boolean {
-  const lower = html.toLowerCase();
-  
-  // Must have table structure
-  if (!lower.includes('<table') || !lower.includes('<tbody')) return false;
-  
-  // Check for vessel-like names (e.g., "BORCHARD", "CMA CGM", "MSC")
-  const vesselPatterns = [
-    /BORCHARD/i, /CMA\s*CGM/i, /MSC\s+[A-Z]/i, /MAERSK/i,
-    /SPIRIT/i, /PENGALIA/i, /VESSEL/i
-  ];
-  
-  const hasVesselPattern = vesselPatterns.some(p => p.test(html));
-  
-  // Check for common schedule patterns
-  const schedulePatterns = [
-    /\d{2}[.:]\d{2}[.:]\d{4}/, // Date format
-    /Load|Discharge|Delete/i,   // Operation types
-    /Berth|Quay/i               // Berth references
-  ];
-  
-  const hasSchedulePattern = schedulePatterns.some(p => p.test(html));
-  
-  return hasVesselPattern && hasSchedulePattern;
-}
-
-async function tryDirectHtmlFetch(url: string): Promise<{ html: string; rejected: boolean; reason?: string } | null> {
-  try {
-    const res = await fetchTextWithTimeout(
+    const requestBody: Record<string, unknown> = {
       url,
-      {
-        method: 'GET',
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'en-GB,en;q=0.9',
-        },
-      },
-      25000
-    );
-
-    if (!res.ok) {
-      console.log(`Direct fetch failed (${res.status}) for ${url}`);
-      return null;
-    }
-
-    const html = await res.text();
-    console.log(`Direct fetch got ${html.length} chars from ${url}`);
-    
-    if (!html || html.trim().length < 200) {
-      console.log(`Direct fetch returned too little HTML for ${url}`);
-      return null;
-    }
-
-    const lower = html.toLowerCase();
-    
-    // Detect JS loader page
-    if (lower.includes('class="loader"') || (lower.includes('.loader{') && lower.includes('fingerprint'))) {
-      console.log(`Direct fetch returned a JS loader page for ${url} - need headless browser`);
-      return { html, rejected: true, reason: 'js_loader_page' };
-    }
-    
-    // Detect login page
-    if (lower.includes('login') && (lower.includes('password') || lower.includes('username'))) {
-      console.log(`Direct fetch appears to be a login page for ${url}`);
-      return { html, rejected: true, reason: 'login_page' };
-    }
-
-    // Must have actual table content
-    const hasTable = lower.includes('<table') && lower.includes('<tbody');
-    
-    if (!hasTable) {
-      console.log(`Direct fetch did not contain table markup for ${url}`);
-      return { html, rejected: true, reason: 'no_table' };
-    }
-
-    console.log(`Direct fetch found table content, accepting HTML`);
-    return { html, rejected: false };
-  } catch (e) {
-    console.error(`Direct fetch threw for ${url}:`, e);
-    return null;
-  }
-}
-
-async function scrapeWithFirecrawl(firecrawlApiKey: string, url: string, useActions = false): Promise<{ html: string; markdown?: string } | null> {
-  try {
-    console.log(`Trying Firecrawl for ${url} (useActions=${useActions})...`);
-    
-    const requestBody: any = {
-      url,
-      formats: ['html', 'markdown'],
-      waitFor: 25000,
-      timeout: 120000,
+      formats: [format, 'html'],
+      waitFor: 20000,
+      timeout: 90000,
       onlyMainContent: false,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Language': 'en-GB,en;q=0.9,en-US;q=0.8',
-      },
     };
     
+    // If useActions, navigate from portal homepage
     if (useActions) {
       requestBody.url = 'https://infogate.eurogate-limassol.eu';
-      requestBody.waitFor = 30000;
+      requestBody.waitFor = 25000;
       requestBody.actions = [
-        { type: 'wait', milliseconds: 8000 },
+        { type: 'wait', milliseconds: 5000 },
         { type: 'click', selector: 'a[href*="segelliste"]' },
-        { type: 'wait', milliseconds: 12000 },
+        { type: 'wait', milliseconds: 15000 },
       ];
     }
     
-    const firecrawlResponse = await fetchTextWithTimeout(
+    const response = await fetchWithTimeout(
       'https://api.firecrawl.dev/v1/scrape',
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${firecrawlApiKey}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       },
-      130000
+      100000
     );
 
-    const raw = await firecrawlResponse.text();
-    let firecrawlData: any;
+    const raw = await response.text();
+    let data: Record<string, unknown>;
+    
     try {
-      firecrawlData = JSON.parse(raw);
+      data = JSON.parse(raw);
     } catch {
-      console.error('Firecrawl returned non-JSON response:', raw?.slice?.(0, 500));
+      console.error('Firecrawl returned non-JSON:', raw?.slice?.(0, 500));
       return null;
     }
 
-    if (!firecrawlResponse.ok || !firecrawlData?.success) {
-      console.error('Firecrawl error:', firecrawlData);
+    if (!response.ok || !data?.success) {
+      console.error('Firecrawl error:', data);
       return null;
     }
 
-    const html = firecrawlData.data?.html || firecrawlData.html || '';
-    const markdown = firecrawlData.data?.markdown || firecrawlData.markdown || '';
+    // Access nested data structure
+    const responseData = (data.data || data) as Record<string, unknown>;
+    const html = (responseData.rawHtml || responseData.html || '') as string;
+    const markdown = (responseData.markdown || '') as string;
     
     console.log(`Firecrawl returned ${html.length} chars HTML, ${markdown.length} chars markdown`);
     
-    if (!html || html.trim().length < 300) {
+    if (!html || html.length < 500) {
       console.log('Firecrawl returned insufficient HTML');
       return null;
     }
 
+    // Check for vessel table
+    if (html.includes('resultlist') || html.includes('BORCHARD') || html.includes('vessel')) {
+      console.log('Firecrawl HTML contains schedule indicators');
+    }
+
     return { html, markdown };
   } catch (e) {
-    console.error('Firecrawl scrape threw:', e);
+    console.error('Firecrawl threw:', e);
     return null;
   }
 }
 
-async function getScheduleHtml(scrapingBeeApiKey: string | null, firecrawlApiKey: string | null): Promise<ScrapeResult | null> {
-  // Primary URLs for the schedule
+// Main function to get schedule HTML using Firecrawl
+async function getScheduleHtml(firecrawlApiKey: string): Promise<{ source: string; url: string; html: string } | null> {
   const scheduleUrls = [
     'https://infogate.eurogate-limassol.eu/segelliste/state/show?_transition=start&period=1&internal=false&languageNo=30&locationCode=CYLMS&order=%2B0',
     'https://infogate.eurogate-limassol.eu/segelliste?locationCode=CYLMS&languageNo=30&period=1',
   ];
 
-  // 1) Try ScrapingBee - first without scenario
-  if (scrapingBeeApiKey) {
-    for (const url of scheduleUrls) {
-      const res = await scrapeWithScrapingBee(scrapingBeeApiKey, url, false);
-      if (res?.html && res.html.length > 5000) {
-        // Check if we got actual vessel content
-        if (checkForVesselContent(res.html)) {
-          console.log('ScrapingBee successfully retrieved vessel schedule');
-          return { source: 'scrapingbee', url, html: res.html };
-        }
-        console.log('ScrapingBee got HTML but no vessel content - will try with scenario');
-      }
-    }
-    
-    // 2) Try ScrapingBee WITH js_scenario for interaction
-    console.log('Trying ScrapingBee with js_scenario...');
-    const scenarioRes = await scrapeWithScrapingBee(
-      scrapingBeeApiKey, 
-      scheduleUrls[0], 
-      true
-    );
-    if (scenarioRes?.html && scenarioRes.html.length > 5000) {
-      if (checkForVesselContent(scenarioRes.html)) {
-        console.log('ScrapingBee with scenario successfully retrieved vessel schedule');
-        return { source: 'scrapingbee', url: scheduleUrls[0], html: scenarioRes.html };
-      }
-    }
-  }
-
-  // 3) Try direct HTML fetch (unlikely to work)
+  // 1) Try direct scrape with rawHtml format
   for (const url of scheduleUrls) {
-    const result = await tryDirectHtmlFetch(url);
-    if (result && !result.rejected) {
-      return { source: 'direct', url, html: result.html };
-    }
-  }
-
-  // 4) Fallback to Firecrawl
-  if (firecrawlApiKey) {
-    for (const url of scheduleUrls) {
-      console.log(`Trying Firecrawl for ${url}...`);
-      const res = await scrapeWithFirecrawl(firecrawlApiKey, url, false);
-      if (res?.html && res.html.length > 5000) {
-        if (checkForVesselContent(res.html)) {
-          return { source: 'firecrawl', url, html: res.html, markdown: res.markdown };
-        }
-      }
-    }
-
-    // Try Firecrawl with portal navigation
-    console.log('Trying Firecrawl with portal navigation...');
-    const navRes = await scrapeWithFirecrawl(firecrawlApiKey, 'https://infogate.eurogate-limassol.eu', true);
-    if (navRes?.html && navRes.html.length > 5000) {
-      if (checkForVesselContent(navRes.html)) {
-        return { source: 'firecrawl', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navRes.html, markdown: navRes.markdown };
+    const result = await scrapeWithFirecrawl(firecrawlApiKey, url, { format: 'rawHtml' });
+    if (result?.html && result.html.length > 3000) {
+      // Check for actual table content
+      if (result.html.includes('resultlist') || result.html.includes('<table')) {
+        console.log('Direct Firecrawl scrape successful');
+        return { source: 'firecrawl-direct', url, html: result.html };
       }
     }
   }
 
-  // 5) Last resort - return whatever we have even if no vessel content
-  if (scrapingBeeApiKey) {
-    console.log('Returning best available HTML even without detected vessel content...');
-    const res = await scrapeWithScrapingBee(scrapingBeeApiKey, scheduleUrls[0], false);
-    if (res?.html && res.html.length > 5000) {
-      return { source: 'scrapingbee', url: scheduleUrls[0], html: res.html };
+  // 2) Try with navigation actions from portal
+  console.log('Trying Firecrawl with portal navigation...');
+  const navResult = await scrapeWithFirecrawl(firecrawlApiKey, '', { useActions: true, format: 'rawHtml' });
+  if (navResult?.html && navResult.html.length > 3000) {
+    if (navResult.html.includes('resultlist') || navResult.html.includes('<table')) {
+      console.log('Firecrawl navigation scrape successful');
+      return { source: 'firecrawl-navigation', url: 'https://infogate.eurogate-limassol.eu (navigated)', html: navResult.html };
+    }
+  }
+
+  // 3) Try html format as fallback
+  for (const url of scheduleUrls) {
+    const result = await scrapeWithFirecrawl(firecrawlApiKey, url, { format: 'html' });
+    if (result?.html && result.html.length > 2000) {
+      console.log('Firecrawl html format scrape successful');
+      return { source: 'firecrawl-html', url, html: result.html };
     }
   }
 
   return null;
 }
 
-// Parse date formats: "21.01.2026", "21/01/2026", "January 21, 2026", "2026-01-21"
+// Parse date: "21/01/2026" or "21.01.2026" -> "2026-01-21"
 function parseDate(dateStr: string): string | null {
-  if (!dateStr || !dateStr.trim()) return null;
+  if (!dateStr?.trim()) return null;
   
   const clean = dateStr.trim();
   
-  // Format: "21.01.2026" or "21/01/2026"
-  let match = clean.match(/^(\d{1,2})[./](\d{1,2})[./](\d{4})$/);
+  // Format: "21/01/2026" or "21.01.2026"
+  const match = clean.match(/^(\d{1,2})[./](\d{1,2})[./](\d{4})$/);
   if (match) {
     return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`;
   }
   
-  // Format: "January 21, 2026"
-  const monthNames: { [key: string]: string } = {
-    'january': '01', 'february': '02', 'march': '03', 'april': '04',
-    'may': '05', 'june': '06', 'july': '07', 'august': '08',
-    'september': '09', 'october': '10', 'november': '11', 'december': '12'
-  };
-  
-  match = clean.match(/^([a-zA-Z]+)\s+(\d{1,2}),?\s+(\d{4})$/);
-  if (match) {
-    const month = monthNames[match[1].toLowerCase()];
-    if (month) {
-      return `${match[3]}-${month}-${match[2].padStart(2, '0')}`;
-    }
-  }
-  
-  // Format: "2026-01-21" (already ISO)
+  // Already ISO format
   if (/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
     return clean;
   }
@@ -404,24 +193,14 @@ function parseDate(dateStr: string): string | null {
   return null;
 }
 
-// Parse time formats: "09:16", "09.16", "9:16 AM", "21:30"
+// Parse time: "05.45" or "15:30" -> "05:45:00"
 function parseTime(timeStr: string): string | null {
-  if (!timeStr || !timeStr.trim()) return null;
+  if (!timeStr?.trim()) return null;
   
+  // Replace dot with colon
   const clean = timeStr.trim().replace('.', ':');
   
-  // Format: "3:00 PM" or "09:16 AM"
-  let match = clean.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-  if (match) {
-    let hour = parseInt(match[1], 10);
-    const isPM = match[3].toUpperCase() === 'PM';
-    if (isPM && hour !== 12) hour += 12;
-    if (!isPM && hour === 12) hour = 0;
-    return `${hour.toString().padStart(2, '0')}:${match[2]}:00`;
-  }
-  
-  // Format: "09:16" or "21:30"
-  match = clean.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  const match = clean.match(/^(\d{1,2}):(\d{2})$/);
   if (match) {
     return `${match[1].padStart(2, '0')}:${match[2]}:00`;
   }
@@ -429,7 +208,7 @@ function parseTime(timeStr: string): string | null {
   return null;
 }
 
-// Extract text content from HTML, cleaning tags
+// Extract text from HTML cell
 function extractText(html: string): string {
   return html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -445,255 +224,235 @@ function extractText(html: string): string {
     .trim();
 }
 
-// Check if a string looks like a valid vessel name
-function isValidVesselName(name: string): boolean {
-  if (!name || name.length < 3) return false;
-  
-  const lower = name.toLowerCase();
-  if (INVALID_VESSEL_NAMES.some(inv => lower === inv || lower.includes(inv))) {
-    return false;
-  }
-  
-  // Vessel names typically are uppercase with spaces
-  // Examples: "LUCY BORCHARD", "CMA CGM SAHARA", "MSC SHEILA"
-  return /^[A-Z0-9][A-Z0-9\s\-\.]+[A-Z0-9]$/i.test(name) && name.length <= 50;
+// Get rowspan value from a cell
+function getRowspan(cellHtml: string): number {
+  const match = cellHtml.match(/rowspan\s*=\s*["']?(\d+)["']?/i);
+  return match ? parseInt(match[1], 10) : 1;
 }
 
-// Extract agent name from text
+// Check if string is valid vessel name
+function isValidVesselName(name: string): boolean {
+  if (!name || name.length < 3 || name.length > 50) return false;
+  
+  const lower = name.toLowerCase();
+  const invalid = ['swipe', 'vessel', 'name', 'ship', 'n/a', 'date', 'time', 'berth', 'agent', 'status', 'load', 'discharge'];
+  if (invalid.some(inv => lower === inv)) return false;
+  
+  // Vessel names are typically uppercase letters, spaces, numbers
+  return /^[A-Z][A-Z0-9\s\-\.]+$/i.test(name);
+}
+
+// Extract agent from text
 function extractAgent(text: string): string | null {
   for (const agent of KNOWN_AGENTS) {
     if (text.includes(agent)) {
-      // Find the full agent string with potential suffix like "(CL)"
-      const idx = text.indexOf(agent);
-      let end = idx + agent.length;
-      
-      // Check for parenthetical suffix
-      const remaining = text.substring(end);
-      const parenMatch = remaining.match(/^\s*\([^)]+\)/);
-      if (parenMatch) {
-        end += parenMatch[0].length;
-      }
-      
-      return text.substring(idx, end).trim();
+      return agent;
     }
   }
   return null;
 }
 
-// Parse operation type: Load, Discharge, Delete
-function parseOperation(text: string): string | null {
-  const lower = text.toLowerCase();
-  
-  const operations: string[] = [];
-  if (lower.includes('load')) operations.push('Load');
-  if (lower.includes('discharge') || lower.includes('delete')) operations.push('Discharge');
-  
-  return operations.length > 0 ? operations.join('/') : null;
-}
-
-// Main parser: Extract vessel data from InfoGate HTML structure
+// Parse InfoGate HTML - handles table.resultlist with rowspan
 function parseVesselsFromHtml(html: string): VesselData[] {
   const vessels: VesselData[] = [];
-  const seenVessels = new Set<string>(); // Dedupe by name+date
+  const seenVessels = new Map<string, VesselData>();
   
-  console.log('Starting vessel parsing...');
+  console.log('Parsing vessels from HTML...');
+  console.log('HTML length:', html.length);
   
-  // Strategy 1: Parse table rows from <tbody>
-  const tbodyMatches = html.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/gi);
+  // Find the resultlist table
+  const tableMatch = html.match(/<table[^>]*class\s*=\s*["'][^"']*resultlist[^"']*["'][^>]*>([\s\S]*?)<\/table>/i);
   
-  if (tbodyMatches) {
-    console.log(`Found ${tbodyMatches.length} tbody sections`);
-    
-    for (const tbody of tbodyMatches) {
-      // Extract rows
-      const rowMatches = tbody.match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi);
-      
-      if (rowMatches) {
-        console.log(`Processing ${rowMatches.length} rows in tbody`);
-        
-        for (const row of rowMatches) {
-          // Skip header rows
-          if (row.includes('<th')) continue;
-          
-          // Extract all cells
-          const cellMatches = row.match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
-          if (!cellMatches || cellMatches.length < 5) continue;
-          
-          const cells = cellMatches.map(c => extractText(c));
-          
-          // Log first few rows for debugging
-          if (vessels.length < 3) {
-            console.log(`Row cells (${cells.length}):`, cells.slice(0, 10).join(' | '));
-          }
-          
-          // Try to identify vessel name - usually the longest uppercase string
-          let vesselName = '';
-          let vesselNameIdx = -1;
-          
-          for (let i = 0; i < cells.length; i++) {
-            const cell = cells[i];
-            if (isValidVesselName(cell) && cell.length > vesselName.length) {
-              vesselName = cell.toUpperCase();
-              vesselNameIdx = i;
-            }
-          }
-          
-          if (!vesselName) continue;
-          
-          // Extract other fields based on position relative to vessel name
-          const vessel: VesselData = {
-            vessel_name: vesselName,
-            callsign: null,
-            voyage_no: null,
-            vessel_no: null,
-            arrival_date: null,
-            arrival_time: null,
-            etd_date: null,
-            etd_time: null,
-            berth: null,
-            operation: null,
-            delivery_start: null,
-            status: null,
-            agent: null,
-          };
-          
-          // Look for dates and times in all cells
-          for (const cell of cells) {
-            const date = parseDate(cell);
-            if (date) {
-              if (!vessel.arrival_date) {
-                vessel.arrival_date = date;
-              } else if (!vessel.etd_date) {
-                vessel.etd_date = date;
-              }
-            }
-            
-            const time = parseTime(cell);
-            if (time) {
-              if (!vessel.arrival_time) {
-                vessel.arrival_time = time;
-              } else if (!vessel.etd_time) {
-                vessel.etd_time = time;
-              }
-            }
-          }
-          
-          // Look for callsign (typically 5-8 alphanumeric chars after vessel name)
-          if (vesselNameIdx >= 0 && vesselNameIdx + 1 < cells.length) {
-            const nextCell = cells[vesselNameIdx + 1];
-            if (/^[A-Z0-9]{4,8}$/i.test(nextCell)) {
-              vessel.callsign = nextCell.toUpperCase();
-            }
-          }
-          
-          // Look for berth (usually a number or number with letter like "1", "2/3", "A")
-          for (const cell of cells) {
-            if (/^[A-Z]?\d{1,2}(\/\d)?$/i.test(cell) && !vessel.berth) {
-              vessel.berth = cell;
-            }
-          }
-          
-          // Look for operation
-          const fullRowText = cells.join(' ');
-          vessel.operation = parseOperation(fullRowText);
-          
-          // Look for agent
-          vessel.agent = extractAgent(fullRowText);
-          
-          // Look for voyage number (usually longer numbers like "39587")
-          for (const cell of cells) {
-            if (/^\d{4,6}$/.test(cell) && !vessel.voyage_no) {
-              vessel.voyage_no = cell;
-            }
-          }
-          
-          // Dedupe check
-          const key = `${vessel.vessel_name}|${vessel.arrival_date || ''}`;
-          if (!seenVessels.has(key)) {
-            seenVessels.add(key);
-            vessels.push(vessel);
-          }
+  if (!tableMatch) {
+    console.log('No resultlist table found, trying any table...');
+    // Fallback: try any table with vessel data
+    const anyTable = html.match(/<table[^>]*>([\s\S]*?)<\/table>/gi);
+    if (anyTable) {
+      console.log(`Found ${anyTable.length} tables`);
+      for (const table of anyTable) {
+        if (table.includes('BORCHARD') || table.includes('CMA CGM') || table.includes('MSC')) {
+          console.log('Found table with vessel names');
+          return parseTableRows(table, seenVessels);
         }
       }
     }
+    return [];
   }
   
-  // Strategy 2: If table parsing didn't work, try regex pattern matching on raw text
-  if (vessels.length === 0) {
-    console.log('Table parsing found 0 vessels, trying text pattern matching...');
+  console.log('Found resultlist table');
+  const tableHtml = tableMatch[0];
+  
+  return parseTableRows(tableHtml, seenVessels);
+}
+
+// Parse rows from a table, handling rowspan
+function parseTableRows(tableHtml: string, seenVessels: Map<string, VesselData>): VesselData[] {
+  const vessels: VesselData[] = [];
+  
+  // Extract all rows
+  const rowMatches = tableHtml.match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi);
+  if (!rowMatches) {
+    console.log('No rows found in table');
+    return [];
+  }
+  
+  console.log(`Found ${rowMatches.length} rows`);
+  
+  // Track rowspan cells that carry over
+  const rowspanCarry: { value: string; remaining: number }[] = [];
+  
+  for (let rowIdx = 0; rowIdx < rowMatches.length; rowIdx++) {
+    const row = rowMatches[rowIdx];
     
-    // Look for vessel name patterns in the text
-    // Common patterns: "LUCY BORCHARD", "CMA CGM SAHARA", "MSC SHEILA"
-    const vesselNamePattern = /\b([A-Z][A-Z\s\-\.]{3,}[A-Z])\b/g;
-    const textContent = extractText(html);
+    // Skip header rows
+    if (row.includes('<th')) continue;
     
-    let match;
-    while ((match = vesselNamePattern.exec(textContent)) !== null) {
-      const potentialName = match[1].trim();
-      
-      // Filter out common false positives
-      if (!isValidVesselName(potentialName)) continue;
-      if (potentialName.length < 5 || potentialName.length > 40) continue;
-      
-      // Skip known non-vessel patterns
-      const skipPatterns = [
-        'EUROGATE', 'LIMASSOL', 'INFOGATE', 'CONTAINER', 'TERMINAL',
-        'CYPRUS', 'SHIPPING', 'SCHEDULE', 'ARRIVAL', 'DEPARTURE',
-        'BERTH', 'VESSEL', 'AGENT', 'STATUS', 'DELETE', 'JANUARY',
-        'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST',
-        'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER', 'MONDAY',
-        'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
-      ];
-      
-      if (skipPatterns.some(p => potentialName.includes(p))) continue;
-      
-      const key = potentialName;
-      if (!seenVessels.has(key)) {
-        seenVessels.add(key);
+    // Extract cells
+    const cellMatches = row.match(/<td[^>]*>[\s\S]*?<\/td>/gi);
+    if (!cellMatches) continue;
+    
+    // Build effective cell array with rowspan tracking
+    const effectiveCells: string[] = [];
+    let cellIdx = 0;
+    
+    for (let colIdx = 0; colIdx < 15; colIdx++) {
+      // Check if we have a carried rowspan value for this column
+      if (rowspanCarry[colIdx] && rowspanCarry[colIdx].remaining > 0) {
+        effectiveCells.push(rowspanCarry[colIdx].value);
+        rowspanCarry[colIdx].remaining--;
+      } else if (cellIdx < cellMatches.length) {
+        const cell = cellMatches[cellIdx];
+        const text = extractText(cell);
+        effectiveCells.push(text);
         
-        // Try to extract context around this vessel name
-        const idx = textContent.indexOf(potentialName);
-        const context = textContent.substring(Math.max(0, idx - 100), idx + potentialName.length + 200);
-        
-        const vessel: VesselData = {
-          vessel_name: potentialName,
-          callsign: null,
-          voyage_no: null,
-          vessel_no: null,
-          arrival_date: null,
-          arrival_time: null,
-          etd_date: null,
-          etd_time: null,
-          berth: null,
-          operation: parseOperation(context) || null,
-          delivery_start: null,
-          status: null,
-          agent: extractAgent(context) || null,
-        };
-        
-        // Try to find dates/times in context
-        const dateMatches = context.match(/\d{1,2}[./]\d{1,2}[./]\d{4}/g);
-        if (dateMatches) {
-          vessel.arrival_date = parseDate(dateMatches[0]);
-          if (dateMatches[1]) vessel.etd_date = parseDate(dateMatches[1]);
+        // Check for rowspan
+        const rowspan = getRowspan(cell);
+        if (rowspan > 1) {
+          rowspanCarry[colIdx] = { value: text, remaining: rowspan - 1 };
         }
         
-        const timeMatches = context.match(/\d{1,2}[:.]\d{2}/g);
-        if (timeMatches) {
-          vessel.arrival_time = parseTime(timeMatches[0]);
-          if (timeMatches[1]) vessel.etd_time = parseTime(timeMatches[1]);
-        }
-        
-        vessels.push(vessel);
+        cellIdx++;
       }
+    }
+    
+    if (effectiveCells.length < 5) continue;
+    
+    // Debug first few rows
+    if (rowIdx < 5) {
+      console.log(`Row ${rowIdx}: ${effectiveCells.slice(0, 8).join(' | ')}`);
+    }
+    
+    // InfoGate column structure (from infogate.md):
+    // 0: Date (21/01/2026)
+    // 1: Time (05.45)
+    // 2: ETD (21/01/2026 15.00)
+    // 3: Vessel Name
+    // 4: Callsign
+    // 5: Berth
+    // 6: Operation (Discharge/Load)
+    // 7: Vessel No
+    // 8: Voyage No
+    // 9: Delivery Start
+    // 10: Status
+    // 11: Agent
+    
+    // Find vessel name - look in expected position first, then search all cells
+    let vesselName = '';
+    let vesselIdx = 3;
+    
+    if (effectiveCells[3] && isValidVesselName(effectiveCells[3])) {
+      vesselName = effectiveCells[3].toUpperCase().trim();
+    } else {
+      // Search for vessel name in other cells
+      for (let i = 0; i < effectiveCells.length; i++) {
+        const cell = effectiveCells[i];
+        if (cell && isValidVesselName(cell) && cell.length > vesselName.length) {
+          vesselName = cell.toUpperCase().trim();
+          vesselIdx = i;
+        }
+      }
+    }
+    
+    if (!vesselName) continue;
+    
+    // Parse date and time
+    let arrivalDate: string | null = null;
+    let arrivalTime: string | null = null;
+    let etdDate: string | null = null;
+    let etdTime: string | null = null;
+    
+    // Column 0: Date
+    if (effectiveCells[0]) {
+      arrivalDate = parseDate(effectiveCells[0]);
+    }
+    
+    // Column 1: Time
+    if (effectiveCells[1]) {
+      arrivalTime = parseTime(effectiveCells[1]);
+    }
+    
+    // Column 2: ETD (combined date and time like "21/01/2026 15.00")
+    if (effectiveCells[2]) {
+      const etdParts = effectiveCells[2].trim().split(/\s+/);
+      if (etdParts.length >= 1) {
+        etdDate = parseDate(etdParts[0]);
+      }
+      if (etdParts.length >= 2) {
+        etdTime = parseTime(etdParts[1]);
+      }
+    }
+    
+    // Other fields
+    const callsign = effectiveCells[4]?.match(/^[A-Z0-9]{4,8}$/i) ? effectiveCells[4].toUpperCase() : null;
+    const berth = effectiveCells[5] || null;
+    const operation = effectiveCells[6] || null;
+    const vesselNo = effectiveCells[7] || null;
+    const voyageNo = effectiveCells[8] || null;
+    const deliveryStart = effectiveCells[9] || null;
+    const status = effectiveCells[10] || null;
+    const agent = effectiveCells[11] ? extractAgent(effectiveCells[11]) || effectiveCells[11] : null;
+    
+    // Create vessel key for deduplication (vessel + date)
+    const key = `${vesselName}|${arrivalDate || ''}`;
+    
+    if (seenVessels.has(key)) {
+      // Merge operations (e.g., combine Discharge and Load)
+      const existing = seenVessels.get(key)!;
+      if (operation && existing.operation && !existing.operation.includes(operation)) {
+        existing.operation = `${existing.operation}/${operation}`;
+      }
+      // Fill in any missing fields
+      if (!existing.callsign && callsign) existing.callsign = callsign;
+      if (!existing.berth && berth) existing.berth = berth;
+      if (!existing.agent && agent) existing.agent = agent;
+      if (!existing.voyage_no && voyageNo) existing.voyage_no = voyageNo;
+    } else {
+      const vessel: VesselData = {
+        vessel_name: vesselName,
+        callsign,
+        voyage_no: voyageNo,
+        vessel_no: vesselNo,
+        arrival_date: arrivalDate,
+        arrival_time: arrivalTime,
+        etd_date: etdDate,
+        etd_time: etdTime,
+        berth,
+        operation,
+        delivery_start: deliveryStart,
+        status,
+        agent,
+      };
+      
+      seenVessels.set(key, vessel);
+      vessels.push(vessel);
     }
   }
   
-  console.log(`Parsed ${vessels.length} vessels total`);
+  console.log(`Parsed ${vessels.length} vessels`);
   
-  // Log first 3 vessels for debugging
+  // Log first 3 vessels
   vessels.slice(0, 3).forEach((v, i) => {
-    console.log(`Vessel ${i + 1}:`, JSON.stringify(v));
+    console.log(`Vessel ${i + 1}: ${v.vessel_name} (${v.callsign}) - ${v.arrival_date} ${v.arrival_time} - Agent: ${v.agent}`);
   });
   
   return vessels;
@@ -705,13 +464,12 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const scrapingBeeApiKey = Deno.env.get('SCRAPINGBEE_API_KEY');
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
     
-    if (!scrapingBeeApiKey && !firecrawlApiKey) {
-      console.error('No scraping API keys configured');
+    if (!firecrawlApiKey) {
+      console.error('FIRECRAWL_API_KEY not configured');
       return new Response(
-        JSON.stringify({ success: false, error: 'No scraping API key configured' }),
+        JSON.stringify({ success: false, error: 'Firecrawl API key not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -720,37 +478,35 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    console.log('Fetching Eurogate InfoGate Limassol schedule...');
+    console.log('Fetching Eurogate InfoGate Limassol schedule with Firecrawl...');
 
-    const scrape = await getScheduleHtml(scrapingBeeApiKey || null, firecrawlApiKey || null);
+    const scrape = await getScheduleHtml(firecrawlApiKey);
     
     if (!scrape) {
       return new Response(
         JSON.stringify({
           success: false,
-          error: 'Failed to load Eurogate InfoGate schedule page',
+          error: 'Failed to scrape Eurogate InfoGate schedule',
         }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const html = scrape.html;
     console.log(`Schedule loaded via ${scrape.source}. URL: ${scrape.url}`);
-    console.log('Received HTML length:', html.length);
+    console.log('HTML length:', scrape.html.length);
 
-    // Parse vessels from HTML
-    const vessels = parseVesselsFromHtml(html);
+    // Parse vessels
+    const vessels = parseVesselsFromHtml(scrape.html);
     
-    console.log('Final parsed vessels count:', vessels.length);
+    console.log('Parsed vessels count:', vessels.length);
 
-    // VALIDATION: Don't overwrite existing data if we got 0 vessels
+    // VALIDATION: Don't overwrite if we got 0 vessels
     if (vessels.length === 0) {
-      // Check how many vessels we currently have
       const { count } = await supabase
         .from('limassol_vessel_schedule')
         .select('*', { count: 'exact', head: true });
       
-      console.log(`Current DB has ${count} vessels, parse returned 0 - NOT deleting existing data`);
+      console.log(`Current DB has ${count} vessels, parse returned 0 - preserving existing data`);
       
       return new Response(
         JSON.stringify({ 
@@ -759,20 +515,20 @@ Deno.serve(async (req) => {
           scrape_source: scrape.source,
           scrape_url: scrape.url,
           existing_vessel_count: count,
-          html_preview: html.substring(0, 3000),
+          html_preview: scrape.html.substring(0, 5000),
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // VALIDATION: Require at least 3 vessels before replacing data
+    // VALIDATION: Require at least 3 vessels
     if (vessels.length < 3) {
       const { count } = await supabase
         .from('limassol_vessel_schedule')
         .select('*', { count: 'exact', head: true });
       
       if (count && count > vessels.length) {
-        console.log(`Only parsed ${vessels.length} vessels but DB has ${count} - NOT replacing`);
+        console.log(`Only parsed ${vessels.length} vessels but DB has ${count} - preserving`);
         return new Response(
           JSON.stringify({ 
             success: true, 
@@ -785,53 +541,42 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Clear old records (older than 7 days)
+    // Clean old records (> 7 days)
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
-    const { error: deleteOldError } = await supabase
+    await supabase
       .from('limassol_vessel_schedule')
       .delete()
       .lt('scraped_at', sevenDaysAgo.toISOString());
 
-    if (deleteOldError) {
-      console.error('Error deleting old records:', deleteOldError);
-    }
-
-    // Delete today's scraped data to replace with fresh data
+    // Delete today's data to replace
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const { error: deleteTodayError } = await supabase
+    await supabase
       .from('limassol_vessel_schedule')
       .delete()
       .gte('scraped_at', today.toISOString());
 
-    if (deleteTodayError) {
-      console.error('Error deleting today records:', deleteTodayError);
-    }
-
-    // Insert new vessel data
+    // Insert new data
     const now = new Date().toISOString();
-    const vesselRecords = vessels.map(v => ({
-      ...v,
-      scraped_at: now,
-    }));
+    const records = vessels.map(v => ({ ...v, scraped_at: now }));
 
     const { data: insertedData, error: insertError } = await supabase
       .from('limassol_vessel_schedule')
-      .insert(vesselRecords)
+      .insert(records)
       .select();
 
     if (insertError) {
-      console.error('Error inserting vessels:', insertError);
+      console.error('Insert error:', insertError);
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to save vessel data', details: insertError }),
+        JSON.stringify({ success: false, error: 'Failed to save vessels', details: insertError }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Successfully scraped and saved ${vessels.length} vessels`);
+    console.log(`Saved ${vessels.length} vessels successfully`);
 
     return new Response(
       JSON.stringify({ 
@@ -845,10 +590,9 @@ Deno.serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in limassol-vessel-schedule:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error:', error);
     return new Response(
-      JSON.stringify({ success: false, error: errorMessage }),
+      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
