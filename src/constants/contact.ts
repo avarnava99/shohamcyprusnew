@@ -15,6 +15,12 @@ export const CONTACT = {
     emailHref: "mailto:info@shoham.com.cy",
   },
 
+  // General mail contact
+  mail: {
+    email: "mail@shoham.com.cy",
+    emailHref: "mailto:mail@shoham.com.cy",
+  },
+
   // Department-specific contacts
   departments: {
     sales: {

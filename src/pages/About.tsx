@@ -133,15 +133,15 @@ const About = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <div className="font-semibold">Limassol (Head Office)</div>
-                  <div className="text-white/80">{CONTACT.address.poBox}, {CONTACT.address.city}</div>
+                  <div className="text-white/80">{CONTACT.address.city}</div>
                 </div>
                 <div>
                   <div className="font-semibold">Phone</div>
-                  <div className="text-white/80">{CONTACT.departments.chartering.phone}</div>
+                  <div className="text-white/80">{CONTACT.primary.phone}</div>
                 </div>
                 <div>
                   <div className="font-semibold">Email</div>
-                  <div className="text-white/80">{CONTACT.info.email}</div>
+                  <div className="text-white/80">{CONTACT.mail.email}</div>
                 </div>
               </div>
             </div>
