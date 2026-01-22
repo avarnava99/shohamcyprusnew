@@ -120,17 +120,17 @@ const Chartering = () => {
 
           <div className="space-y-6">
             <div className="bg-secondary p-6 rounded-lg">
-              <h3 className="font-heading font-semibold text-lg mb-4">Contact Our Chartering Team</h3>
+              <h3 className="font-heading font-semibold text-lg mb-4">Contact Our Team</h3>
               <p className="text-muted-foreground text-sm mb-4">
                 Need to charter a vessel? Our experienced team is ready to help you find 
                 the perfect solution for your cargo.
               </p>
               <div className="space-y-2 text-sm mb-4">
-                <p><strong>Phone:</strong> {CONTACT.departments.chartering.phone}</p>
-                <p><strong>Email:</strong> {CONTACT.departments.chartering.email}</p>
+                <p><strong>Phone:</strong> {CONTACT.primary.phone}</p>
+                <p><strong>Email:</strong> {CONTACT.primary.email}</p>
               </div>
               <Button asChild variant="outline" className="w-full">
-                <Link to="/contact">Get In Touch</Link>
+                <Link to="/contact-us">Get In Touch</Link>
               </Button>
             </div>
 

@@ -2,7 +2,8 @@ import { useParams, useLocation } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Phone, Mail } from "lucide-react";
+import { CONTACT } from "@/constants/contact";
 
 // Service data with original URL slugs
 const servicesData: Record<string, { title: string; description: string; content: string[]; subpages?: { label: string; href: string }[] }> = {
@@ -227,6 +228,16 @@ const ServicePage = () => {
             <p className="text-muted-foreground mb-4">
               Contact our team for more information about our {service.title.toLowerCase()} services.
             </p>
+            <div className="space-y-2 text-sm text-muted-foreground mb-4">
+              <a href={CONTACT.primary.phoneHref} className="flex items-center gap-2 hover:underline">
+                <Phone className="h-4 w-4" />
+                {CONTACT.primary.phone}
+              </a>
+              <a href={CONTACT.primary.emailHref} className="flex items-center gap-2 hover:underline">
+                <Mail className="h-4 w-4" />
+                {CONTACT.primary.email}
+              </a>
+            </div>
             <Button asChild variant="outline" className="w-full">
               <Link to="/contact-us">Contact Us</Link>
             </Button>
