@@ -40,6 +40,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
 import ContainerOrders from "./pages/admin/ContainerOrders";
 import DutyCalculatorLeads from "./pages/admin/DutyCalculatorLeads";
+import LiveChat from "./pages/admin/LiveChat";
 import UsedContainers from "./pages/UsedContainers";
 
 const queryClient = new QueryClient();
@@ -100,6 +101,7 @@ const App = () => (
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/live-chat" element={<LiveChat />} />
           <Route path="/admin/contacts" element={<ContactSubmissions />} />
           <Route path="/admin/container-orders" element={<ContainerOrders />} />
           <Route path="/admin/duty-leads" element={<DutyCalculatorLeads />} />

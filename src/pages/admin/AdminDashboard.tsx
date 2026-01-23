@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Clock, CheckCircle, Reply, Package, Calculator } from "lucide-react";
+import { Mail, Clock, CheckCircle, Reply, Package, Calculator, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAdminChat } from "@/hooks/useChat";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -21,6 +22,9 @@ const AdminDashboard = () => {
     new: 0,
   });
   const [loading, setLoading] = useState(true);
+  const { sessions, totalUnread } = useAdminChat();
+
+  const activeChatCount = sessions.filter(s => s.status === 'active').length;
 
   useEffect(() => {
     fetchStats();
@@ -86,10 +90,10 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
+    { label: "Active Chats", value: activeChatCount, icon: MessageCircle, color: "text-green-500" },
     { label: "Contact Submissions", value: stats.total, icon: Mail, color: "text-primary" },
-    { label: "New Contacts", value: stats.new, icon: Clock, color: "text-blue-500" },
     { label: "Container Orders", value: containerStats.total, icon: Package, color: "text-purple-500" },
-    { label: "Duty Calculator Leads", value: dutyLeadStats.total, icon: Calculator, color: "text-green-500" },
+    { label: "Duty Calculator Leads", value: dutyLeadStats.total, icon: Calculator, color: "text-orange-500" },
   ];
 
   return (
@@ -125,13 +129,38 @@ const AdminDashboard = () => {
         {/* Quick Actions */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Link to="/admin/live-chat">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5 text-green-500" />
+                    Live Chat
+                  </CardTitle>
+                  <CardDescription>
+                    Chat with website visitors in real-time
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {totalUnread > 0 && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {totalUnread} unread message{totalUnread > 1 ? "s" : ""}
+                    </span>
+                  )}
+                  {activeChatCount > 0 && totalUnread === 0 && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {activeChatCount} active chat{activeChatCount > 1 ? "s" : ""}
+                    </span>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
             <Link to="/admin/contacts">
               <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Mail className="h-5 w-5 text-primary" />
-                    View Contact Submissions
+                    Contact Submissions
                   </CardTitle>
                   <CardDescription>
                     Manage and respond to contact form submissions
@@ -151,7 +180,7 @@ const AdminDashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5 text-purple-500" />
-                    View Container Orders
+                    Container Orders
                   </CardTitle>
                   <CardDescription>
                     Manage container purchase requests and send offers
@@ -170,8 +199,8 @@ const AdminDashboard = () => {
               <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Calculator className="h-5 w-5 text-green-500" />
-                    View Duty Calculator Leads
+                    <Calculator className="h-5 w-5 text-orange-500" />
+                    Duty Calculator Leads
                   </CardTitle>
                   <CardDescription>
                     Manage leads from the Cyprus duty calculator tool

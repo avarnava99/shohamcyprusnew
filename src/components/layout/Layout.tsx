@@ -3,6 +3,7 @@ import TopBar from "./TopBar";
 import Header from "./Header";
 import Footer from "./Footer";
 import Breadcrumbs from "./Breadcrumbs";
+import ChatWidget from "@/components/chat/ChatWidget";
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ const Layout = ({ children, hideBreadcrumbs = false }: LayoutProps) => {
       )}
       <main className="flex-1">{children}</main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 };
