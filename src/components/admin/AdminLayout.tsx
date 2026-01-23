@@ -2,8 +2,10 @@ import { ReactNode, useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Mail, LogOut, Home, Package, Calculator } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { LayoutDashboard, Mail, LogOut, Home, Package, Calculator, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useAdminChat } from "@/hooks/useChat";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -14,6 +16,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const { totalUnread } = useAdminChat();
 
   useEffect(() => {
     const checkAdminAccess = async () => {
@@ -63,6 +66,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   const navItems = [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/admin/live-chat", icon: MessageCircle, label: "Live Chat", badge: totalUnread },
     { href: "/admin/contacts", icon: Mail, label: "Contact Submissions" },
     { href: "/admin/container-orders", icon: Package, label: "Container Orders" },
     { href: "/admin/duty-leads", icon: Calculator, label: "Duty Calculator Leads" },
@@ -83,14 +87,21 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <Link
                 key={item.href}
                 to={item.href}
-                className={`flex items-center gap-3 px-6 py-3 transition-colors ${
+                className={`flex items-center justify-between px-6 py-3 transition-colors ${
                   isActive
                     ? "bg-white/10 border-r-4 border-accent"
                     : "hover:bg-white/5"
                 }`}
               >
-                <Icon className="h-5 w-5" />
-                <span>{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className="h-5 w-5" />
+                  <span>{item.label}</span>
+                </div>
+                {item.badge && item.badge > 0 && (
+                  <Badge variant="destructive" className="h-5 min-w-[20px] px-1.5">
+                    {item.badge}
+                  </Badge>
+                )}
               </Link>
             );
           })}
