@@ -158,7 +158,6 @@ const Header = () => {
   ];
 
   const navItems: NavItem[] = [
-    { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
     { label: "ZIM Agency", href: "/zim-agency-in-cyprus", megaMenu: zimMegaMenu },
     { label: "Port Agency", href: "/port-agency", megaMenu: portAgencyMegaMenu },
