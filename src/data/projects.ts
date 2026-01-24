@@ -18,6 +18,15 @@ import desalination4 from "@/assets/projects/desalination-4.jpg";
 import desalination5 from "@/assets/projects/desalination-5.jpg";
 import desalination6 from "@/assets/projects/desalination-6.jpg";
 import desalination7 from "@/assets/projects/desalination-7.jpg";
+import vassilikosPower1 from "@/assets/projects/vassilikos-power-1.jpg";
+import vassilikosPower2 from "@/assets/projects/vassilikos-power-2.jpg";
+import vassilikosPower3 from "@/assets/projects/vassilikos-power-3.jpg";
+import vassilikosPower4 from "@/assets/projects/vassilikos-power-4.jpg";
+import vassilikosPower5 from "@/assets/projects/vassilikos-power-5.jpg";
+import vassilikosPower6 from "@/assets/projects/vassilikos-power-6.jpg";
+import vassilikosPower7 from "@/assets/projects/vassilikos-power-7.jpg";
+import vassilikosPower8 from "@/assets/projects/vassilikos-power-8.jpg";
+import vassilikosPower9 from "@/assets/projects/vassilikos-power-9.jpg";
 
 export interface Project {
   slug: string;
@@ -131,6 +140,25 @@ export const projects: Project[] = [
     year: "2012",
     location: "Vassiliko",
     category: "Project Cargo",
+  },
+  {
+    slug: "vassilikos-power-station",
+    title: "Vassilikos Power Station Upgrade",
+    subtitle: "One of the biggest logistics projects on the island at the time",
+    description: "In 2004, Shoham handled one of the biggest logistics projects on the island at the time - the logistics for upgrading the Vassilikos Power Station. The main equipment handled were an LP Turbine outer casing (47 tons), Generator Stators (160 tons and 145 tons), and 23-ton transformers.",
+    fullDescription: [
+      "In 2004, Shoham handled one of the biggest logistics projects on the island at the time - the logistics for upgrading the Vassilikos Power Station.",
+      "The main equipment handled were an LP Turbine outer casing weighing 47 tons, Generator Stators weighing 160 tons and 145 tons, and 23-ton transformers.",
+      "Our company handled the discharging from the vessels, the transportation to the site, and the positioning at the site."
+    ],
+    year: "2004",
+    location: "Vassiliko",
+    category: "Heavy Lift",
+    images: [
+      vassilikosPower1, vassilikosPower2, vassilikosPower3,
+      vassilikosPower4, vassilikosPower5, vassilikosPower6,
+      vassilikosPower7, vassilikosPower8, vassilikosPower9
+    ],
   },
 ];
 
