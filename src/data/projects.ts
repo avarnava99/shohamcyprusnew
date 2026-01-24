@@ -27,6 +27,16 @@ import vassilikosPower6 from "@/assets/projects/vassilikos-power-6.jpg";
 import vassilikosPower7 from "@/assets/projects/vassilikos-power-7.jpg";
 import vassilikosPower8 from "@/assets/projects/vassilikos-power-8.jpg";
 import vassilikosPower9 from "@/assets/projects/vassilikos-power-9.jpg";
+import vassilikosPower10 from "@/assets/projects/vassilikos-power-10.jpg";
+import vassilikosPower11 from "@/assets/projects/vassilikos-power-11.jpg";
+import vassilikosPower12 from "@/assets/projects/vassilikos-power-12.jpg";
+import vassilikosPower13 from "@/assets/projects/vassilikos-power-13.jpg";
+import vassilikosPower14 from "@/assets/projects/vassilikos-power-14.jpg";
+import vassilikosPower15 from "@/assets/projects/vassilikos-power-15.jpg";
+import vassilikosPower16 from "@/assets/projects/vassilikos-power-16.jpg";
+import vassilikosPower17 from "@/assets/projects/vassilikos-power-17.jpg";
+import vassilikosPower18 from "@/assets/projects/vassilikos-power-18.jpg";
+import vassilikosPower19 from "@/assets/projects/vassilikos-power-19.gif";
 
 export interface Project {
   slug: string;
@@ -157,7 +167,11 @@ export const projects: Project[] = [
     images: [
       vassilikosPower1, vassilikosPower2, vassilikosPower3,
       vassilikosPower4, vassilikosPower5, vassilikosPower6,
-      vassilikosPower7, vassilikosPower8, vassilikosPower9
+      vassilikosPower7, vassilikosPower8, vassilikosPower9,
+      vassilikosPower10, vassilikosPower11, vassilikosPower12,
+      vassilikosPower13, vassilikosPower14, vassilikosPower15,
+      vassilikosPower16, vassilikosPower17, vassilikosPower18,
+      vassilikosPower19
     ],
   },
 ];
