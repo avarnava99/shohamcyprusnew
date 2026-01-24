@@ -37,6 +37,7 @@ import vassilikosPower16 from "@/assets/projects/vassilikos-power-16.jpg";
 import vassilikosPower17 from "@/assets/projects/vassilikos-power-17.jpg";
 import vassilikosPower18 from "@/assets/projects/vassilikos-power-18.jpg";
 import vassilikosPower19 from "@/assets/projects/vassilikos-power-19.gif";
+import vassilikosPower20 from "@/assets/projects/vassilikos-power-20.jpg";
 
 export interface Project {
   slug: string;
@@ -171,7 +172,7 @@ export const projects: Project[] = [
       vassilikosPower10, vassilikosPower11, vassilikosPower12,
       vassilikosPower13, vassilikosPower14, vassilikosPower15,
       vassilikosPower16, vassilikosPower17, vassilikosPower18,
-      vassilikosPower19
+      vassilikosPower19, vassilikosPower20
     ],
   },
 ];
