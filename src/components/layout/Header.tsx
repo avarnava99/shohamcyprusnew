@@ -206,7 +206,7 @@ const Header = () => {
                   <Link
                     to={item.href}
                     className={cn(
-                      "flex items-center gap-1.5 px-4 py-2.5 text-[15px] font-semibold tracking-wide transition-all duration-200 rounded-md",
+                      "flex items-center gap-1.5 px-4 py-2.5 text-[15px] font-semibold tracking-wide transition-all duration-200 rounded-md whitespace-nowrap",
                       isActivePath(item.href) 
                         ? "text-primary" 
                         : "text-foreground hover:text-primary hover:bg-secondary/50"
