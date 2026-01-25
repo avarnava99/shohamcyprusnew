@@ -92,8 +92,14 @@ const AnalyticsDashboard = () => {
       {/* Chart */}
       {isLoading ? (
         <Skeleton className="h-[380px]" />
+      ) : data?.timeSeries && data.timeSeries.length > 0 ? (
+        <AnalyticsChart data={data.timeSeries} />
       ) : (
-        <AnalyticsChart data={data?.timeSeries || []} />
+        <div className="rounded-lg border bg-card p-8 text-center">
+          <p className="text-muted-foreground">
+            No visitor data yet. Analytics will appear once your published site receives traffic.
+          </p>
+        </div>
       )}
 
       {/* Breakdown Cards */}

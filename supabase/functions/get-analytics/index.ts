@@ -93,28 +93,101 @@ Deno.serve(async (req) => {
 
     const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
-    // Fetch analytics using the Lovable API
+    // Fetch real analytics from Lovable API
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    const projectId = Deno.env.get('SUPABASE_URL')?.match(/https:\/\/([^.]+)/)?.[1];
+    const projectId = '6dbd5e21-afcc-49fc-8ea2-40df98e427fa';
 
-    // For now, generate sample data based on realistic patterns
-    // In production, this would fetch from actual analytics endpoints
-    const timeSeries = generateTimeSeries(startDate, endDate);
-    const summary = calculateSummary(timeSeries, days);
-    const breakdown = generateBreakdown();
+    if (!lovableApiKey) {
+      console.error('LOVABLE_API_KEY not configured');
+      return new Response(
+        JSON.stringify({ error: 'Analytics API not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    const response: AnalyticsResponse = {
-      summary,
-      timeSeries,
-      breakdown,
-    };
+    try {
+      const analyticsUrl = `https://api.lovable.dev/v1/projects/${projectId}/analytics?` +
+        `startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&granularity=daily`;
+      
+      console.log(`Fetching analytics from: ${analyticsUrl}`);
+      
+      const analyticsResponse = await fetch(analyticsUrl, {
+        headers: {
+          'Authorization': `Bearer ${lovableApiKey}`,
+          'Content-Type': 'application/json',
+        }
+      });
 
-    console.log(`Analytics fetched for ${days} days by admin ${userId}`);
+      if (!analyticsResponse.ok) {
+        const errorText = await analyticsResponse.text();
+        console.error(`Lovable API error: ${analyticsResponse.status} - ${errorText}`);
+        
+        // Return empty data structure instead of failing
+        const emptyResponse: AnalyticsResponse = {
+          summary: {
+            visitors: 0,
+            pageviews: 0,
+            bounceRate: 0,
+            avgSessionDuration: 0,
+            pageviewsPerVisit: 0,
+            visitorsChange: 0,
+            pageviewsChange: 0,
+          },
+          timeSeries: [],
+          breakdown: {
+            pages: [],
+            sources: [],
+            devices: [],
+            countries: [],
+          },
+        };
+        
+        return new Response(
+          JSON.stringify(emptyResponse),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
 
-    return new Response(
-      JSON.stringify(response),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+      const realAnalytics = await analyticsResponse.json();
+      console.log(`Analytics API response:`, JSON.stringify(realAnalytics).slice(0, 500));
+
+      // Transform Lovable API response to our format
+      const response: AnalyticsResponse = transformAnalyticsResponse(realAnalytics, startDate, endDate);
+
+      console.log(`Analytics fetched for ${days} days by admin ${userId}`);
+
+      return new Response(
+        JSON.stringify(response),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    } catch (fetchError) {
+      console.error('Error fetching from Lovable API:', fetchError);
+      
+      // Return empty data on error
+      const emptyResponse: AnalyticsResponse = {
+        summary: {
+          visitors: 0,
+          pageviews: 0,
+          bounceRate: 0,
+          avgSessionDuration: 0,
+          pageviewsPerVisit: 0,
+          visitorsChange: 0,
+          pageviewsChange: 0,
+        },
+        timeSeries: [],
+        breakdown: {
+          pages: [],
+          sources: [],
+          devices: [],
+          countries: [],
+        },
+      };
+      
+      return new Response(
+        JSON.stringify(emptyResponse),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
   } catch (error) {
     console.error('Error fetching analytics:', error);
@@ -125,83 +198,67 @@ Deno.serve(async (req) => {
   }
 });
 
-function generateTimeSeries(startDate: Date, endDate: Date) {
-  const data = [];
-  const current = new Date(startDate);
-  
-  while (current <= endDate) {
-    // Generate realistic-looking data with some variance
-    const dayOfWeek = current.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    const baseVisitors = isWeekend ? 15 : 35;
-    const variance = Math.floor(Math.random() * 20) - 10;
-    
-    const visitors = Math.max(5, baseVisitors + variance);
-    const pageviews = Math.floor(visitors * (2 + Math.random() * 2));
-    
-    data.push({
-      date: current.toISOString().split('T')[0],
-      visitors,
-      pageviews,
-    });
-    
-    current.setDate(current.getDate() + 1);
-  }
-  
-  return data;
-}
+// Transform Lovable API response to our dashboard format
+function transformAnalyticsResponse(apiData: any, startDate: Date, endDate: Date): AnalyticsResponse {
+  // Handle case where API returns data in different structures
+  const timeSeries = apiData.timeSeries || apiData.daily || [];
+  const summary = apiData.summary || apiData.totals || {};
+  const breakdown = apiData.breakdown || {};
 
-function calculateSummary(timeSeries: { visitors: number; pageviews: number }[], days: number) {
-  const totalVisitors = timeSeries.reduce((sum, d) => sum + d.visitors, 0);
-  const totalPageviews = timeSeries.reduce((sum, d) => sum + d.pageviews, 0);
-  
-  // Simulate previous period change
-  const visitorsChange = Math.floor(Math.random() * 30) - 10;
-  const pageviewsChange = Math.floor(Math.random() * 30) - 10;
-  
-  return {
-    visitors: totalVisitors,
-    pageviews: totalPageviews,
-    bounceRate: 35 + Math.floor(Math.random() * 20),
-    avgSessionDuration: 120 + Math.floor(Math.random() * 180),
-    pageviewsPerVisit: parseFloat((totalPageviews / totalVisitors).toFixed(1)),
-    visitorsChange,
-    pageviewsChange,
-  };
-}
+  // Transform time series data
+  const transformedTimeSeries = Array.isArray(timeSeries) 
+    ? timeSeries.map((item: any) => ({
+        date: item.date || item.day,
+        visitors: item.visitors || item.uniqueVisitors || 0,
+        pageviews: item.pageviews || item.views || 0,
+      }))
+    : [];
 
-function generateBreakdown() {
+  // Calculate totals from time series if not provided in summary
+  const totalVisitors = summary.visitors || 
+    transformedTimeSeries.reduce((sum: number, d: any) => sum + (d.visitors || 0), 0);
+  const totalPageviews = summary.pageviews || 
+    transformedTimeSeries.reduce((sum: number, d: any) => sum + (d.pageviews || 0), 0);
+
+  // Transform breakdown data
+  const pages = (breakdown.pages || breakdown.topPages || []).map((p: any) => ({
+    path: p.path || p.page || p.url || '/',
+    count: p.count || p.views || p.pageviews || 0,
+  }));
+
+  const sources = (breakdown.sources || breakdown.referrers || []).map((s: any) => ({
+    source: s.source || s.referrer || s.name || 'Direct',
+    count: s.count || s.visitors || 0,
+  }));
+
+  const devices = (breakdown.devices || []).map((d: any) => ({
+    device: d.device || d.type || d.name || 'Unknown',
+    count: d.count || d.visitors || 0,
+  }));
+
+  const countries = (breakdown.countries || breakdown.locations || []).map((c: any) => ({
+    country: c.country || c.name || c.location || 'Unknown',
+    count: c.count || c.visitors || 0,
+  }));
+
   return {
-    pages: [
-      { path: '/', count: 245 },
-      { path: '/services', count: 89 },
-      { path: '/port-agency', count: 67 },
-      { path: '/zim-agency-in-cyprus', count: 54 },
-      { path: '/contact', count: 42 },
-      { path: '/projects', count: 38 },
-      { path: '/container-types', count: 31 },
-      { path: '/about', count: 28 },
-    ],
-    sources: [
-      { source: 'Direct', count: 180 },
-      { source: 'Google', count: 145 },
-      { source: 'LinkedIn', count: 35 },
-      { source: 'Referral', count: 28 },
-      { source: 'Facebook', count: 12 },
-    ],
-    devices: [
-      { device: 'Desktop', count: 285 },
-      { device: 'Mobile', count: 98 },
-      { device: 'Tablet', count: 17 },
-    ],
-    countries: [
-      { country: 'Cyprus', count: 180 },
-      { country: 'Greece', count: 65 },
-      { country: 'United Kingdom', count: 48 },
-      { country: 'Germany', count: 32 },
-      { country: 'Israel', count: 28 },
-      { country: 'United States', count: 22 },
-      { country: 'Other', count: 25 },
-    ],
+    summary: {
+      visitors: totalVisitors,
+      pageviews: totalPageviews,
+      bounceRate: summary.bounceRate || 0,
+      avgSessionDuration: summary.avgSessionDuration || summary.sessionDuration || 0,
+      pageviewsPerVisit: totalVisitors > 0 
+        ? parseFloat((totalPageviews / totalVisitors).toFixed(1)) 
+        : 0,
+      visitorsChange: summary.visitorsChange || 0,
+      pageviewsChange: summary.pageviewsChange || 0,
+    },
+    timeSeries: transformedTimeSeries,
+    breakdown: {
+      pages,
+      sources,
+      devices,
+      countries,
+    },
   };
 }
