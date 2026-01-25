@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Clock, CheckCircle, Reply, Package, Calculator, MessageCircle } from "lucide-react";
+import { Mail, Package, Calculator, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAdminChat } from "@/hooks/useChat";
+import AnalyticsDashboard from "@/components/admin/analytics/AnalyticsDashboard";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -89,13 +90,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const statCards = [
-    { label: "Active Chats", value: activeChatCount, icon: MessageCircle, color: "text-green-500" },
-    { label: "Contact Submissions", value: stats.total, icon: Mail, color: "text-primary" },
-    { label: "Container Orders", value: containerStats.total, icon: Package, color: "text-purple-500" },
-    { label: "Duty Calculator Leads", value: dutyLeadStats.total, icon: Calculator, color: "text-orange-500" },
-  ];
-
   return (
     <AdminLayout>
       <div className="space-y-8">
@@ -104,27 +98,8 @@ const AdminDashboard = () => {
           <p className="text-muted-foreground mt-1">Welcome to the Shoham admin dashboard</p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {statCards.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={stat.label}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    {stat.label}
-                  </CardTitle>
-                  <Icon className={`h-5 w-5 ${stat.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">
-                    {loading ? "..." : stat.value}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        {/* Analytics Section */}
+        <AnalyticsDashboard />
 
         {/* Quick Actions */}
         <div>
