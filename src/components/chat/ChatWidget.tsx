@@ -156,26 +156,32 @@ const ChatWidget = () => {
                     msg.sender_type === 'guest' ? 'justify-end' : 'justify-start'
                   )}
                 >
-                  <div
-                    className={cn(
-                      'max-w-[80%] rounded-lg px-3 py-2',
-                      msg.sender_type === 'guest'
-                        ? 'bg-primary text-white'
-                        : 'bg-muted text-foreground'
-                    )}
-                  >
-                    <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
-                    <p
-                      className={cn(
-                        'mt-1 text-xs',
-                        msg.sender_type === 'guest'
-                          ? 'text-white/70'
-                          : 'text-muted-foreground'
-                      )}
-                    >
-                      {formatTime(msg.created_at)}
-                    </p>
-                  </div>
+                  {msg.sender_type === 'admin' ? (
+                    <div className="flex items-start gap-2 max-w-[85%]">
+                      <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold shrink-0">
+                        S
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-primary mb-1">Shoham Team</p>
+                        <div className="bg-muted rounded-lg px-3 py-2">
+                          <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {formatTime(msg.created_at)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="max-w-[80%]">
+                      <p className="text-xs text-muted-foreground mb-1 text-right">You</p>
+                      <div className="bg-primary text-white rounded-lg px-3 py-2">
+                        <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                        <p className="mt-1 text-xs text-white/70">
+                          {formatTime(msg.created_at)}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
               <div ref={messagesEndRef} />
