@@ -1,9 +1,8 @@
 
-
-## Plan: Replace Hero Image with ZIM Ship Photo
+## Plan: Replace ZIM Agency Card Image
 
 ### What We'll Do
-Replace the current hero background image with the new ZIM LNG container ship photo you provided.
+Replace the current ZIM Agency card image (the older container ship) with the new ZIM LNG vessel image showing "Powered by The Z Factor" branding.
 
 ---
 
@@ -12,30 +11,22 @@ Replace the current hero background image with the new ZIM LNG container ship ph
 **Step 1: Copy the New Image to Project Assets**
 
 Copy the uploaded image to the src/assets folder:
-- Source: `user-uploads://zim-sammy-ofer_panama-shoham-cyprus.webp`
-- Destination: `src/assets/hero-zim-ship.webp`
+- Source: `user-uploads://zim_vessel_lng_shoham_cyprus.webp`
+- Destination: `src/assets/zim-lng-vessel.webp`
 
-**Step 2: Update Hero Component**
+**Step 2: Update MainServices Component**
 
-Modify `src/components/home/Hero.tsx`:
-- Change the import from `hero-shipping.jpg` to `hero-zim-ship.webp`
-- Update the alt text to describe the ZIM ship image
+Modify `src/components/home/MainServices.tsx`:
+- Add a new import for the ZIM LNG vessel image
+- Update the ZIM Agency service card to use the new image
+- Also update the Chartering card which currently reuses the old ZIM image
 
 ```tsx
-// Before
-import heroImage from "@/assets/hero-shipping.jpg";
+// Add new import
+import zimAgencyImg from "@/assets/zim-lng-vessel.webp";
 
-// After
-import heroImage from "@/assets/hero-zim-ship.webp";
-```
-
-Also update the alt text:
-```tsx
-// Before
-alt="Shipping port with cargo containers"
-
-// After
-alt="ZIM LNG container ship sailing through Panama Canal"
+// Remove or keep old import if still needed elsewhere
+// import zimAgencyImg from "@/assets/zim-ship.jpg";
 ```
 
 ---
@@ -44,11 +35,10 @@ alt="ZIM LNG container ship sailing through Panama Canal"
 
 | File | Change |
 |------|--------|
-| `src/assets/hero-zim-ship.webp` | New file (copy uploaded image) |
-| `src/components/home/Hero.tsx` | Update import and alt text |
+| `src/assets/zim-lng-vessel.webp` | New file (copy uploaded image) |
+| `src/components/home/MainServices.tsx` | Update import to use new ZIM LNG image |
 
 ---
 
 ### Result
-The homepage hero will display the impressive ZIM LNG ship image, which better showcases your partnership with ZIM shipping line.
-
+The ZIM Agency card (and Chartering card which reuses the same image) will display the impressive new ZIM LNG container ship with "Powered by The Z Factor" branding, providing a more modern and branded appearance.
