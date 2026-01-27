@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-shipping.jpg";
+import heroImage from "@/assets/hero-zim-ship.webp";
 
 const Hero = () => {
   return (
     <section className="relative h-[500px] md:h-[600px] overflow-hidden">
       <img
         src={heroImage}
-        alt="Shipping port with cargo containers"
+        alt="ZIM LNG container ship sailing through Panama Canal"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-shoham-navy/90 to-shoham-blue/70" />
