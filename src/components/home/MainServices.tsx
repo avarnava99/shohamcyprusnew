@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import zimAgencyImg from "@/assets/zim-lng-vessel.webp";
 import portAgencyImg from "@/assets/port-agency.jpg";
 import freightImg from "@/assets/freight-forwarding.jpg";
-import haulageImg from "@/assets/haulage.jpg";
+import haulageImg from "@/assets/container-transport.png";
 import oilGasImg from "@/assets/oil-gas.jpg";
 
 const services = [
