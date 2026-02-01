@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Fuel, Users, Ship, Shield, Wrench, FileText, Anchor, Phone, Mail } from "lucide-react";
+import LimassolMarinaSection from "@/components/port-agency/LimassolMarinaSection";
 import { CONTACT } from "@/constants/contact";
 
 interface SectionData {
@@ -228,6 +229,8 @@ const PortAgencySectionPage = () => {
           <div className="lg:col-span-2">
             <h2 className="section-title">Overview</h2>
             <p className="text-muted-foreground mb-8">{sectionData.description}</p>
+
+            {section === "yacht-agency" && <LimassolMarinaSection />}
 
             <h3 className="font-heading font-semibold text-xl mb-4">Services We Provide</h3>
             <div className="grid md:grid-cols-2 gap-3 mb-8">
