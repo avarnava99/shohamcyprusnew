@@ -6,6 +6,7 @@ import portAgencyImg from "@/assets/port-agency.jpg";
 import freightImg from "@/assets/service-freight.jpg";
 import haulageImg from "@/assets/container-transport.png";
 import oilGasImg from "@/assets/oil-gas.jpg";
+import charteringImg from "@/assets/chartering.png";
 
 const services = [
   {
@@ -53,7 +54,7 @@ const services = [
   {
     title: "Chartering",
     description: "Full and part vessel chartering when liner services are not available.",
-    image: zimAgencyImg,
+    image: charteringImg,
     href: "/chartering",
   },
 ];
