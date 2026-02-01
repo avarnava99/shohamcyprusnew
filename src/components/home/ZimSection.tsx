@@ -1,10 +1,10 @@
 import zimShip from "@/assets/zim-ship.jpg";
 
 const stats = [
-  { value: "60+", label: "Agents Worldwide" },
-  { value: "29", label: "Ships" },
-  { value: "59", label: "Ports Covered" },
-  { value: "25", label: "Lines" },
+  { value: "90+", label: "Countries" },
+  { value: "32K+", label: "Customers" },
+  { value: "300", label: "Ports Covered" },
+  { value: "80+", label: "Years" },
 ];
 
 const ZimSection = () => {
