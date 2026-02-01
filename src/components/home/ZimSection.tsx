@@ -1,11 +1,68 @@
+import { useRef, useState, useEffect } from "react";
 import zimShip from "@/assets/zim-ship.jpg";
 
 const stats = [
-  { value: "90+", label: "Countries" },
-  { value: "32K+", label: "Customers" },
-  { value: "300", label: "Ports Covered" },
-  { value: "80+", label: "Years" },
+  { value: 90, suffix: "+", label: "Countries" },
+  { value: 32, suffix: "K+", label: "Customers" },
+  { value: 300, suffix: "", label: "Ports Covered" },
+  { value: 80, suffix: "+", label: "Years" },
 ];
+
+const AnimatedStat = ({ value, suffix, label }: { value: number; suffix: string; label: string }) => {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            
+            const duration = 2000;
+            const startTime = performance.now();
+            
+            const animate = (currentTime: number) => {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              
+              // Easing function for smooth animation
+              const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+              const currentCount = Math.floor(easeOutQuart * value);
+              
+              setCount(currentCount);
+              
+              if (progress < 1) {
+                requestAnimationFrame(animate);
+              } else {
+                setCount(value);
+              }
+            };
+            
+            requestAnimationFrame(animate);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [value, hasAnimated]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <div className="font-heading text-3xl md:text-4xl font-bold text-primary tabular-nums">
+        {count}{suffix}
+      </div>
+      <div className="text-sm text-muted-foreground mt-1">{label}</div>
+    </div>
+  );
+};
 
 const ZimSection = () => {
   return (
@@ -22,12 +79,12 @@ const ZimSection = () => {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
               {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="font-heading text-3xl md:text-4xl font-bold text-primary">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
-                </div>
+                <AnimatedStat
+                  key={stat.label}
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  label={stat.label}
+                />
               ))}
             </div>
           </div>
