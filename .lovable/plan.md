@@ -1,161 +1,136 @@
 
 
-# Plan: Add Limassol Marina Section to Yacht Agency Page
+# Plan: Berth Planning Schedule via Email-to-Database Pipeline
 
 ## Overview
-Enhance the Yacht Agency page with a dedicated Limassol Marina section using the uploaded aerial photo and information extracted from the official marina documentation.
+Set up a system where you forward the DP World berth planning PDF to a Resend inbound email address. An edge function receives the webhook, fetches the PDF attachment, parses the vessel data, and stores it in the database. The Limassol Port Schedule page will display this data in a clean, auto-refreshing table.
 
 ---
 
-## Content from Official Documents
+## How It Works (Simple Flow)
 
-Based on the Limassol Marina Superyacht Destination brochure:
+1. You forward the berth planning PDF (2-3 times daily) to a dedicated email address (e.g. `berth@yourdomain.resend.app` or your custom domain)
+2. Resend receives the email and sends a webhook notification to our edge function
+3. The edge function fetches the PDF attachment from Resend, parses the vessel table data, and saves it to the database
+4. The Limassol Port Schedule page automatically shows the latest berthing schedule in a nice table
 
-**Key Description:**
-> "Limassol Marina is an exciting new superyacht destination in the Mediterranean. Visitors and berth holders benefit from an unrivalled combination of service, facilities and technical support. Designed by a world-renowned team of architects and engineers, it combines elegant residences and a full service marina with an enticing mix of restaurants and shops, to create a lifestyle uniquely shaped by 'living on the sea'."
+---
 
-**Blue Flag Marina Status** - Port of Entry
+## Setup Required on Resend Dashboard
 
-**Marina Facilities:**
-- Spa and Fitness Club
-- Travel Lift
-- Car Park  
-- Fuel Station
-- Yacht Club
-- Harbour Master / Port Authority / Information Desk
-- Toilet and Shower Facilities
-- Slipway
-- Shopping and Dining
-- Helipad
-- Boatyard
-- Chandlery
-- Cultural Centre
+Before implementation, you will need to:
 
-**Residential Areas:**
-- Nireas, Dioni, Thetis, Nereids, Castle Residences
-- Peninsula Villas
-- Island Villas
+1. Go to **Resend Dashboard > Receiving Emails**
+2. Note your Resend inbound email address (e.g. `anything@yourdomain.resend.app`)
+3. Go to **Webhooks > Add Webhook**
+4. Set the endpoint URL to the edge function URL (we will provide this after creating it)
+5. Select the `email.received` event type
 
 ---
 
 ## Implementation Steps
 
-### Step 1: Copy Marina Image to Assets
-Copy the uploaded aerial photo to the project assets folder:
-- **Source**: `user-uploads://LImassol_Marina_Shoham_Cyprus.webp`
-- **Destination**: `src/assets/limassol-marina.webp`
+### Step 1: Create Database Table
 
-### Step 2: Update PortAgencySectionPage Component
+New table `berth_schedule` to store parsed vessel movements:
 
-Modify `src/pages/port-agency/PortAgencySectionPage.tsx` to:
+| Column | Type | Description |
+|--------|------|-------------|
+| id | uuid | Primary key |
+| day | text | Day of week (WED, THU, etc.) |
+| vessel_name | text | Vessel name |
+| voyage_no | text | Voyage number |
+| movement | text | IN/OUT + PORT/STBD |
+| quay | text | NORTH, CNTR, EAST, etc. |
+| pilot_time | text | Pilot station time |
+| all_fast | text | All fast time (for arrivals) |
+| tug1 | text | Primary tug |
+| tug2 | text | Secondary tug |
+| agent | text | Ship agent |
+| loa | text | Length overall |
+| comments | text | Additional comments |
+| period_start | timestamptz | Schedule period start |
+| period_end | timestamptz | Schedule period end |
+| received_at | timestamptz | When the email was received |
+| created_at | timestamptz | Record creation time |
 
-1. Import the Limassol Marina image
-2. Add a `LimassolMarinaSection` component that displays:
-   - The marina aerial photo with caption
-   - Blue Flag Marina badge/indicator
-   - The official description from the brochure
-   - Facilities grid showing all marina amenities
+RLS: Public read access, service role write access.
 
-### Component Structure
+### Step 2: Create Edge Function `receive-berth-schedule`
 
-```text
-+--------------------------------------------------+
-|  Limassol Marina (heading)                       |
-|  Blue Flag Marina | Port of Entry                |
-+--------------------------------------------------+
-|                                                  |
-|  [Aerial Photo of Marina]                        |
-|  Caption: Limassol Marina - Cyprus               |
-|                                                  |
-+--------------------------------------------------+
-|  Description paragraph from official brochure    |
-+--------------------------------------------------+
-|  Marina Facilities (2-3 column grid):            |
-|  - Spa & Fitness Club    - Fuel Station          |
-|  - Travel Lift           - Yacht Club            |
-|  - Harbour Master        - Helipad               |
-|  - Shower Facilities     - Boatyard              |
-|  - Shopping & Dining     - Chandlery             |
-|  - Slipway               - Car Park              |
-+--------------------------------------------------+
-```
+This edge function will:
+1. Receive the Resend `email.received` webhook event
+2. Use the Resend Attachments API to fetch the PDF attachment
+3. Use Lovable AI (Gemini) to parse the PDF content into structured JSON -- since the PDF has a complex table layout, AI-based extraction will be more reliable than manual parsing
+4. Insert the parsed rows into the `berth_schedule` table
+5. Delete old records (keep only the latest schedule)
+
+### Step 3: Update Limassol Port Schedule Page
+
+Replace the current "link to InfoGate" placeholder with a live berthing schedule table showing:
+- A responsive table with vessel name, movement (IN/OUT), quay, times, tugs, agent
+- Color-coded badges for arrivals (green) vs departures (red)
+- "Last updated" timestamp showing when the schedule was last received
+- The schedule period displayed prominently
+- Keep the InfoGate external link as a secondary reference
+- Auto-refresh via React Query with a 5-minute refetch interval
+
+### Step 4: Add Route for Berth Schedule (optional)
+
+Could also add a dedicated "Berthing Schedule" card on the Ports of Cyprus index page, or enhance the existing Limassol Port Schedule entry.
 
 ---
 
-## Files to Modify
+## Files to Create/Modify
 
 | File | Change |
 |------|--------|
-| `src/assets/limassol-marina.webp` | New file - copy uploaded image |
-| `src/pages/port-agency/PortAgencySectionPage.tsx` | Add Limassol Marina section for yacht-agency |
+| `supabase/functions/receive-berth-schedule/index.ts` | New edge function - webhook receiver |
+| `supabase/config.toml` | Add function config (verify_jwt = false) |
+| Database migration | New `berth_schedule` table |
+| `src/components/port/LimassolScheduleDetails.tsx` | Replace with live berthing table |
+| `src/components/port/BerthScheduleTable.tsx` | New component for the schedule table |
 
 ---
 
 ## Technical Details
 
-### New Component: LimassolMarinaSection
+### Edge Function: `receive-berth-schedule`
 
-```tsx
-const LimassolMarinaSection = () => {
-  const facilities = [
-    "Spa & Fitness Club",
-    "Travel Lift", 
-    "Fuel Station",
-    "Yacht Club",
-    "Harbour Master",
-    "Shower Facilities",
-    "Shopping & Dining",
-    "Helipad",
-    "Boatyard",
-    "Chandlery",
-    "Slipway",
-    "Car Park"
-  ];
-  
-  return (
-    <div className="mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <h3 className="font-heading font-semibold text-xl">
-          Limassol Marina
-        </h3>
-        <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">
-          Blue Flag Marina
-        </span>
-        <span className="bg-primary text-white text-xs px-2 py-1 rounded">
-          Port of Entry
-        </span>
-      </div>
-      
-      <img 
-        src={limassolMarinaImg} 
-        alt="Limassol Marina aerial view"
-        className="w-full rounded-lg shadow-lg mb-4"
-      />
-      
-      <p className="text-muted-foreground mb-6">
-        Limassol Marina is an exciting superyacht destination in the 
-        Mediterranean. Visitors and berth holders benefit from an 
-        unrivalled combination of service, facilities and technical 
-        support. Designed by a world-renowned team of architects and 
-        engineers, it combines elegant residences and a full service 
-        marina with an enticing mix of restaurants and shops.
-      </p>
-      
-      <h4 className="font-semibold mb-3">Marina Facilities</h4>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-        {facilities.map((facility) => (
-          <div key={facility} className="flex items-center gap-2 
-               bg-secondary p-2 rounded text-sm">
-            <div className="w-2 h-2 bg-blue-500 rounded-full" />
-            {facility}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+```text
+1. Receive POST from Resend webhook
+2. Validate event.type === "email.received"
+3. Call Resend API: GET /emails/{email_id}/attachments
+4. Find PDF attachment, download via download_url
+5. Send PDF content to Gemini AI for structured extraction
+6. Parse AI response into berth_schedule rows
+7. Delete previous schedule data
+8. Insert new rows into berth_schedule table
+9. Return 200 OK
 ```
 
-### Conditional Rendering
-The marina section will only appear when `section === "yacht-agency"`, placed between the Overview and "Services We Provide" sections.
+### AI-Powered PDF Parsing
+
+The berth planning PDF has a complex multi-column table. Rather than building a fragile regex parser, we will use Gemini (available via Lovable AI) to extract the data reliably. The prompt will instruct it to return a structured JSON array of vessel movements.
+
+### Frontend Table Design
+
+```text
++------------------------------------------------------------------+
+|  Berth Planning Schedule                    Last updated: 15:28  |
+|  Period: 11/02/2026 16:00 - 12/02/2026 23:59                    |
++------------------------------------------------------------------+
+| Day | Vessel         | IN/OUT | Quay  | Pilot | Agent    | LOA  |
+|-----|----------------|--------|-------|-------|----------|------|
+| WED | PATRIS         |  OUT   | NORTH | 17:00 | Salamis  | 193  |
+| WED | LUCY BORCHARD  |  OUT   | CNTR  | 17:45 | THE CYPR | 133  |
+| WED | MSC ELMA       |  IN    | CNTR  | 18:15 | Mediterr | 300  |
+| THU | MEDKON ONO     |  IN    | CNTR  | 06:00 | Feeder S | 148  |
++------------------------------------------------------------------+
+```
+
+- IN movements shown with a green badge
+- OUT movements shown with a red/orange badge
+- Responsive: on mobile, shows a card layout instead of a table
+- "Berth Planner" name shown as source attribution
 
