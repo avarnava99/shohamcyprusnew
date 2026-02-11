@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      berth_schedule: {
+        Row: {
+          agent: string | null
+          all_fast: string | null
+          comments: string | null
+          created_at: string
+          day: string | null
+          id: string
+          loa: string | null
+          movement: string | null
+          period_end: string | null
+          period_start: string | null
+          pilot_time: string | null
+          quay: string | null
+          received_at: string
+          tug1: string | null
+          tug2: string | null
+          vessel_name: string
+          voyage_no: string | null
+        }
+        Insert: {
+          agent?: string | null
+          all_fast?: string | null
+          comments?: string | null
+          created_at?: string
+          day?: string | null
+          id?: string
+          loa?: string | null
+          movement?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          pilot_time?: string | null
+          quay?: string | null
+          received_at?: string
+          tug1?: string | null
+          tug2?: string | null
+          vessel_name: string
+          voyage_no?: string | null
+        }
+        Update: {
+          agent?: string | null
+          all_fast?: string | null
+          comments?: string | null
+          created_at?: string
+          day?: string | null
+          id?: string
+          loa?: string | null
+          movement?: string | null
+          period_end?: string | null
+          period_start?: string | null
+          pilot_time?: string | null
+          quay?: string | null
+          received_at?: string
+          tug1?: string | null
+          tug2?: string | null
+          vessel_name?: string
+          voyage_no?: string | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           created_at: string
