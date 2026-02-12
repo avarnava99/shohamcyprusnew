@@ -140,6 +140,7 @@ const Header = () => {
       items: [
         { label: "Ports of Cyprus", href: "/port-agency/ports-in-cyprus" },
         { label: "Limassol Terminal", href: "/port-agency/ports-in-cyprus/limassol-container-terminal" },
+        { label: "Berth Schedule", href: "/port-agency/ports-in-cyprus/limassol-port-schedule" },
       ],
     },
   ];
