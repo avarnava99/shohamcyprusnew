@@ -37,10 +37,10 @@ serve(async (req) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Step 1: Fetch attachments list from Resend
+    // Step 1: Fetch attachments list from Resend (inbound/receiving endpoint)
     console.log("Fetching attachments for email:", emailId);
     const attachmentsRes = await fetch(
-      `https://api.resend.com/emails/${emailId}/attachments`,
+      `https://api.resend.com/emails/receiving/${emailId}/attachments`,
       { headers: { Authorization: `Bearer ${RESEND_API_KEY}` } }
     );
 
