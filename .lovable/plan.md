@@ -1,136 +1,112 @@
 
 
-# Plan: Berth Planning Schedule via Email-to-Database Pipeline
+# Redirect Plan: Preserve SEO Traffic from WordPress URLs
 
-## Overview
-Set up a system where you forward the DP World berth planning PDF to a Resend inbound email address. An edge function receives the webhook, fetches the PDF attachment, parses the vessel data, and stores it in the database. The Limassol Port Schedule page will display this data in a clean, auto-refreshing table.
+## The Problem
 
----
+Your Google Search Console data shows **2,161 clicks over 3 months** going to your WordPress URLs. When you switch to the new site, many of these URLs will return 404 errors because the URL structure has changed. This means lost traffic and lost Google rankings.
 
-## How It Works (Simple Flow)
+## Top URLs at Risk (by clicks)
 
-1. You forward the berth planning PDF (2-3 times daily) to a dedicated email address (e.g. `berth@yourdomain.resend.app` or your custom domain)
-2. Resend receives the email and sends a webhook notification to our edge function
-3. The edge function fetches the PDF attachment from Resend, parses the vessel table data, and saves it to the database
-4. The Limassol Port Schedule page automatically shows the latest berthing schedule in a nice table
+| Old WordPress URL | Clicks | New Site Equivalent |
+|---|---|---|
+| `/car-import-duty-calculation/` | 139 | `/services/customs-clearing/duty-calculator-for-cyprus` |
+| `/port-agency/ports-in-cyprus/limassol-port/limassol-port-eurogate-schedule/` | 116 | Eurogate schedule page |
+| `/about-us/contact-us/` | 32 | `/contact-us` |
+| `/car-registration/` | 33 | Customs clearing page |
+| `/about-us/contact-us/careers/` | 25 | `/contact-us` |
+| `/tag/car-duty-calculator/` | 22 | `/services/customs-clearing/duty-calculator-for-cyprus` |
+| `/services/car-shipping-from-uk-to-cyprus/` | 19 | `/services/car-shipping-from-uk-to-cyprus` |
+| `/travel-agency/` (with trailing slash variations) | 15 | `/travel-agency` |
+| `/tag/amazon-cyprus/` | 14 | `/online-purchases-shipped-to-cyprus-from-amazon-uk` |
+| `/services/parcel-forwarding/` | 14 | `/services/parcel-forwarding` |
+| `/services/air-freight-cyprus/` | 10 | `/services/air-freight` |
+| `/home-2/` | 9 | `/` |
+| `/opl-limassol-services-...` | 9 | `/port-agency` |
+| `/tracking/` + `/container-tracking-platform/` | 10 | `/services/container-tracking` |
+| `/drydock-service/` | 6 | `/port-agency` |
+| `/why-ispm-15-certification-matters.../` | 2 clicks, **1,397 impressions** | `/blog` |
 
----
+Plus hundreds of `/tag/*`, `/category/*`, `/product-tag/*`, `/product-category/*`, `/news/*` pages with significant impressions.
 
-## Setup Required on Resend Dashboard
+## The Solution
 
-Before implementation, you will need to:
+Add **301 redirects** (permanent redirects) using React Router's `Navigate` component in `App.tsx`. This tells Google "this page has permanently moved here" and transfers the SEO value.
 
-1. Go to **Resend Dashboard > Receiving Emails**
-2. Note your Resend inbound email address (e.g. `anything@yourdomain.resend.app`)
-3. Go to **Webhooks > Add Webhook**
-4. Set the endpoint URL to the edge function URL (we will provide this after creating it)
-5. Select the `email.received` event type
+### Implementation Steps
 
----
-
-## Implementation Steps
-
-### Step 1: Create Database Table
-
-New table `berth_schedule` to store parsed vessel movements:
-
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| day | text | Day of week (WED, THU, etc.) |
-| vessel_name | text | Vessel name |
-| voyage_no | text | Voyage number |
-| movement | text | IN/OUT + PORT/STBD |
-| quay | text | NORTH, CNTR, EAST, etc. |
-| pilot_time | text | Pilot station time |
-| all_fast | text | All fast time (for arrivals) |
-| tug1 | text | Primary tug |
-| tug2 | text | Secondary tug |
-| agent | text | Ship agent |
-| loa | text | Length overall |
-| comments | text | Additional comments |
-| period_start | timestamptz | Schedule period start |
-| period_end | timestamptz | Schedule period end |
-| received_at | timestamptz | When the email was received |
-| created_at | timestamptz | Record creation time |
-
-RLS: Public read access, service role write access.
-
-### Step 2: Create Edge Function `receive-berth-schedule`
-
-This edge function will:
-1. Receive the Resend `email.received` webhook event
-2. Use the Resend Attachments API to fetch the PDF attachment
-3. Use Lovable AI (Gemini) to parse the PDF content into structured JSON -- since the PDF has a complex table layout, AI-based extraction will be more reliable than manual parsing
-4. Insert the parsed rows into the `berth_schedule` table
-5. Delete old records (keep only the latest schedule)
-
-### Step 3: Update Limassol Port Schedule Page
-
-Replace the current "link to InfoGate" placeholder with a live berthing schedule table showing:
-- A responsive table with vessel name, movement (IN/OUT), quay, times, tugs, agent
-- Color-coded badges for arrivals (green) vs departures (red)
-- "Last updated" timestamp showing when the schedule was last received
-- The schedule period displayed prominently
-- Keep the InfoGate external link as a secondary reference
-- Auto-refresh via React Query with a 5-minute refetch interval
-
-### Step 4: Add Route for Berth Schedule (optional)
-
-Could also add a dedicated "Berthing Schedule" card on the Ports of Cyprus index page, or enhance the existing Limassol Port Schedule entry.
-
----
-
-## Files to Create/Modify
-
-| File | Change |
-|------|--------|
-| `supabase/functions/receive-berth-schedule/index.ts` | New edge function - webhook receiver |
-| `supabase/config.toml` | Add function config (verify_jwt = false) |
-| Database migration | New `berth_schedule` table |
-| `src/components/port/LimassolScheduleDetails.tsx` | Replace with live berthing table |
-| `src/components/port/BerthScheduleTable.tsx` | New component for the schedule table |
-
----
-
-## Technical Details
-
-### Edge Function: `receive-berth-schedule`
+**1. Add specific redirect routes in `App.tsx`** for the highest-traffic old URLs:
 
 ```text
-1. Receive POST from Resend webhook
-2. Validate event.type === "email.received"
-3. Call Resend API: GET /emails/{email_id}/attachments
-4. Find PDF attachment, download via download_url
-5. Send PDF content to Gemini AI for structured extraction
-6. Parse AI response into berth_schedule rows
-7. Delete previous schedule data
-8. Insert new rows into berth_schedule table
-9. Return 200 OK
+/car-import-duty-calculation       -->  /services/customs-clearing/duty-calculator-for-cyprus
+/car-registration                  -->  /services/customs-clearing
+/about-us/contact-us               -->  /contact-us
+/about-us/contact-us/careers       -->  /contact-us
+/home-2                            -->  /
+/tracking                          -->  /services/container-tracking
+/container-tracking-platform       -->  /services/container-tracking
+/drydock-service                   -->  /port-agency
+/services/air-freight-cyprus       -->  /services/air-freight
+/services/travel-agency            -->  /travel-agency
+/services/marine-logistics         -->  /port-agency
+/services/marine-insurance         -->  /services
+/services/cross-shipments-and-dropshipping  -->  /services
+/services/freight-forwarder-cyprus  -->  /services/freight-forwarding
+/services/sea-freight-cyprus       -->  /services/sea-freight
+/services/car-shipping-from-uk-to-cyprus/*  -->  /services/car-shipping-from-uk-to-cyprus
+/services/find-online-shipping-rates-cyprus -->  /quote
+/services/ship-parcel-to-cyprus    -->  /services/parcel-forwarding
+/services/customs-clearing/transfer-of-normal-residence...  -->  /services/customs-clearing
+/services/parcel-forwarding/online-purchases-from-uk  -->  /online-purchases-shipped-to-cyprus-from-amazon-uk
+/services/parcel-forwarding/e-commerce-purchases-from-germany-amazon-de  -->  /ecommerce-purchases-from-germany
+/services/parcel-forwarding/online-purchases-shipped-from-usa-to-cyprus  -->  /ecommerce-purchases-from-usa
+/services/container-tracking-for-multiple-shipping-lines  -->  /services/container-tracking
+/port-agency/ports-in-cyprus/limassol-port/*  -->  /port-agency/ports-in-cyprus/limassol-port
+/port-agency/ports-in-cyprus/limassol-port-cruise-terminal  -->  /port-agency/ports-in-cyprus/limassol-port
+/port-agency/ports-in-cyprus/limassol-port-anchorage  -->  /port-agency/ports-in-cyprus/limassol-port
+/port-agency/ports-in-cyprus/dhekelia-oil-terminal  -->  /port-agency/ports-in-cyprus/vassiliko-oil-terminal
+/port-agency/ports-in-cyprus/larnaca-oil-terminal  -->  /port-agency/ports-in-cyprus/larnaca-port
+/port-agency/ports-in-cyprus/raf-akrotiri-oil-terminal  -->  /port-agency/ports-in-cyprus
+/port-agency/yacht-agency/*        -->  /port-agency
+/port-agency/vessel-repairs        -->  /port-agency
+/port-agency/change-of-ownership   -->  /port-agency
+/port-agency/owners-protecting-agency  -->  /port-agency
+/about-us/general-information/*    -->  /about-us
+/zim-agency-in-cyprus/zim-sailing-schedules/*  -->  /zim-agency-in-cyprus/zim-sailing-schedules
+/zim-agency-in-cyprus/track-your-cargo  -->  /services/container-tracking
 ```
 
-### AI-Powered PDF Parsing
-
-The berth planning PDF has a complex multi-column table. Rather than building a fragile regex parser, we will use Gemini (available via Lovable AI) to extract the data reliably. The prompt will instruct it to return a structured JSON array of vessel movements.
-
-### Frontend Table Design
+**2. Add wildcard catch-all redirects** for WordPress pattern URLs:
 
 ```text
-+------------------------------------------------------------------+
-|  Berth Planning Schedule                    Last updated: 15:28  |
-|  Period: 11/02/2026 16:00 - 12/02/2026 23:59                    |
-+------------------------------------------------------------------+
-| Day | Vessel         | IN/OUT | Quay  | Pilot | Agent    | LOA  |
-|-----|----------------|--------|-------|-------|----------|------|
-| WED | PATRIS         |  OUT   | NORTH | 17:00 | Salamis  | 193  |
-| WED | LUCY BORCHARD  |  OUT   | CNTR  | 17:45 | THE CYPR | 133  |
-| WED | MSC ELMA       |  IN    | CNTR  | 18:15 | Mediterr | 300  |
-| THU | MEDKON ONO     |  IN    | CNTR  | 06:00 | Feeder S | 148  |
-+------------------------------------------------------------------+
+/tag/*              -->  /blog
+/category/*         -->  /blog
+/product-tag/*      -->  /services
+/product-category/* -->  /services
+/news/*             -->  /blog
+/shop/*             -->  /services/used-containers
 ```
 
-- IN movements shown with a green badge
-- OUT movements shown with a red/orange badge
-- Responsive: on mobile, shows a card layout instead of a table
-- "Berth Planner" name shown as source attribution
+**3. Specific blog post redirects** for high-impression articles:
+
+```text
+/why-ispm-15-certification-matters-for-your-cargo  -->  /blog
+/moving-to-cyprus-reliefs-for-transferring-your-normal-residence  -->  /services/customs-clearing
+/what-is-an-eur1-certificate  -->  /services/customs-clearing
+/opl-limassol-services-*  -->  /port-agency
+```
+
+**4. Improve the NotFound page** to suggest relevant pages instead of a dead end, in case any old URL slips through.
+
+### Technical Details
+
+- All redirects will use `<Navigate to="..." replace />` from `react-router-dom`
+- These are client-side redirects (since this is a SPA). They work for users clicking links and for Google's crawler
+- The redirects will be added as `<Route>` elements before the catch-all `*` route
+- Approximately 50-60 redirect routes will be added to `App.tsx`, organized in a clean redirects section
+
+### Files to Change
+
+- **`src/App.tsx`** -- Add all redirect routes
+- **`src/pages/NotFound.tsx`** -- Improve with suggested links to popular pages
 
