@@ -5,7 +5,7 @@ import EcommerceUSA from "./pages/EcommerceUSA";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -105,6 +105,71 @@ const App = () => (
           <Route path="/admin/contacts" element={<ContactSubmissions />} />
           <Route path="/admin/container-orders" element={<ContainerOrders />} />
           <Route path="/admin/duty-leads" element={<DutyCalculatorLeads />} />
+
+          {/* ============================================= */}
+          {/* SEO REDIRECTS - WordPress URL preservation     */}
+          {/* ============================================= */}
+
+          {/* High-traffic page redirects */}
+          <Route path="/car-import-duty-calculation" element={<Navigate to="/services/customs-clearing/duty-calculator-for-cyprus" replace />} />
+          <Route path="/car-registration" element={<Navigate to="/services/customs-clearing" replace />} />
+          <Route path="/about-us/contact-us/careers" element={<Navigate to="/contact-us" replace />} />
+          <Route path="/about-us/contact-us" element={<Navigate to="/contact-us" replace />} />
+          <Route path="/home-2" element={<Navigate to="/" replace />} />
+          <Route path="/tracking" element={<Navigate to="/services/container-tracking" replace />} />
+          <Route path="/container-tracking-platform" element={<Navigate to="/services/container-tracking" replace />} />
+          <Route path="/drydock-service" element={<Navigate to="/port-agency" replace />} />
+
+          {/* Service page redirects */}
+          <Route path="/services/air-freight-cyprus" element={<Navigate to="/services/air-freight" replace />} />
+          <Route path="/services/travel-agency" element={<Navigate to="/travel-agency" replace />} />
+          <Route path="/services/marine-logistics" element={<Navigate to="/port-agency" replace />} />
+          <Route path="/services/marine-insurance" element={<Navigate to="/services" replace />} />
+          <Route path="/services/cross-shipments-and-dropshipping" element={<Navigate to="/services" replace />} />
+          <Route path="/services/freight-forwarder-cyprus" element={<Navigate to="/services/freight-forwarding" replace />} />
+          <Route path="/services/sea-freight-cyprus" element={<Navigate to="/services/sea-freight" replace />} />
+          <Route path="/services/car-shipping-from-uk-to-cyprus/*" element={<Navigate to="/services/car-shipping-from-uk-to-cyprus" replace />} />
+          <Route path="/services/find-online-shipping-rates-cyprus" element={<Navigate to="/quote" replace />} />
+          <Route path="/services/ship-parcel-to-cyprus" element={<Navigate to="/services/parcel-forwarding" replace />} />
+          <Route path="/services/customs-clearing/transfer-of-normal-residence-to-cyprus" element={<Navigate to="/services/customs-clearing" replace />} />
+          <Route path="/services/container-tracking-for-multiple-shipping-lines" element={<Navigate to="/services/container-tracking" replace />} />
+
+          {/* Parcel forwarding sub-page redirects */}
+          <Route path="/services/parcel-forwarding/online-purchases-from-uk" element={<Navigate to="/online-purchases-shipped-to-cyprus-from-amazon-uk" replace />} />
+          <Route path="/services/parcel-forwarding/e-commerce-purchases-from-germany-amazon-de" element={<Navigate to="/ecommerce-purchases-from-germany" replace />} />
+          <Route path="/services/parcel-forwarding/online-purchases-shipped-from-usa-to-cyprus" element={<Navigate to="/ecommerce-purchases-from-usa" replace />} />
+
+          {/* Port agency redirects */}
+          <Route path="/port-agency/ports-in-cyprus/limassol-port/limassol-port-eurogate-schedule" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/limassol-port/*" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/limassol-port-cruise-terminal" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/limassol-port-anchorage" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/dhekelia-oil-terminal" element={<Navigate to="/port-agency/ports-in-cyprus/vassiliko-oil-terminal" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/larnaca-oil-terminal" element={<Navigate to="/port-agency/ports-in-cyprus/larnaca-port" replace />} />
+          <Route path="/port-agency/ports-in-cyprus/raf-akrotiri-oil-terminal" element={<Navigate to="/port-agency/ports-in-cyprus" replace />} />
+          <Route path="/port-agency/yacht-agency/*" element={<Navigate to="/port-agency" replace />} />
+          <Route path="/port-agency/vessel-repairs" element={<Navigate to="/port-agency" replace />} />
+          <Route path="/port-agency/change-of-ownership" element={<Navigate to="/port-agency" replace />} />
+          <Route path="/port-agency/owners-protecting-agency" element={<Navigate to="/port-agency" replace />} />
+
+          {/* About & ZIM redirects */}
+          <Route path="/about-us/general-information/*" element={<Navigate to="/about-us" replace />} />
+          <Route path="/zim-agency-in-cyprus/zim-sailing-schedules/*" element={<Navigate to="/zim-agency-in-cyprus/zim-sailing-schedules" replace />} />
+          <Route path="/zim-agency-in-cyprus/track-your-cargo" element={<Navigate to="/services/container-tracking" replace />} />
+
+          {/* Blog post redirects (high impressions) */}
+          <Route path="/why-ispm-15-certification-matters-for-your-cargo" element={<Navigate to="/blog" replace />} />
+          <Route path="/moving-to-cyprus-reliefs-for-transferring-your-normal-residence" element={<Navigate to="/services/customs-clearing" replace />} />
+          <Route path="/what-is-an-eur1-certificate" element={<Navigate to="/services/customs-clearing" replace />} />
+          <Route path="/opl-limassol-services-*" element={<Navigate to="/port-agency" replace />} />
+
+          {/* WordPress pattern catch-all redirects */}
+          <Route path="/tag/*" element={<Navigate to="/blog" replace />} />
+          <Route path="/category/*" element={<Navigate to="/blog" replace />} />
+          <Route path="/product-tag/*" element={<Navigate to="/services" replace />} />
+          <Route path="/product-category/*" element={<Navigate to="/services" replace />} />
+          <Route path="/news/*" element={<Navigate to="/blog" replace />} />
+          <Route path="/shop/*" element={<Navigate to="/services/used-containers" replace />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
