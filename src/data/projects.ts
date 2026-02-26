@@ -175,6 +175,14 @@ export const projects: Project[] = [
       vassilikosPower19, vassilikosPower20
     ],
   },
+  {
+    slug: "positioning-of-transformer",
+    title: "Positioning of Transformer",
+    description: "In 2006, we handled the discharging from the vessel, the transport and the positioning of a 60 ton transformer. The location the transformer was installed was the Kolossi Substation operated by the Electricity Authority of Cyprus.",
+    year: "2006",
+    location: "Kolossi, Cyprus",
+    category: "Heavy Lift",
+  },
 ];
 
 export const getProjectBySlug = (slug: string): Project | undefined => {
