@@ -187,6 +187,7 @@ export const projects: Project[] = [
     year: "2006",
     location: "Kolossi, Cyprus",
     category: "Heavy Lift",
+    images: [kolossiTransformer1, kolossiTransformer2, kolossiTransformer3, kolossiTransformer4, kolossiTransformer5],
   },
 ];
 
