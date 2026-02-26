@@ -66,6 +66,16 @@ import mobilePlant5 from "@/assets/projects/mobile-plant-5.webp";
 import mobilePlant6 from "@/assets/projects/mobile-plant-6.webp";
 import mobilePlant7 from "@/assets/projects/mobile-plant-7.webp";
 import mobilePlant8 from "@/assets/projects/mobile-plant-8.webp";
+import vassilikosDesal1 from "@/assets/projects/vassilikos-desal-1.webp";
+import vassilikosDesal2 from "@/assets/projects/vassilikos-desal-2.webp";
+import vassilikosDesal3 from "@/assets/projects/vassilikos-desal-3.webp";
+import vassilikosDesal4 from "@/assets/projects/vassilikos-desal-4.jpg";
+import vassilikosDesal5 from "@/assets/projects/vassilikos-desal-5.webp";
+import vassilikosDesal6 from "@/assets/projects/vassilikos-desal-6.jpg";
+import vassilikosDesal7 from "@/assets/projects/vassilikos-desal-7.webp";
+import vassilikosDesal8 from "@/assets/projects/vassilikos-desal-8.webp";
+import vassilikosDesal9 from "@/assets/projects/vassilikos-desal-9.webp";
+import vassilikosDesal10 from "@/assets/projects/vassilikos-desal-10.jpg";
 
 export interface Project {
   slug: string;
@@ -175,10 +185,16 @@ export const projects: Project[] = [
   {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
-    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. This major project required careful planning and coordination with multiple stakeholders.",
+    subtitle: "Unloading and installing 13 desalination tanks",
+    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. The cargo was transported from Vassiliko port to Vassiliko desalination plant.",
+    fullDescription: [
+      "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks.",
+      "The cargo was transported from Vassiliko port to Vassiliko desalination plant as shown in the gallery below."
+    ],
     year: "2012",
     location: "Vassiliko",
     category: "Project Cargo",
+    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10],
   },
   {
     slug: "chimney-sections",
