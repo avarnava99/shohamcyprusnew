@@ -92,6 +92,12 @@ import loadingGenerators6 from "@/assets/projects/loading-generators-6.webp";
 import loadingGenerators7 from "@/assets/projects/loading-generators-7.webp";
 import loadingGenerators8 from "@/assets/projects/loading-generators-8.webp";
 import loadingGenerators9 from "@/assets/projects/loading-generators-9.webp";
+import unVehicles1 from "@/assets/projects/un-vehicles-1.webp";
+import unVehicles2 from "@/assets/projects/un-vehicles-2.webp";
+import unVehicles3 from "@/assets/projects/un-vehicles-3.webp";
+import unVehicles4 from "@/assets/projects/un-vehicles-4.webp";
+import unVehicles5 from "@/assets/projects/un-vehicles-5.webp";
+import unVehicles6 from "@/assets/projects/un-vehicles-6.webp";
 
 export interface Project {
   slug: string;
@@ -203,6 +209,20 @@ export const projects: Project[] = [
     location: "Limassol Port",
     category: "Heavy Lift",
     images: [loadingGenerators1, loadingGenerators2, loadingGenerators3, loadingGenerators4, loadingGenerators5, loadingGenerators6, loadingGenerators7, loadingGenerators8, loadingGenerators9],
+  },
+  {
+    slug: "unloading-un-vehicles",
+    title: "Unloading UN Vehicles",
+    subtitle: "Unloading of 76 United Nations vehicles at Larnaca port",
+    description: "In March 2013, we undertook the unloading of 76 United Nations vehicles at Larnaca port from a general cargo vessel. The unloading required special fabrication of unloading equipment which was fabricated in short notice.",
+    fullDescription: [
+      "In March 2013, we undertook the unloading of 76 United Nations vehicles at Larnaca port from a general cargo vessel.",
+      "The unloading required special fabrication of unloading equipment which was fabricated in short notice."
+    ],
+    year: "2013",
+    location: "Larnaca Port",
+    category: "Breakbulk",
+    images: [unVehicles1, unVehicles2, unVehicles3, unVehicles4, unVehicles5, unVehicles6],
   },
   {
     slug: "vassilikos-desalination-plant",
