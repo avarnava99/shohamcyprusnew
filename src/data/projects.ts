@@ -162,6 +162,19 @@ export const projects: Project[] = [
     category: "Project Cargo",
   },
   {
+    slug: "chimney-sections",
+    title: "Chimney Sections",
+    subtitle: "Chimney Sections for Electricity Plant",
+    description: "In 2009 our customer assigned us with the transport of chimney sections. The chimney sections were oversize and we arranged according to all the regulations the clearing and delivery to the Dhekelia Power Station.",
+    fullDescription: [
+      "In 2009 our customer assigned us with the transport of chimney sections.",
+      "The chimney sections were oversize and we arranged according to all the regulations the clearing and delivery to the Dhekelia Power Station."
+    ],
+    year: "2009",
+    location: "Dhekelia, Cyprus",
+    category: "Project Cargo",
+  },
+  {
     slug: "vassilikos-power-station",
     title: "Vassilikos Power Station Upgrade",
     subtitle: "One of the biggest logistics projects on the island at the time",
