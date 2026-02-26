@@ -189,6 +189,14 @@ export const projects: Project[] = [
     category: "Heavy Lift",
     images: [kolossiTransformer1, kolossiTransformer2, kolossiTransformer3, kolossiTransformer4, kolossiTransformer5],
   },
+  {
+    slug: "delivery-of-transformer",
+    title: "Delivery of Transformer",
+    description: "In March 2007 we arranged the transport and positioning of a 32 ton transformer at Episkopi substation for the Electricity Authority of Cyprus.",
+    year: "2007",
+    location: "Episkopi, Cyprus",
+    category: "Heavy Lift",
+  },
 ];
 
 export const getProjectBySlug = (slug: string): Project | undefined => {
