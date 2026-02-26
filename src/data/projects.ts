@@ -58,6 +58,14 @@ import dhekeliaGenerators2 from "@/assets/projects/dhekelia-generators-2.webp";
 import dhekeliaGenerators3 from "@/assets/projects/dhekelia-generators-3.webp";
 import dhekeliaGenerators4 from "@/assets/projects/dhekelia-generators-4.webp";
 import dhekeliaGenerators5 from "@/assets/projects/dhekelia-generators-5.webp";
+import mobilePlant1 from "@/assets/projects/mobile-plant-1.webp";
+import mobilePlant2 from "@/assets/projects/mobile-plant-2.webp";
+import mobilePlant3 from "@/assets/projects/mobile-plant-3.webp";
+import mobilePlant4 from "@/assets/projects/mobile-plant-4.webp";
+import mobilePlant5 from "@/assets/projects/mobile-plant-5.webp";
+import mobilePlant6 from "@/assets/projects/mobile-plant-6.webp";
+import mobilePlant7 from "@/assets/projects/mobile-plant-7.webp";
+import mobilePlant8 from "@/assets/projects/mobile-plant-8.webp";
 
 export interface Project {
   slug: string;
