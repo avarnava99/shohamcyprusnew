@@ -66,6 +66,16 @@ import mobilePlant5 from "@/assets/projects/mobile-plant-5.webp";
 import mobilePlant6 from "@/assets/projects/mobile-plant-6.webp";
 import mobilePlant7 from "@/assets/projects/mobile-plant-7.webp";
 import mobilePlant8 from "@/assets/projects/mobile-plant-8.webp";
+import vassilikosDesal1 from "@/assets/projects/vassilikos-desal-1.webp";
+import vassilikosDesal2 from "@/assets/projects/vassilikos-desal-2.webp";
+import vassilikosDesal3 from "@/assets/projects/vassilikos-desal-3.webp";
+import vassilikosDesal4 from "@/assets/projects/vassilikos-desal-4.jpg";
+import vassilikosDesal5 from "@/assets/projects/vassilikos-desal-5.webp";
+import vassilikosDesal6 from "@/assets/projects/vassilikos-desal-6.jpg";
+import vassilikosDesal7 from "@/assets/projects/vassilikos-desal-7.webp";
+import vassilikosDesal8 from "@/assets/projects/vassilikos-desal-8.webp";
+import vassilikosDesal9 from "@/assets/projects/vassilikos-desal-9.webp";
+import vassilikosDesal10 from "@/assets/projects/vassilikos-desal-10.jpg";
 
 export interface Project {
   slug: string;
