@@ -210,6 +210,21 @@ export const projects: Project[] = [
     images: [dhekeliaGenerators1, dhekeliaGenerators2, dhekeliaGenerators3, dhekeliaGenerators4, dhekeliaGenerators5],
   },
   {
+    slug: "mobile-electricity-plant",
+    title: "Mobile Electricity Plant",
+    subtitle: "Transport and positioning of mobile electricity plant",
+    description: "In 2011 we were assigned with the task of transporting and positioning a mobile electricity plant. The plant consisted of mobile generators and fuel tanks. The equipment were placed next to Dhekelia and Moni power stations, supporting the electricity production of the island for the hot summer months.",
+    fullDescription: [
+      "In 2011 we were assigned with the task of transporting and positioning a mobile electricity plant.",
+      "The plant consisted of mobile generators and fuel tanks.",
+      "The equipment were placed next to Dhekelia and Moni power stations, supporting the electricity production of the island for the hot summer months."
+    ],
+    year: "2011",
+    location: "Dhekelia & Moni, Cyprus",
+    category: "Project Cargo",
+    images: [mobilePlant1, mobilePlant2, mobilePlant3, mobilePlant4, mobilePlant5, mobilePlant6, mobilePlant7, mobilePlant8],
+  },
+  {
     slug: "vassilikos-power-station",
     title: "Vassilikos Power Station Upgrade",
     subtitle: "One of the biggest logistics projects on the island at the time",
