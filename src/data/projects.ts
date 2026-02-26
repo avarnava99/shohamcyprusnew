@@ -185,10 +185,16 @@ export const projects: Project[] = [
   {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
-    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. This major project required careful planning and coordination with multiple stakeholders.",
+    subtitle: "Unloading and installing 13 desalination tanks",
+    description: "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks. The cargo was transported from Vassiliko port to Vassiliko desalination plant.",
+    fullDescription: [
+      "In August 2012 we were assigned with the task of unloading from a vessel and installing 13 desalination tanks.",
+      "The cargo was transported from Vassiliko port to Vassiliko desalination plant as shown in the gallery below."
+    ],
     year: "2012",
     location: "Vassiliko",
     category: "Project Cargo",
+    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10],
   },
   {
     slug: "chimney-sections",
