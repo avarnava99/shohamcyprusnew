@@ -53,6 +53,11 @@ import chimneySections3 from "@/assets/projects/chimney-sections-3.webp";
 import chimneySections4 from "@/assets/projects/chimney-sections-4.webp";
 import chimneySections5 from "@/assets/projects/chimney-sections-5.webp";
 import chimneySections6 from "@/assets/projects/chimney-sections-6.jpg";
+import dhekeliaGenerators1 from "@/assets/projects/dhekelia-generators-1.webp";
+import dhekeliaGenerators2 from "@/assets/projects/dhekelia-generators-2.webp";
+import dhekeliaGenerators3 from "@/assets/projects/dhekelia-generators-3.webp";
+import dhekeliaGenerators4 from "@/assets/projects/dhekelia-generators-4.webp";
+import dhekeliaGenerators5 from "@/assets/projects/dhekelia-generators-5.webp";
 
 export interface Project {
   slug: string;
@@ -180,6 +185,21 @@ export const projects: Project[] = [
     location: "Dhekelia, Cyprus",
     category: "Project Cargo",
     images: [chimneySections1, chimneySections2, chimneySections3, chimneySections4, chimneySections5, chimneySections6],
+  },
+  {
+    slug: "generators-for-electricity-plant",
+    title: "Generators for Plant",
+    subtitle: "Stevedoring and logistics handling of 4 heavy generators",
+    description: "In 2010 we undertook the stevedoring and logistics handling of 4 heavy generators. The units were 2 x 68 tons and 2 x 295 tons generators. The generators were destined for the Dhekelia Electricity Authority Station.",
+    fullDescription: [
+      "In 2010 we undertook the stevedoring and logistics handling of 4 heavy generators.",
+      "The units were 2 x 68 tons and 2 x 295 tons generators.",
+      "The generators were destined for the Dhekelia Electricity Authority Station."
+    ],
+    year: "2010",
+    location: "Dhekelia, Cyprus",
+    category: "Heavy Lift",
+    images: [dhekeliaGenerators1, dhekeliaGenerators2, dhekeliaGenerators3, dhekeliaGenerators4, dhekeliaGenerators5],
   },
   {
     slug: "vassilikos-power-station",
