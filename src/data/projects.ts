@@ -83,6 +83,15 @@ import vassilikosDesal14 from "@/assets/projects/vassilikos-desal-14.jpg";
 import vassilikosDesal15 from "@/assets/projects/vassilikos-desal-15.webp";
 import vassilikosDesal16 from "@/assets/projects/vassilikos-desal-16.webp";
 import vassilikosDesal17 from "@/assets/projects/vassilikos-desal-17.webp";
+import loadingGenerators1 from "@/assets/projects/loading-generators-1.webp";
+import loadingGenerators2 from "@/assets/projects/loading-generators-2.webp";
+import loadingGenerators3 from "@/assets/projects/loading-generators-3.webp";
+import loadingGenerators4 from "@/assets/projects/loading-generators-4.webp";
+import loadingGenerators5 from "@/assets/projects/loading-generators-5.webp";
+import loadingGenerators6 from "@/assets/projects/loading-generators-6.webp";
+import loadingGenerators7 from "@/assets/projects/loading-generators-7.webp";
+import loadingGenerators8 from "@/assets/projects/loading-generators-8.webp";
+import loadingGenerators9 from "@/assets/projects/loading-generators-9.webp";
 
 export interface Project {
   slug: string;
