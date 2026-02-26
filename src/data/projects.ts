@@ -38,6 +38,11 @@ import vassilikosPower17 from "@/assets/projects/vassilikos-power-17.jpg";
 import vassilikosPower18 from "@/assets/projects/vassilikos-power-18.jpg";
 import vassilikosPower19 from "@/assets/projects/vassilikos-power-19.gif";
 import vassilikosPower20 from "@/assets/projects/vassilikos-power-20.jpg";
+import kolossiTransformer1 from "@/assets/projects/kolossi-transformer-1.webp";
+import kolossiTransformer2 from "@/assets/projects/kolossi-transformer-2.webp";
+import kolossiTransformer3 from "@/assets/projects/kolossi-transformer-3.webp";
+import kolossiTransformer4 from "@/assets/projects/kolossi-transformer-4.webp";
+import kolossiTransformer5 from "@/assets/projects/kolossi-transformer-5.webp";
 
 export interface Project {
   slug: string;
