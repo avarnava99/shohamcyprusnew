@@ -201,7 +201,7 @@ export const projects: Project[] = [
     year: "2012",
     location: "Vassiliko",
     category: "Project Cargo",
-    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10],
+    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10, vassilikosDesal11, vassilikosDesal12, vassilikosDesal13, vassilikosDesal14, vassilikosDesal15, vassilikosDesal16, vassilikosDesal17],
   },
   {
     slug: "chimney-sections",
