@@ -1,39 +1,30 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Add "Generators for Plant" Project with Photos
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Add a new project entry for the 2010 generators delivery to Dhekelia Power Station, along with 5 unique uploaded photos (images 5 and 6 appear identical, so one will be skipped).
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. Copy 5 images to `src/assets/projects/`
+- `generators-for-Dhekelia-power-station-1.webp` -> `dhekelia-generators-1.webp`
+- `generators-for-Dhekelia-power-station-2.webp` -> `dhekelia-generators-2.webp`
+- `generators-for-Dhekelia-power-station-3.webp` -> `dhekelia-generators-3.webp`
+- `generators-for-Dhekelia-power-station-4-e1566051548398.webp` -> `dhekelia-generators-4.webp`
+- `generators-for-Dhekelia-power-station-6.webp` -> `dhekelia-generators-5.webp`
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+Image 5 is skipped as it's identical to image 6.
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
-
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### 2. Update `src/data/projects.ts`
+- Add 5 image imports
+- Insert new project entry for year 2010 (between the 2009 Chimney Sections and 2012 entries):
+  - **Slug:** `generators-for-electricity-plant`
+  - **Title:** Generators for Plant
+  - **Subtitle:** Stevedoring and logistics handling of 4 heavy generators
+  - **Description:** In 2010 we undertook the stevedoring and logistics handling of 4 heavy generators. The units were 2 x 68 tons and 2 x 295 tons generators. The generators were destined for the Dhekelia Electricity Authority Station.
+  - **Year:** 2010
+  - **Location:** Dhekelia, Cyprus
+  - **Category:** Heavy Lift
+  - **Images:** all 5 images
 
