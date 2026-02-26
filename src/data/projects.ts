@@ -193,10 +193,16 @@ export const projects: Project[] = [
   {
     slug: "loading-mobile-generators",
     title: "Loading Mobile Generators",
+    subtitle: "Loading of mobile generators at Limassol Port",
     description: "In March 2013, we arranged the loading of mobile generators which were used by the Electricity of Cyprus during shortages. The project involved coordination of heavy lift operations and vessel loading at Limassol port.",
+    fullDescription: [
+      "In March 2013, we arranged the loading of mobile generators which were used by the Electricity of Cyprus during shortages.",
+      "The project involved coordination of heavy lift operations and vessel loading at Limassol port."
+    ],
     year: "2013",
     location: "Limassol Port",
     category: "Heavy Lift",
+    images: [loadingGenerators1, loadingGenerators2, loadingGenerators3, loadingGenerators4, loadingGenerators5, loadingGenerators6, loadingGenerators7, loadingGenerators8, loadingGenerators9],
   },
   {
     slug: "vassilikos-desalination-plant",
