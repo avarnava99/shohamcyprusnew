@@ -47,6 +47,12 @@ import episkopiTransformer1 from "@/assets/projects/episkopi-transformer-1.webp"
 import episkopiTransformer2 from "@/assets/projects/episkopi-transformer-2.webp";
 import episkopiTransformer3 from "@/assets/projects/episkopi-transformer-3.jpg";
 import episkopiTransformer4 from "@/assets/projects/episkopi-transformer-4.webp";
+import chimneySections1 from "@/assets/projects/chimney-sections-1.webp";
+import chimneySections2 from "@/assets/projects/chimney-sections-2.webp";
+import chimneySections3 from "@/assets/projects/chimney-sections-3.webp";
+import chimneySections4 from "@/assets/projects/chimney-sections-4.webp";
+import chimneySections5 from "@/assets/projects/chimney-sections-5.webp";
+import chimneySections6 from "@/assets/projects/chimney-sections-6.jpg";
 
 export interface Project {
   slug: string;
@@ -173,6 +179,7 @@ export const projects: Project[] = [
     year: "2009",
     location: "Dhekelia, Cyprus",
     category: "Project Cargo",
+    images: [chimneySections1, chimneySections2, chimneySections3, chimneySections4, chimneySections5, chimneySections6],
   },
   {
     slug: "vassilikos-power-station",
