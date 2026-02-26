@@ -187,6 +187,21 @@ export const projects: Project[] = [
     images: [chimneySections1, chimneySections2, chimneySections3, chimneySections4, chimneySections5, chimneySections6],
   },
   {
+    slug: "generators-for-electricity-plant",
+    title: "Generators for Plant",
+    subtitle: "Stevedoring and logistics handling of 4 heavy generators",
+    description: "In 2010 we undertook the stevedoring and logistics handling of 4 heavy generators. The units were 2 x 68 tons and 2 x 295 tons generators. The generators were destined for the Dhekelia Electricity Authority Station.",
+    fullDescription: [
+      "In 2010 we undertook the stevedoring and logistics handling of 4 heavy generators.",
+      "The units were 2 x 68 tons and 2 x 295 tons generators.",
+      "The generators were destined for the Dhekelia Electricity Authority Station."
+    ],
+    year: "2010",
+    location: "Dhekelia, Cyprus",
+    category: "Heavy Lift",
+    images: [dhekeliaGenerators1, dhekeliaGenerators2, dhekeliaGenerators3, dhekeliaGenerators4, dhekeliaGenerators5],
+  },
+  {
     slug: "vassilikos-power-station",
     title: "Vassilikos Power Station Upgrade",
     subtitle: "One of the biggest logistics projects on the island at the time",
