@@ -211,6 +211,20 @@ export const projects: Project[] = [
     images: [loadingGenerators1, loadingGenerators2, loadingGenerators3, loadingGenerators4, loadingGenerators5, loadingGenerators6, loadingGenerators7, loadingGenerators8, loadingGenerators9],
   },
   {
+    slug: "unloading-un-vehicles",
+    title: "Unloading UN Vehicles",
+    subtitle: "Unloading of 76 United Nations vehicles at Larnaca port",
+    description: "In March 2013, we undertook the unloading of 76 United Nations vehicles at Larnaca port from a general cargo vessel. The unloading required special fabrication of unloading equipment which was fabricated in short notice.",
+    fullDescription: [
+      "In March 2013, we undertook the unloading of 76 United Nations vehicles at Larnaca port from a general cargo vessel.",
+      "The unloading required special fabrication of unloading equipment which was fabricated in short notice."
+    ],
+    year: "2013",
+    location: "Larnaca Port",
+    category: "Breakbulk",
+    images: [unVehicles1, unVehicles2, unVehicles3, unVehicles4, unVehicles5, unVehicles6],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
