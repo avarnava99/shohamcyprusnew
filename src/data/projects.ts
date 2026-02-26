@@ -76,6 +76,13 @@ import vassilikosDesal7 from "@/assets/projects/vassilikos-desal-7.webp";
 import vassilikosDesal8 from "@/assets/projects/vassilikos-desal-8.webp";
 import vassilikosDesal9 from "@/assets/projects/vassilikos-desal-9.webp";
 import vassilikosDesal10 from "@/assets/projects/vassilikos-desal-10.jpg";
+import vassilikosDesal11 from "@/assets/projects/vassilikos-desal-11.jpg";
+import vassilikosDesal12 from "@/assets/projects/vassilikos-desal-12.webp";
+import vassilikosDesal13 from "@/assets/projects/vassilikos-desal-13.webp";
+import vassilikosDesal14 from "@/assets/projects/vassilikos-desal-14.jpg";
+import vassilikosDesal15 from "@/assets/projects/vassilikos-desal-15.webp";
+import vassilikosDesal16 from "@/assets/projects/vassilikos-desal-16.webp";
+import vassilikosDesal17 from "@/assets/projects/vassilikos-desal-17.webp";
 
 export interface Project {
   slug: string;
@@ -194,7 +201,7 @@ export const projects: Project[] = [
     year: "2012",
     location: "Vassiliko",
     category: "Project Cargo",
-    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10],
+    images: [vassilikosDesal1, vassilikosDesal2, vassilikosDesal3, vassilikosDesal4, vassilikosDesal5, vassilikosDesal6, vassilikosDesal7, vassilikosDesal8, vassilikosDesal9, vassilikosDesal10, vassilikosDesal11, vassilikosDesal12, vassilikosDesal13, vassilikosDesal14, vassilikosDesal15, vassilikosDesal16, vassilikosDesal17],
   },
   {
     slug: "chimney-sections",
