@@ -43,6 +43,10 @@ import kolossiTransformer2 from "@/assets/projects/kolossi-transformer-2.webp";
 import kolossiTransformer3 from "@/assets/projects/kolossi-transformer-3.webp";
 import kolossiTransformer4 from "@/assets/projects/kolossi-transformer-4.webp";
 import kolossiTransformer5 from "@/assets/projects/kolossi-transformer-5.webp";
+import episkopiTransformer1 from "@/assets/projects/episkopi-transformer-1.webp";
+import episkopiTransformer2 from "@/assets/projects/episkopi-transformer-2.webp";
+import episkopiTransformer3 from "@/assets/projects/episkopi-transformer-3.jpg";
+import episkopiTransformer4 from "@/assets/projects/episkopi-transformer-4.webp";
 
 export interface Project {
   slug: string;
