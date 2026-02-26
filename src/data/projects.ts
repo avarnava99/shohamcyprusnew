@@ -53,6 +53,11 @@ import chimneySections3 from "@/assets/projects/chimney-sections-3.webp";
 import chimneySections4 from "@/assets/projects/chimney-sections-4.webp";
 import chimneySections5 from "@/assets/projects/chimney-sections-5.webp";
 import chimneySections6 from "@/assets/projects/chimney-sections-6.jpg";
+import dhekeliaGenerators1 from "@/assets/projects/dhekelia-generators-1.webp";
+import dhekeliaGenerators2 from "@/assets/projects/dhekelia-generators-2.webp";
+import dhekeliaGenerators3 from "@/assets/projects/dhekelia-generators-3.webp";
+import dhekeliaGenerators4 from "@/assets/projects/dhekelia-generators-4.webp";
+import dhekeliaGenerators5 from "@/assets/projects/dhekelia-generators-5.webp";
 
 export interface Project {
   slug: string;
