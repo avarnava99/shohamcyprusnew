@@ -179,6 +179,7 @@ export const projects: Project[] = [
     year: "2009",
     location: "Dhekelia, Cyprus",
     category: "Project Cargo",
+    images: [chimneySections1, chimneySections2, chimneySections3, chimneySections4, chimneySections5, chimneySections6],
   },
   {
     slug: "vassilikos-power-station",
