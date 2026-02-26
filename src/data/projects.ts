@@ -92,6 +92,12 @@ import loadingGenerators6 from "@/assets/projects/loading-generators-6.webp";
 import loadingGenerators7 from "@/assets/projects/loading-generators-7.webp";
 import loadingGenerators8 from "@/assets/projects/loading-generators-8.webp";
 import loadingGenerators9 from "@/assets/projects/loading-generators-9.webp";
+import unVehicles1 from "@/assets/projects/un-vehicles-1.webp";
+import unVehicles2 from "@/assets/projects/un-vehicles-2.webp";
+import unVehicles3 from "@/assets/projects/un-vehicles-3.webp";
+import unVehicles4 from "@/assets/projects/un-vehicles-4.webp";
+import unVehicles5 from "@/assets/projects/un-vehicles-5.webp";
+import unVehicles6 from "@/assets/projects/un-vehicles-6.webp";
 
 export interface Project {
   slug: string;
