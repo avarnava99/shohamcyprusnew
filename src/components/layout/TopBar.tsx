@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Phone, Mail, Clock, LogOut, Settings } from "lucide-react";
+import { Phone, Mail, Clock, LogOut, Settings, UserCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -71,6 +71,11 @@ const TopBar = () => {
           {user ? (
             <>
               <span className="text-white/70 hidden sm:inline">{user.email}</span>
+              <span className="text-white/50">|</span>
+              <Link to="/account" className="hover:text-[#f59e0b] transition-colors flex items-center gap-1">
+                <UserCircle className="h-3 w-3" />
+                My Account
+              </Link>
               {isAdmin && (
                 <>
                   <span className="text-white/50">|</span>
