@@ -99,6 +99,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/account" element={<Account />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminDashboard />} />
