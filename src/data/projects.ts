@@ -272,6 +272,20 @@ export const projects: Project[] = [
     images: [risers1, risers2, risers3, risers4, risers5, risers6],
   },
   {
+    slug: "mud-plant-export",
+    title: "Mud Plant Export",
+    subtitle: "Chartering and export of 350 tons of mud plant equipment",
+    description: "In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger. The scope of work was to arrange chartering the vessel, arrange the stowage plan, load safely the cargo and secure the cargo in the vessel.",
+    fullDescription: [
+      "In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger.",
+      "The scope of work was to arrange chartering the vessel, arrange the stowage plan, load safely the cargo and secure the cargo in the vessel."
+    ],
+    year: "2014",
+    location: "Limassol Port",
+    category: "Chartering",
+    images: [mudPlant1, mudPlant2, mudPlant3, mudPlant4, mudPlant5, mudPlant6, mudPlant7, mudPlant8, mudPlant9, mudPlant10],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
