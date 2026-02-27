@@ -114,6 +114,16 @@ import offshoreBaskets7 from "@/assets/projects/offshore-baskets-7.webp";
 import offshoreBaskets8 from "@/assets/projects/offshore-baskets-8.webp";
 import offshoreBaskets9 from "@/assets/projects/offshore-baskets-9.webp";
 import offshoreBaskets10 from "@/assets/projects/offshore-baskets-10.webp";
+import mudPlant1 from "@/assets/projects/mud-plant-1.webp";
+import mudPlant2 from "@/assets/projects/mud-plant-2.webp";
+import mudPlant3 from "@/assets/projects/mud-plant-3.webp";
+import mudPlant4 from "@/assets/projects/mud-plant-4.webp";
+import mudPlant5 from "@/assets/projects/mud-plant-5.webp";
+import mudPlant6 from "@/assets/projects/mud-plant-6.webp";
+import mudPlant7 from "@/assets/projects/mud-plant-7.webp";
+import mudPlant8 from "@/assets/projects/mud-plant-8.webp";
+import mudPlant9 from "@/assets/projects/mud-plant-9.webp";
+import mudPlant10 from "@/assets/projects/mud-plant-10.webp";
 
 export interface Project {
   slug: string;
