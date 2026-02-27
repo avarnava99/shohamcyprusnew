@@ -1,48 +1,39 @@
 
 
-# Enhance the My Account Page
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-The current account page only has a basic profile form. We'll expand it into a tabbed dashboard with profile management, submission history, container order history, and a password change section -- giving users a much richer account experience.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## What You'll Get
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-1. **Tabbed layout** with 3 sections: Profile, My Submissions, and Security
-2. **Profile tab** (current form, improved with account info like member-since date)
-3. **My Submissions tab** showing:
-   - Contact form submissions and quote requests the user has made (matched by email)
-   - Container orders the user has placed (matched by email)
-   - Each with date, status badge, and summary
-4. **Security tab** with a password change form
+## Solution
 
-## Database Changes
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-New RLS policies are needed so users can see their own submissions by email:
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-- **contact_submissions**: Add SELECT policy: `auth.jwt()->>'email' = email`
-- **container_orders**: Add SELECT policy: `auth.jwt()->>'email' = email`
+This handles all 40 existing posts AND any future posts automatically.
 
-This lets authenticated users view only their own submissions without exposing anyone else's data.
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
 
 ## Technical Details
 
-### 1. Database migration
-Add two new RLS policies allowing users to read their own rows from `contact_submissions` and `container_orders` by matching their auth email to the `email` column.
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
 
-### 2. Rebuild `src/pages/Account.tsx`
-- Use Tabs component (already available via shadcn) for Profile / My Submissions / Security
-- **Profile tab**: Keep existing form, add "Member since" date from `profiles.created_at`
-- **My Submissions tab**:
-  - Fetch from `contact_submissions` where email matches
-  - Fetch from `container_orders` where email matches
-  - Display as card lists with date, type/subject, status badge (color-coded: new/pending/completed)
-  - "No submissions yet" empty state with link to Contact page
-- **Security tab**:
-  - Password change form (current password not needed with Supabase `updateUser`)
-  - New password + confirm password fields
-  - Uses `supabase.auth.updateUser({ password })` 
-
-### 3. Files changed
-- `src/pages/Account.tsx` -- major rewrite with tabs and new sections
-- Database migration -- 2 new RLS policies
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
