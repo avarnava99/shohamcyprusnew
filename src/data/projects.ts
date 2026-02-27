@@ -315,6 +315,20 @@ export const projects: Project[] = [
     images: [drillingEquipment1, drillingEquipment2, drillingEquipment3, drillingEquipment4, drillingEquipment5, drillingEquipment6, drillingEquipment7, drillingEquipment8, drillingEquipment9, drillingEquipment10],
   },
   {
+    slug: "mud-plant-discharge",
+    title: "Mud Plant Discharge",
+    subtitle: "Discharging of mud plant equipment and vessel agency",
+    description: "In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client Schlumberger.",
+    fullDescription: [
+      "In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client. The equipment belonged to Schlumberger.",
+      "Schlumberger is the world's leading provider of technology for reservoir characterization, drilling, production, and processing to the oil and gas industry."
+    ],
+    year: "2016",
+    location: "Limassol Port",
+    category: "Oil & Gas",
+    images: [mudPlantDischarge1, mudPlantDischarge2, mudPlantDischarge3, mudPlantDischarge4],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
