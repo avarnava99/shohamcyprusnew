@@ -231,6 +231,20 @@ export const projects: Project[] = [
     images: [unVehicles1, unVehicles2, unVehicles3, unVehicles4, unVehicles5, unVehicles6],
   },
   {
+    slug: "shipping-of-risers",
+    title: "Shipping of Risers",
+    subtitle: "Chartering of m/v ACM Delta for exporting risers",
+    description: "In 2014 we arranged the chartering of the m/v ACM Delta for our client for the exporting of risers used in the oil and gas industry. The cargo was urgently needed in Romania. The voyage charter was quickly fixed and our clients were very satisfied.",
+    fullDescription: [
+      "In 2014 we arranged the chartering of the m/v ACM Delta for our client for the exporting of risers used in the oil and gas industry. The cargo was urgently needed in Romania.",
+      "The voyage charter was quickly fixed and our clients were very satisfied."
+    ],
+    year: "2014",
+    location: "Cyprus → Romania",
+    category: "Chartering",
+    images: [risers1, risers2, risers3, risers4, risers5, risers6],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
