@@ -98,6 +98,12 @@ import unVehicles3 from "@/assets/projects/un-vehicles-3.webp";
 import unVehicles4 from "@/assets/projects/un-vehicles-4.webp";
 import unVehicles5 from "@/assets/projects/un-vehicles-5.webp";
 import unVehicles6 from "@/assets/projects/un-vehicles-6.webp";
+import risers1 from "@/assets/projects/risers-1.webp";
+import risers2 from "@/assets/projects/risers-2.webp";
+import risers3 from "@/assets/projects/risers-3.webp";
+import risers4 from "@/assets/projects/risers-4.webp";
+import risers5 from "@/assets/projects/risers-5.webp";
+import risers6 from "@/assets/projects/risers-6.webp";
 
 export interface Project {
   slug: string;
