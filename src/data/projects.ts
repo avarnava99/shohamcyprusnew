@@ -134,6 +134,10 @@ import drillingEquipment7 from "@/assets/projects/drilling-equipment-7.webp";
 import drillingEquipment8 from "@/assets/projects/drilling-equipment-8.webp";
 import drillingEquipment9 from "@/assets/projects/drilling-equipment-9.webp";
 import drillingEquipment10 from "@/assets/projects/drilling-equipment-10.webp";
+import mudPlantDischarge1 from "@/assets/projects/mud-plant-discharge-1.webp";
+import mudPlantDischarge2 from "@/assets/projects/mud-plant-discharge-2.webp";
+import mudPlantDischarge3 from "@/assets/projects/mud-plant-discharge-3.webp";
+import mudPlantDischarge4 from "@/assets/projects/mud-plant-discharge-4.webp";
 
 export interface Project {
   slug: string;
