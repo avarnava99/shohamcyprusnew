@@ -1,39 +1,29 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Add "Drilling Equipment" Project with 10 Photos
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Add a new project entry for the 2014 evacuation of drilling and mooring equipment used by Noble Energy in Cyprus's first natural gas exploration, with 10 uploaded photos. The photos span from September 2013 (import) through January 2014 (export).
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. Copy 10 images to `src/assets/projects/`
+Rename uploaded files to follow existing naming convention:
+- `drilling-and-mooring-equipment-import-cyprus-1.webp` through `10.webp` -> `drilling-equipment-1.webp` through `drilling-equipment-10.webp`
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
-
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
-
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### 2. Update `src/data/projects.ts`
+- Add 10 image imports at the top
+- Insert new project entry in the projects array:
+  - **Slug:** `drilling-equipment`
+  - **Title:** Drilling Equipment
+  - **Subtitle:** Evacuation of drilling and mooring equipment for Noble Energy
+  - **Description:** In January 2014 we arranged the evacuation of drilling and mooring equipment back to the point of origin. The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus.
+  - **fullDescription:** Split into 3 paragraphs:
+    1. "In January 2014 we arranged with the evacuation of drilling and mooring equipment of our customers back to the point of origin."
+    2. "The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus."
+    3. "In 2013 the same equipment were also handled by us in the import side and a vessel was chartered to import the equipment from Alexandria to Limassol in the time frame requested."
+  - **Year:** 2014
+  - **Location:** Limassol Port
+  - **Category:** Oil & Gas
+  - **Images:** all 10 images
 
