@@ -143,7 +143,7 @@ const App = () => (
 
           {/* Port agency redirects */}
           <Route path="/port-agency/ports-in-cyprus/limassol-port/limassol-port-eurogate-schedule" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
-          <Route path="/port-agency/ports-in-cyprus/limassol-port-schedule" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
+          {/* limassol-port-schedule is a live page, not a redirect */}
           <Route path="/port-agency/ports-in-cyprus/limassol-port/*" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
           <Route path="/port-agency/ports-in-cyprus/limassol-port-cruise-terminal" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
           <Route path="/port-agency/ports-in-cyprus/limassol-port-anchorage" element={<Navigate to="/port-agency/ports-in-cyprus/limassol-port" replace />} />
