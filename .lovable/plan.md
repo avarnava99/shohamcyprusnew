@@ -1,39 +1,32 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Build User Account / Profile Page
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Create a user profile page at `/account` where logged-in users can view and edit their profile information (full name, phone, company). The page will read from and write to the existing `profiles` table. A link to the account page will be added in the TopBar for logged-in users.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. Create `src/pages/Account.tsx`
+A new page using the existing Layout component with:
+- Hero banner matching other pages' style
+- Profile form with fields: Full Name, Email (read-only from auth), Phone, Company
+- Load current profile data on mount from the `profiles` table
+- Save button that updates the `profiles` table
+- Redirect to `/login` if user is not authenticated
+- Success/error toast notifications on save
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+### 2. Update `src/App.tsx`
+- Import the new Account page
+- Add route: `<Route path="/account" element={<Account />} />`
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
+### 3. Update `src/components/layout/TopBar.tsx`
+- Add a "My Account" link (using the User icon) next to the user's email for logged-in users
+- Links to `/account`
 
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+## Technical Notes
+- The `profiles` table already exists with columns: `full_name`, `phone`, `company`, `avatar_url`
+- RLS policies already allow users to view/update their own profile
+- The `handle_new_user` trigger already creates a profile row on signup
+- No database changes needed
 
