@@ -175,12 +175,19 @@ export const projects: Project[] = [
     category: "Breakbulk",
   },
   {
-    slug: "offshore-cargo-baskets-eni",
-    title: "Offshore Cargo Baskets for ENI",
-    description: "Coordination of offshore cargo basket operations for ENI's drilling operations in Cyprus waters. We provided full logistics support including cargo handling and vessel coordination.",
-    year: "2019",
-    location: "Cyprus Offshore",
+    slug: "offshore-cargo-baskets",
+    title: "Offshore Cargo Baskets",
+    subtitle: "Discharging of 450 tons offshore cargo baskets and containers",
+    description: "In August 2014, we were assigned the vessel agency and handled the discharging of 450 tons offshore cargo baskets and containers. The equipment were going to be used in drilling operations for exploration of natural gas offshore Cyprus.",
+    fullDescription: [
+      "In August 2014, we were assigned the vessel agency and handled the discharging of 450 tons offshore cargo baskets and containers.",
+      "The equipment were going to be used in drilling operations for exploration of natural gas offshore Cyprus.",
+      "The equipment belonged to Medserv which was the base manager for ENI."
+    ],
+    year: "2014",
+    location: "Limassol Port",
     category: "Oil & Gas",
+    images: [offshoreBaskets1, offshoreBaskets2, offshoreBaskets3, offshoreBaskets4, offshoreBaskets5, offshoreBaskets6, offshoreBaskets7, offshoreBaskets8, offshoreBaskets9, offshoreBaskets10],
   },
   {
     slug: "transport-of-transformers",
