@@ -104,6 +104,16 @@ import risers3 from "@/assets/projects/risers-3.webp";
 import risers4 from "@/assets/projects/risers-4.webp";
 import risers5 from "@/assets/projects/risers-5.webp";
 import risers6 from "@/assets/projects/risers-6.webp";
+import offshoreBaskets1 from "@/assets/projects/offshore-baskets-1.webp";
+import offshoreBaskets2 from "@/assets/projects/offshore-baskets-2.webp";
+import offshoreBaskets3 from "@/assets/projects/offshore-baskets-3.webp";
+import offshoreBaskets4 from "@/assets/projects/offshore-baskets-4.webp";
+import offshoreBaskets5 from "@/assets/projects/offshore-baskets-5.webp";
+import offshoreBaskets6 from "@/assets/projects/offshore-baskets-6.webp";
+import offshoreBaskets7 from "@/assets/projects/offshore-baskets-7.webp";
+import offshoreBaskets8 from "@/assets/projects/offshore-baskets-8.webp";
+import offshoreBaskets9 from "@/assets/projects/offshore-baskets-9.webp";
+import offshoreBaskets10 from "@/assets/projects/offshore-baskets-10.webp";
 
 export interface Project {
   slug: string;
@@ -165,12 +175,19 @@ export const projects: Project[] = [
     category: "Breakbulk",
   },
   {
-    slug: "offshore-cargo-baskets-eni",
-    title: "Offshore Cargo Baskets for ENI",
-    description: "Coordination of offshore cargo basket operations for ENI's drilling operations in Cyprus waters. We provided full logistics support including cargo handling and vessel coordination.",
-    year: "2019",
-    location: "Cyprus Offshore",
+    slug: "offshore-cargo-baskets",
+    title: "Offshore Cargo Baskets",
+    subtitle: "Discharging of 450 tons offshore cargo baskets and containers",
+    description: "In August 2014, we were assigned the vessel agency and handled the discharging of 450 tons offshore cargo baskets and containers. The equipment were going to be used in drilling operations for exploration of natural gas offshore Cyprus.",
+    fullDescription: [
+      "In August 2014, we were assigned the vessel agency and handled the discharging of 450 tons offshore cargo baskets and containers.",
+      "The equipment were going to be used in drilling operations for exploration of natural gas offshore Cyprus.",
+      "The equipment belonged to Medserv which was the base manager for ENI."
+    ],
+    year: "2014",
+    location: "Limassol Port",
     category: "Oil & Gas",
+    images: [offshoreBaskets1, offshoreBaskets2, offshoreBaskets3, offshoreBaskets4, offshoreBaskets5, offshoreBaskets6, offshoreBaskets7, offshoreBaskets8, offshoreBaskets9, offshoreBaskets10],
   },
   {
     slug: "transport-of-transformers",
