@@ -124,6 +124,16 @@ import mudPlant7 from "@/assets/projects/mud-plant-7.webp";
 import mudPlant8 from "@/assets/projects/mud-plant-8.webp";
 import mudPlant9 from "@/assets/projects/mud-plant-9.webp";
 import mudPlant10 from "@/assets/projects/mud-plant-10.webp";
+import drillingEquipment1 from "@/assets/projects/drilling-equipment-1.webp";
+import drillingEquipment2 from "@/assets/projects/drilling-equipment-2.webp";
+import drillingEquipment3 from "@/assets/projects/drilling-equipment-3.webp";
+import drillingEquipment4 from "@/assets/projects/drilling-equipment-4.webp";
+import drillingEquipment5 from "@/assets/projects/drilling-equipment-5.webp";
+import drillingEquipment6 from "@/assets/projects/drilling-equipment-6.webp";
+import drillingEquipment7 from "@/assets/projects/drilling-equipment-7.webp";
+import drillingEquipment8 from "@/assets/projects/drilling-equipment-8.webp";
+import drillingEquipment9 from "@/assets/projects/drilling-equipment-9.webp";
+import drillingEquipment10 from "@/assets/projects/drilling-equipment-10.webp";
 
 export interface Project {
   slug: string;
@@ -284,6 +294,21 @@ export const projects: Project[] = [
     location: "Limassol Port",
     category: "Chartering",
     images: [mudPlant1, mudPlant2, mudPlant3, mudPlant4, mudPlant5, mudPlant6, mudPlant7, mudPlant8, mudPlant9, mudPlant10],
+  },
+  {
+    slug: "drilling-equipment",
+    title: "Drilling Equipment",
+    subtitle: "Evacuation of drilling and mooring equipment for Noble Energy",
+    description: "In January 2014 we arranged the evacuation of drilling and mooring equipment back to the point of origin. The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus.",
+    fullDescription: [
+      "In January 2014 we arranged with the evacuation of drilling and mooring equipment of our customers back to the point of origin.",
+      "The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus.",
+      "In 2013 the same equipment were also handled by us in the import side and a vessel was chartered to import the equipment from Alexandria to Limassol in the time frame requested."
+    ],
+    year: "2014",
+    location: "Limassol Port",
+    category: "Oil & Gas",
+    images: [drillingEquipment1, drillingEquipment2, drillingEquipment3, drillingEquipment4, drillingEquipment5, drillingEquipment6, drillingEquipment7, drillingEquipment8, drillingEquipment9, drillingEquipment10],
   },
   {
     slug: "vassilikos-desalination-plant",
