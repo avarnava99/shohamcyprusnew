@@ -42,6 +42,7 @@ import ContainerOrders from "./pages/admin/ContainerOrders";
 import DutyCalculatorLeads from "./pages/admin/DutyCalculatorLeads";
 import LiveChat from "./pages/admin/LiveChat";
 import UsedContainers from "./pages/UsedContainers";
+import Account from "./pages/Account";
 
 const queryClient = new QueryClient();
 
