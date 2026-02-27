@@ -104,6 +104,16 @@ import risers3 from "@/assets/projects/risers-3.webp";
 import risers4 from "@/assets/projects/risers-4.webp";
 import risers5 from "@/assets/projects/risers-5.webp";
 import risers6 from "@/assets/projects/risers-6.webp";
+import offshoreBaskets1 from "@/assets/projects/offshore-baskets-1.webp";
+import offshoreBaskets2 from "@/assets/projects/offshore-baskets-2.webp";
+import offshoreBaskets3 from "@/assets/projects/offshore-baskets-3.webp";
+import offshoreBaskets4 from "@/assets/projects/offshore-baskets-4.webp";
+import offshoreBaskets5 from "@/assets/projects/offshore-baskets-5.webp";
+import offshoreBaskets6 from "@/assets/projects/offshore-baskets-6.webp";
+import offshoreBaskets7 from "@/assets/projects/offshore-baskets-7.webp";
+import offshoreBaskets8 from "@/assets/projects/offshore-baskets-8.webp";
+import offshoreBaskets9 from "@/assets/projects/offshore-baskets-9.webp";
+import offshoreBaskets10 from "@/assets/projects/offshore-baskets-10.webp";
 
 export interface Project {
   slug: string;
