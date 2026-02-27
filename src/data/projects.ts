@@ -296,6 +296,21 @@ export const projects: Project[] = [
     images: [mudPlant1, mudPlant2, mudPlant3, mudPlant4, mudPlant5, mudPlant6, mudPlant7, mudPlant8, mudPlant9, mudPlant10],
   },
   {
+    slug: "drilling-equipment",
+    title: "Drilling Equipment",
+    subtitle: "Evacuation of drilling and mooring equipment for Noble Energy",
+    description: "In January 2014 we arranged the evacuation of drilling and mooring equipment back to the point of origin. The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus.",
+    fullDescription: [
+      "In January 2014 we arranged with the evacuation of drilling and mooring equipment of our customers back to the point of origin.",
+      "The equipment were used by Noble Energy in the first ever drilling exploration for natural gas offshore Cyprus.",
+      "In 2013 the same equipment were also handled by us in the import side and a vessel was chartered to import the equipment from Alexandria to Limassol in the time frame requested."
+    ],
+    year: "2014",
+    location: "Limassol Port",
+    category: "Oil & Gas",
+    images: [drillingEquipment1, drillingEquipment2, drillingEquipment3, drillingEquipment4, drillingEquipment5, drillingEquipment6, drillingEquipment7, drillingEquipment8, drillingEquipment9, drillingEquipment10],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
