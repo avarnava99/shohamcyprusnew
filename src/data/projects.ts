@@ -114,6 +114,16 @@ import offshoreBaskets7 from "@/assets/projects/offshore-baskets-7.webp";
 import offshoreBaskets8 from "@/assets/projects/offshore-baskets-8.webp";
 import offshoreBaskets9 from "@/assets/projects/offshore-baskets-9.webp";
 import offshoreBaskets10 from "@/assets/projects/offshore-baskets-10.webp";
+import mudPlant1 from "@/assets/projects/mud-plant-1.webp";
+import mudPlant2 from "@/assets/projects/mud-plant-2.webp";
+import mudPlant3 from "@/assets/projects/mud-plant-3.webp";
+import mudPlant4 from "@/assets/projects/mud-plant-4.webp";
+import mudPlant5 from "@/assets/projects/mud-plant-5.webp";
+import mudPlant6 from "@/assets/projects/mud-plant-6.webp";
+import mudPlant7 from "@/assets/projects/mud-plant-7.webp";
+import mudPlant8 from "@/assets/projects/mud-plant-8.webp";
+import mudPlant9 from "@/assets/projects/mud-plant-9.webp";
+import mudPlant10 from "@/assets/projects/mud-plant-10.webp";
 
 export interface Project {
   slug: string;
@@ -260,6 +270,20 @@ export const projects: Project[] = [
     location: "Cyprus → Romania",
     category: "Chartering",
     images: [risers1, risers2, risers3, risers4, risers5, risers6],
+  },
+  {
+    slug: "mud-plant-export",
+    title: "Mud Plant Export",
+    subtitle: "Chartering and export of 350 tons of mud plant equipment",
+    description: "In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger. The scope of work was to arrange chartering the vessel, arrange the stowage plan, load safely the cargo and secure the cargo in the vessel.",
+    fullDescription: [
+      "In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger.",
+      "The scope of work was to arrange chartering the vessel, arrange the stowage plan, load safely the cargo and secure the cargo in the vessel."
+    ],
+    year: "2014",
+    location: "Limassol Port",
+    category: "Chartering",
+    images: [mudPlant1, mudPlant2, mudPlant3, mudPlant4, mudPlant5, mudPlant6, mudPlant7, mudPlant8, mudPlant9, mudPlant10],
   },
   {
     slug: "vassilikos-desalination-plant",

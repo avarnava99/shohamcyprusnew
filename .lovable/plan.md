@@ -1,37 +1,39 @@
 
 
-# Add "Mud Plant Export" Project with 10 Photos
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-Add a new project entry for the June 2014 chartering and export of 350 tons of mud plant equipment belonging to Schlumberger, with 10 uploaded photos.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## Changes
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-### 1. Copy 10 images to `src/assets/projects/`
-- `schulmberger-mud-plant-export-from-cyprus-1.webp` -> `mobile-plant-1.webp`
-- `schulmberger-mud-plant-export-from-cyprus-2.webp` -> `mobile-plant-2.webp`
-- `schulmberger-mud-plant-export-from-cyprus-3.webp` -> `mobile-plant-3.webp`
-- `schulmberger-mud-plant-export-from-cyprus-4.webp` -> `mobile-plant-4.webp`
-- `schulmberger-mud-plant-export-from-cyprus-5.webp` -> `mobile-plant-5.webp`
-- `schulmberger-mud-plant-export-from-cyprus-6.webp` -> `mobile-plant-6.webp`
-- `schulmberger-mud-plant-export-from-cyprus-7.webp` -> `mobile-plant-7.webp`
-- `schulmberger-mud-plant-export-from-cyprus-8.webp` -> `mobile-plant-8.webp`
-- `schulmberger-mud-plant-export-from-cyprus-9.webp` -> `mobile-plant-9.webp` (note: files already exist as mobile-plant-1 through 8, so these will be new additions)
+## Solution
 
-**Note:** The project already has files named `mobile-plant-1.webp` through `mobile-plant-8.webp` in the assets folder. To avoid conflicts, the images will be named `mud-plant-1.webp` through `mud-plant-10.webp` instead.
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-### 2. Update `src/data/projects.ts`
-- Add 10 image imports at the top
-- Insert new project entry in the projects array:
-  - **Slug:** `mud-plant-export`
-  - **Title:** Mud Plant Export
-  - **Subtitle:** Chartering and export of 350 tons of mud plant equipment
-  - **Description:** In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger.
-  - **fullDescription:** Split into 2 paragraphs:
-    1. "In June 2014, our company chartered a vessel for our client and evacuated from Cyprus 350 tons of mud plant equipment which belonged to Schlumberger."
-    2. "The scope of work was to arrange chartering the vessel, arrange the stowage plan, load safely the cargo and secure the cargo in the vessel."
-  - **Year:** 2014
-  - **Location:** Limassol Port
-  - **Category:** Chartering
-  - **Images:** all 10 images
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
+
+This handles all 40 existing posts AND any future posts automatically.
+
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
