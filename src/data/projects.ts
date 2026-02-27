@@ -98,6 +98,12 @@ import unVehicles3 from "@/assets/projects/un-vehicles-3.webp";
 import unVehicles4 from "@/assets/projects/un-vehicles-4.webp";
 import unVehicles5 from "@/assets/projects/un-vehicles-5.webp";
 import unVehicles6 from "@/assets/projects/un-vehicles-6.webp";
+import risers1 from "@/assets/projects/risers-1.webp";
+import risers2 from "@/assets/projects/risers-2.webp";
+import risers3 from "@/assets/projects/risers-3.webp";
+import risers4 from "@/assets/projects/risers-4.webp";
+import risers5 from "@/assets/projects/risers-5.webp";
+import risers6 from "@/assets/projects/risers-6.webp";
 
 export interface Project {
   slug: string;
@@ -223,6 +229,20 @@ export const projects: Project[] = [
     location: "Larnaca Port",
     category: "Breakbulk",
     images: [unVehicles1, unVehicles2, unVehicles3, unVehicles4, unVehicles5, unVehicles6],
+  },
+  {
+    slug: "shipping-of-risers",
+    title: "Shipping of Risers",
+    subtitle: "Chartering of m/v ACM Delta for exporting risers",
+    description: "In 2014 we arranged the chartering of the m/v ACM Delta for our client for the exporting of risers used in the oil and gas industry. The cargo was urgently needed in Romania. The voyage charter was quickly fixed and our clients were very satisfied.",
+    fullDescription: [
+      "In 2014 we arranged the chartering of the m/v ACM Delta for our client for the exporting of risers used in the oil and gas industry. The cargo was urgently needed in Romania.",
+      "The voyage charter was quickly fixed and our clients were very satisfied."
+    ],
+    year: "2014",
+    location: "Cyprus → Romania",
+    category: "Chartering",
+    images: [risers1, risers2, risers3, risers4, risers5, risers6],
   },
   {
     slug: "vassilikos-desalination-plant",
