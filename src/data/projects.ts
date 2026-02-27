@@ -134,6 +134,10 @@ import drillingEquipment7 from "@/assets/projects/drilling-equipment-7.webp";
 import drillingEquipment8 from "@/assets/projects/drilling-equipment-8.webp";
 import drillingEquipment9 from "@/assets/projects/drilling-equipment-9.webp";
 import drillingEquipment10 from "@/assets/projects/drilling-equipment-10.webp";
+import mudPlantDischarge1 from "@/assets/projects/mud-plant-discharge-1.webp";
+import mudPlantDischarge2 from "@/assets/projects/mud-plant-discharge-2.webp";
+import mudPlantDischarge3 from "@/assets/projects/mud-plant-discharge-3.webp";
+import mudPlantDischarge4 from "@/assets/projects/mud-plant-discharge-4.webp";
 
 export interface Project {
   slug: string;
@@ -309,6 +313,20 @@ export const projects: Project[] = [
     location: "Limassol Port",
     category: "Oil & Gas",
     images: [drillingEquipment1, drillingEquipment2, drillingEquipment3, drillingEquipment4, drillingEquipment5, drillingEquipment6, drillingEquipment7, drillingEquipment8, drillingEquipment9, drillingEquipment10],
+  },
+  {
+    slug: "mud-plant-discharge",
+    title: "Mud Plant Discharge",
+    subtitle: "Discharging of mud plant equipment and vessel agency",
+    description: "In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client Schlumberger.",
+    fullDescription: [
+      "In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client. The equipment belonged to Schlumberger.",
+      "Schlumberger is the world's leading provider of technology for reservoir characterization, drilling, production, and processing to the oil and gas industry."
+    ],
+    year: "2016",
+    location: "Limassol Port",
+    category: "Oil & Gas",
+    images: [mudPlantDischarge1, mudPlantDischarge2, mudPlantDischarge3, mudPlantDischarge4],
   },
   {
     slug: "vassilikos-desalination-plant",
