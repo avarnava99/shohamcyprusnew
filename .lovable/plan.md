@@ -1,39 +1,30 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Add "Mud Plant Discharge" Project with 4 Photos
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Add a new project entry for the 2016 discharging of mud plant equipment for Schlumberger's oil and gas drilling operations offshore Cyprus. The user uploaded 4 photos.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. Copy 4 images to `src/assets/projects/`
+- `mudplant-equipment-discharge-1.webp` -> `mud-plant-discharge-1.webp`
+- `mudplant-equipment-discharge-2.webp` -> `mud-plant-discharge-2.webp`
+- `mudplant-equipment-discharge-3.webp` -> `mud-plant-discharge-3.webp`
+- `mudplant-equipment-discharge-4.webp` -> `mud-plant-discharge-4.webp`
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
-
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
-
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### 2. Update `src/data/projects.ts`
+- Add 4 image imports at the top
+- Insert new project entry in the projects array:
+  - **Slug:** `mud-plant-discharge`
+  - **Title:** Mud Plant Discharge
+  - **Subtitle:** Discharging of mud plant equipment and vessel agency
+  - **Description:** In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client Schlumberger.
+  - **fullDescription:** Split into 2 paragraphs:
+    1. "In 2016, we handled the discharging of mud plant equipment to be used in the oil and gas drilling offshore Cyprus on behalf of our client. The equipment belonged to Schlumberger."
+    2. "Schlumberger is the world's leading provider of technology for reservoir characterization, drilling, production, and processing to the oil and gas industry."
+  - **Year:** 2016
+  - **Location:** Limassol Port
+  - **Category:** Oil & Gas
+  - **Images:** all 4 images
 
