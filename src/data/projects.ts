@@ -124,6 +124,16 @@ import mudPlant7 from "@/assets/projects/mud-plant-7.webp";
 import mudPlant8 from "@/assets/projects/mud-plant-8.webp";
 import mudPlant9 from "@/assets/projects/mud-plant-9.webp";
 import mudPlant10 from "@/assets/projects/mud-plant-10.webp";
+import drillingEquipment1 from "@/assets/projects/drilling-equipment-1.webp";
+import drillingEquipment2 from "@/assets/projects/drilling-equipment-2.webp";
+import drillingEquipment3 from "@/assets/projects/drilling-equipment-3.webp";
+import drillingEquipment4 from "@/assets/projects/drilling-equipment-4.webp";
+import drillingEquipment5 from "@/assets/projects/drilling-equipment-5.webp";
+import drillingEquipment6 from "@/assets/projects/drilling-equipment-6.webp";
+import drillingEquipment7 from "@/assets/projects/drilling-equipment-7.webp";
+import drillingEquipment8 from "@/assets/projects/drilling-equipment-8.webp";
+import drillingEquipment9 from "@/assets/projects/drilling-equipment-9.webp";
+import drillingEquipment10 from "@/assets/projects/drilling-equipment-10.webp";
 
 export interface Project {
   slug: string;
