@@ -112,20 +112,23 @@ const ExnessPartnership = () => {
           {services.map((s) => (
             <div
               key={s.title}
-              className="bg-card rounded-lg border p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-card rounded-lg border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <s.icon className="h-6 w-6 text-primary-foreground" />
+              <img src={s.image} alt={s.title} className="w-full h-40 object-cover" loading="lazy" />
+              <div className="p-6">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <s.icon className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <h3 className="font-heading font-semibold text-lg mb-3">{s.title}</h3>
+                <ul className="space-y-1.5">
+                  {s.points.map((p) => (
+                    <li key={p} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-accent mt-0.5">•</span>
+                      {p}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="font-heading font-semibold text-lg mb-3">{s.title}</h3>
-              <ul className="space-y-1.5">
-                {s.points.map((p) => (
-                  <li key={p} className="text-sm text-muted-foreground flex items-start gap-2">
-                    <span className="text-accent mt-0.5">•</span>
-                    {p}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
