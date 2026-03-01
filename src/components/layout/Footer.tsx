@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Instagram, Phone, Mail, MapPin, Printer } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { CONTACT } from "@/constants/contact";
 
@@ -76,17 +76,20 @@ const Footer = () => {
             </Link>
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Follow Us</h3>
             <div className="flex gap-3">
-              <a href="#" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Facebook">
+              <a href={CONTACT.socials.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Facebook">
                 <Facebook className="h-5 w-5 text-white" />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Twitter">
+              <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="X (Twitter)">
                 <Twitter className="h-5 w-5 text-white" />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="LinkedIn">
+              <a href={CONTACT.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5 text-white" />
               </a>
-              <a href="#" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Instagram">
+              <a href={CONTACT.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Instagram">
                 <Instagram className="h-5 w-5 text-white" />
+              </a>
+              <a href={CONTACT.socials.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="YouTube">
+                <Youtube className="h-5 w-5 text-white" />
               </a>
             </div>
             

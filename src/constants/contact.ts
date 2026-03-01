@@ -54,4 +54,12 @@ export const CONTACT = {
     weekdays: "Monday - Friday: 08:00 - 17:00",
     weekend: "Saturday - Sunday: Closed",
   },
+
+  socials: {
+    facebook: "https://www.facebook.com/shohamlogistics",
+    linkedin: "https://www.linkedin.com/company/shohamcyprus",
+    youtube: "https://www.youtube.com/channel/UCkGO39uqrSFB-fOpmD5B1Rg",
+    x: "https://x.com/shohamcy",
+    instagram: "https://www.instagram.com/shohamcyprus/",
+  },
 } as const;
