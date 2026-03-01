@@ -1,39 +1,35 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Add "Door to Door Delivery from Italy to Cyprus of Out of Gauge Tank Units" Project
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Add a new project entry for the 2019 Italy-to-Cyprus tank units delivery with the 4 uploaded images.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Steps
 
-## Solution
+### 1. Copy 4 uploaded images to project assets
+- `user-uploads://20190822_153843.jpg` -> `src/assets/projects/italy-tanks-1.jpg`
+- `user-uploads://20190822_161853.jpg` -> `src/assets/projects/italy-tanks-2.jpg`
+- `user-uploads://20190822_165830.jpg` -> `src/assets/projects/italy-tanks-3.jpg`
+- `user-uploads://20190822_161803.jpg` -> `src/assets/projects/italy-tanks-4.jpg`
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+### 2. Update `src/data/projects.ts`
+- Add 4 image imports
+- Add new project entry:
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
+```text
+slug: "door-to-door-delivery-from-italy-to-cyprus-of-out-of-gauge-tank-units"
+title: "Door to Door Delivery from Italy to Cyprus of Out of Gauge Tank Units"
+subtitle: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus"
+description: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the electricity authority station."
+fullDescription:
+  - "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the electricity authority station."
+year: "2019"
+location: "Italy -> Larnaca, Cyprus"
+category: "Breakbulk"
+images: [italyTanks1, italyTanks2, italyTanks3, italyTanks4]
+```
 
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### 3. No other changes needed
+The project will automatically appear under the 2019 year group on `/project-cargo` and link to `/project-cargo/door-to-door-delivery-from-italy-to-cyprus-of-out-of-gauge-tank-units`.
 
