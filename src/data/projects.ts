@@ -138,6 +138,11 @@ import mudPlantDischarge1 from "@/assets/projects/mud-plant-discharge-1.webp";
 import mudPlantDischarge2 from "@/assets/projects/mud-plant-discharge-2.webp";
 import mudPlantDischarge3 from "@/assets/projects/mud-plant-discharge-3.webp";
 import mudPlantDischarge4 from "@/assets/projects/mud-plant-discharge-4.webp";
+import mobileCrane1 from "@/assets/projects/mobile-crane-1.webp";
+import mobileCrane2 from "@/assets/projects/mobile-crane-2.webp";
+import mobileCrane3 from "@/assets/projects/mobile-crane-3.webp";
+import mobileCrane4 from "@/assets/projects/mobile-crane-4.webp";
+import mobileCrane5 from "@/assets/projects/mobile-crane-5.webp";
 
 export interface Project {
   slug: string;
