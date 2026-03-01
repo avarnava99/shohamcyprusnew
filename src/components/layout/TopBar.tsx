@@ -66,6 +66,13 @@ const TopBar = () => {
             <Clock className="h-4 w-4" />
             <span>{CONTACT.hours.display}</span>
           </span>
+          <div className="hidden md:flex items-center gap-2 ml-2">
+            <a href={CONTACT.socials.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="Facebook"><Facebook className="h-3.5 w-3.5" /></a>
+            <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="X"><Twitter className="h-3.5 w-3.5" /></a>
+            <a href={CONTACT.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="LinkedIn"><Linkedin className="h-3.5 w-3.5" /></a>
+            <a href={CONTACT.socials.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="Instagram"><Instagram className="h-3.5 w-3.5" /></a>
+            <a href={CONTACT.socials.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="YouTube"><Youtube className="h-3.5 w-3.5" /></a>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           {user ? (
