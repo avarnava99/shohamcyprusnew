@@ -43,6 +43,7 @@ import DutyCalculatorLeads from "./pages/admin/DutyCalculatorLeads";
 import LiveChat from "./pages/admin/LiveChat";
 import UsedContainers from "./pages/UsedContainers";
 import Account from "./pages/Account";
+import ExnessPartnership from "./pages/ExnessPartnership";
 
 const queryClient = new QueryClient();
 
