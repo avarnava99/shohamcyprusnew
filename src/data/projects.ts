@@ -166,17 +166,16 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "italy-tanks-delivery",
-    title: "Door to Door Delivery from Italy to Cyprus - Out of Gauge Tank Units",
-    subtitle: "Transportation of tanks from ex-works Italy to door delivery Larnaca",
-    description: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the Electricity Authority station. The project involved handling oversized tank units requiring specialized flat rack containers and coordinated logistics from factory to final destination.",
+    slug: "door-to-door-delivery-from-italy-to-cyprus-of-out-of-gauge-tank-units",
+    title: "Door to Door Delivery from Italy to Cyprus of Out of Gauge Tank Units",
+    subtitle: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus",
+    description: "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the electricity authority station.",
     fullDescription: [
-      "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the Electricity Authority station.",
-      "The project involved handling oversized tank units requiring specialized flat rack containers and coordinated logistics from factory to final destination."
+      "Transportation of tanks from ex-works Italy to door delivery Larnaca, Cyprus for a development in the electricity authority station."
     ],
     year: "2019",
-    location: "Italy → Larnaca",
-    category: "Project Cargo",
+    location: "Italy → Larnaca, Cyprus",
+    category: "Breakbulk",
     images: [italyTanks1, italyTanks2, italyTanks3, italyTanks4],
   },
   {
