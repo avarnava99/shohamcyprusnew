@@ -370,6 +370,22 @@ export const projects: Project[] = [
     images: [casingJoints1, casingJoints2, casingJoints3],
   },
   {
+    slug: "silos-shipping",
+    title: "Silos Shipping",
+    subtitle: "Shipment of out of gauge Silos from Netherlands to Cyprus",
+    description: "Shipment of out of gauge Silos from Netherlands to Cyprus.",
+    fullDescription: [
+      "In 2017 we organised a shipment of three out of gauge silos from Netherlands to door delivery to our client in Cyprus.",
+      "The shipment was effected on a RO/RO vessel.",
+      "The scope of work was to collect the silos from Netherlands, transport to the port of loading, load on a RO/RO vessel and ship to Limassol.",
+      "The cargo was cleared and delivered to the final destination in Cyprus."
+    ],
+    year: "2017",
+    location: "Netherlands → Limassol, Cyprus",
+    category: "Breakbulk",
+    images: [silosShipping1, silosShipping2, silosShipping3, silosShipping4, silosShipping5],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
