@@ -334,6 +334,19 @@ export const projects: Project[] = [
     images: [mudPlantDischarge1, mudPlantDischarge2, mudPlantDischarge3, mudPlantDischarge4],
   },
   {
+    slug: "mobile-crane-shipping",
+    title: "Mobile Crane Shipping",
+    subtitle: "Chartering of vessel for shipping Mobile Crane and Containers for an oil & gas project",
+    description: "Chartering of vessel for shipping Mobile Crane and Containers for an oil & gas project. We chartered a vessel on behalf of our client Medserv to ship their Mobile Crane and other equipment to Sines, Portugal.",
+    fullDescription: [
+      "In 2016, we chartered a vessel on behalf of our client Medserv to ship their Mobile Crane and other equipment to Sines, Portugal for an oil & gas project."
+    ],
+    year: "2016",
+    location: "Limassol → Sines, Portugal",
+    category: "Chartering",
+    images: [mobileCrane1, mobileCrane2, mobileCrane3, mobileCrane4, mobileCrane5],
+  },
+  {
     slug: "vassilikos-desalination-plant",
     title: "Vassilikos Desalination Plant",
     subtitle: "Unloading and installing 13 desalination tanks",
