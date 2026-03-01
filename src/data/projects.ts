@@ -146,6 +146,11 @@ import mobileCrane5 from "@/assets/projects/mobile-crane-5.webp";
 import casingJoints1 from "@/assets/projects/casing-joints-1.webp";
 import casingJoints2 from "@/assets/projects/casing-joints-2.webp";
 import casingJoints3 from "@/assets/projects/casing-joints-3.webp";
+import silosShipping1 from "@/assets/projects/silos-shipping-1.webp";
+import silosShipping2 from "@/assets/projects/silos-shipping-2.webp";
+import silosShipping3 from "@/assets/projects/silos-shipping-3.webp";
+import silosShipping4 from "@/assets/projects/silos-shipping-4.webp";
+import silosShipping5 from "@/assets/projects/silos-shipping-5.webp";
 
 export interface Project {
   slug: string;
