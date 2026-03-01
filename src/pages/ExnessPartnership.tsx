@@ -90,7 +90,7 @@ const ExnessPartnership = () => {
       <section className="bg-primary py-20">
         <div className="container-shoham">
           <div className="flex items-center justify-center gap-6 mb-10">
-            <img src={shohamLogo} alt="Shoham Shipping logo" className="h-14 md:h-20 object-contain" />
+            <img src={shohamLogo} alt="Shoham Shipping logo" className="h-10 md:h-16 object-contain" />
             <span className="text-white/60 text-3xl md:text-4xl font-light select-none">×</span>
             <img src={exnessLogo} alt="Exness logo" className="h-10 md:h-16 object-contain" />
           </div>
