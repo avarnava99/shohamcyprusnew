@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Users, PackageOpen, Monitor, Plane, CalendarCheck, Send, Clock, ShieldCheck, Truck } from "lucide-react";
-import shohamLogo from "@/assets/shoham-logo-new.png";
+import shohamLogo from "@/assets/shoham-logo.png";
 import exnessLogo from "@/assets/exness-logo.webp";
 
 const services = [
