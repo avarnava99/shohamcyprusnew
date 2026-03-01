@@ -15,6 +15,7 @@ const services = [
   {
     title: "Employee Relocations",
     icon: Users,
+    image: imgRelocations,
     points: [
       "Customs clearance for transfer of residence",
       "Duty-free vehicle imports",
@@ -25,6 +26,7 @@ const services = [
   {
     title: "Packing & Removals",
     icon: PackageOpen,
+    image: imgPacking,
     points: [
       "Professional packing for staff moving in or out",
       "International door-to-door moves",
@@ -34,6 +36,7 @@ const services = [
   {
     title: "IT & Equipment Shipping",
     icon: Monitor,
+    image: imgIT,
     points: [
       "Networking gear, servers, office hardware",
       "Express and economy options",
@@ -44,6 +47,7 @@ const services = [
   {
     title: "Corporate Travel",
     icon: Plane,
+    image: imgTravel,
     points: [
       "Business travel bookings",
       "Group arrangements for events",
@@ -53,6 +57,7 @@ const services = [
   {
     title: "Event Logistics",
     icon: CalendarCheck,
+    image: imgEvent,
     points: [
       "Equipment transport for corporate events",
       "Exhibition stand shipping",
@@ -63,6 +68,7 @@ const services = [
   {
     title: "Parcel Forwarding",
     icon: Send,
+    image: imgParcel,
     points: [
       "Regular forwarding from UK / EU / US",
       "Office supply shipments",
