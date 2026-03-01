@@ -4,11 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Users, PackageOpen, Monitor, Plane, CalendarCheck, Send, Clock, ShieldCheck, Truck } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import exnessLogo from "@/assets/exness-logo.webp";
+import imgRelocations from "@/assets/exness/employee-relocations.jpg";
+import imgPacking from "@/assets/exness/packing-removals.jpg";
+import imgIT from "@/assets/exness/it-equipment.jpg";
+import imgTravel from "@/assets/exness/corporate-travel.jpg";
+import imgEvent from "@/assets/exness/event-logistics.jpg";
+import imgParcel from "@/assets/exness/parcel-forwarding.jpg";
 
 const services = [
   {
     title: "Employee Relocations",
     icon: Users,
+    image: imgRelocations,
     points: [
       "Customs clearance for transfer of residence",
       "Duty-free vehicle imports",
@@ -19,6 +26,7 @@ const services = [
   {
     title: "Packing & Removals",
     icon: PackageOpen,
+    image: imgPacking,
     points: [
       "Professional packing for staff moving in or out",
       "International door-to-door moves",
@@ -28,6 +36,7 @@ const services = [
   {
     title: "IT & Equipment Shipping",
     icon: Monitor,
+    image: imgIT,
     points: [
       "Networking gear, servers, office hardware",
       "Express and economy options",
@@ -38,6 +47,7 @@ const services = [
   {
     title: "Corporate Travel",
     icon: Plane,
+    image: imgTravel,
     points: [
       "Business travel bookings",
       "Group arrangements for events",
@@ -47,6 +57,7 @@ const services = [
   {
     title: "Event Logistics",
     icon: CalendarCheck,
+    image: imgEvent,
     points: [
       "Equipment transport for corporate events",
       "Exhibition stand shipping",
@@ -57,6 +68,7 @@ const services = [
   {
     title: "Parcel Forwarding",
     icon: Send,
+    image: imgParcel,
     points: [
       "Regular forwarding from UK / EU / US",
       "Office supply shipments",
@@ -100,20 +112,23 @@ const ExnessPartnership = () => {
           {services.map((s) => (
             <div
               key={s.title}
-              className="bg-card rounded-lg border p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-card rounded-lg border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <s.icon className="h-6 w-6 text-primary-foreground" />
+              <img src={s.image} alt={s.title} className="w-full h-40 object-cover" loading="lazy" />
+              <div className="p-6">
+                <div className="bg-primary w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <s.icon className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <h3 className="font-heading font-semibold text-lg mb-3">{s.title}</h3>
+                <ul className="space-y-1.5">
+                  {s.points.map((p) => (
+                    <li key={p} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-accent mt-0.5">•</span>
+                      {p}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="font-heading font-semibold text-lg mb-3">{s.title}</h3>
-              <ul className="space-y-1.5">
-                {s.points.map((p) => (
-                  <li key={p} className="text-sm text-muted-foreground flex items-start gap-2">
-                    <span className="text-accent mt-0.5">•</span>
-                    {p}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
