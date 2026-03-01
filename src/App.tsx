@@ -43,6 +43,7 @@ import DutyCalculatorLeads from "./pages/admin/DutyCalculatorLeads";
 import LiveChat from "./pages/admin/LiveChat";
 import UsedContainers from "./pages/UsedContainers";
 import Account from "./pages/Account";
+import ExnessPartnership from "./pages/ExnessPartnership";
 
 const queryClient = new QueryClient();
 
@@ -88,6 +89,7 @@ const App = () => (
           <Route path="/online-purchases-shipped-to-cyprus-from-amazon-uk" element={<AmazonUK />} />
           <Route path="/ecommerce-purchases-from-germany" element={<EcommerceGermany />} />
           <Route path="/ecommerce-purchases-from-usa" element={<EcommerceUSA />} />
+          <Route path="/exness" element={<ExnessPartnership />} />
           
           {/* Other Pages */}
           <Route path="/chartering" element={<Chartering />} />

@@ -1,43 +1,39 @@
 
 
-# Exness Partnership Page
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-Create a clean, professional landing page at `/exness` that presents Shoham's services tailored for Exness. No sales fluff -- just a clear, well-structured overview of what we handle for them.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## Page Structure
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-### Hero Section
-- Navy background, both logos side by side with "x" between them
-- Headline: **"Logistics Services for Exness Cyprus"**
-- One-liner: "From employee relocations to event logistics -- one team, one point of contact."
+## Solution
 
-### Services Grid -- "What We Handle"
-Six cards with Lucide icons, each with a short title + 3-4 bullet points:
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-1. **Employee Relocations** -- Customs clearance for transfer of residence, duty-free vehicle imports, personal effects shipping, paperwork handled end to end
-2. **Packing & Removals** -- Professional packing for staff moving in or out, international door-to-door moves, temporary storage
-3. **IT & Equipment Shipping** -- Networking gear, servers, office hardware, express and economy options, worldwide coverage
-4. **Corporate Travel** -- Business travel bookings, group arrangements for events, airport transfers
-5. **Event Logistics** -- Equipment transport for corporate events, exhibition stand shipping, on-site coordination
-6. **Parcel Forwarding** -- Regular forwarding from UK/EU/US, office supply shipments, tracked delivery
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### Bottom Section -- "Why Work With Us"
-Simple 3-column stat/fact row: "Since 1946" | "Licensed Customs Broker" | "Island-wide Delivery"
+This handles all 40 existing posts AND any future posts automatically.
 
-### CTA
-"Get in touch" button linking to `/contact-us`
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
 
 ## Technical Details
 
-### Files:
-1. **Copy** uploaded Exness logo to `src/assets/exness-logo.webp`
-2. **Create** `src/pages/ExnessPartnership.tsx` -- Uses existing Layout component, follows the same design patterns as Services page (card grid, icon-based cards, navy hero banner)
-3. **Update** `src/App.tsx` -- Add route `/exness` before the catch-all
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
 
-### Design:
-- Follows existing design system (navy hero, card grid, Lucide icons)
-- Professional and understated -- no "partner of choice" language
-- Responsive grid matching other pages
-- Both logos displayed at appropriate sizing in the hero
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
