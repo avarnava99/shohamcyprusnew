@@ -146,6 +146,11 @@ import mobileCrane5 from "@/assets/projects/mobile-crane-5.webp";
 import casingJoints1 from "@/assets/projects/casing-joints-1.webp";
 import casingJoints2 from "@/assets/projects/casing-joints-2.webp";
 import casingJoints3 from "@/assets/projects/casing-joints-3.webp";
+import silosShipping1 from "@/assets/projects/silos-shipping-1.webp";
+import silosShipping2 from "@/assets/projects/silos-shipping-2.webp";
+import silosShipping3 from "@/assets/projects/silos-shipping-3.webp";
+import silosShipping4 from "@/assets/projects/silos-shipping-4.webp";
+import silosShipping5 from "@/assets/projects/silos-shipping-5.webp";
 
 export interface Project {
   slug: string;
@@ -363,6 +368,22 @@ export const projects: Project[] = [
     location: "Karachi, Pakistan → Limassol, Cyprus",
     category: "Oil & Gas",
     images: [casingJoints1, casingJoints2, casingJoints3],
+  },
+  {
+    slug: "silos-shipping",
+    title: "Silos Shipping",
+    subtitle: "Shipment of out of gauge Silos from Netherlands to Cyprus",
+    description: "Shipment of out of gauge Silos from Netherlands to Cyprus.",
+    fullDescription: [
+      "In 2017 we organised a shipment of three out of gauge silos from Netherlands to door delivery to our client in Cyprus.",
+      "The shipment was effected on a RO/RO vessel.",
+      "The scope of work was to collect the silos from Netherlands, transport to the port of loading, load on a RO/RO vessel and ship to Limassol.",
+      "The cargo was cleared and delivered to the final destination in Cyprus."
+    ],
+    year: "2017",
+    location: "Netherlands → Limassol, Cyprus",
+    category: "Breakbulk",
+    images: [silosShipping1, silosShipping2, silosShipping3, silosShipping4, silosShipping5],
   },
   {
     slug: "vassilikos-desalination-plant",

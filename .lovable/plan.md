@@ -1,39 +1,39 @@
 
 
-# Add "Silos Shipping" Project
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-Add a new project entry for Silos Shipping (2017) with the 5 uploaded images to the project cargo portfolio.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## Steps
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-### 1. Copy 5 uploaded images to project assets
-- `shipment-of-silos-to-Limassol-e1566050785446.webp` -> `src/assets/projects/silos-shipping-1.webp`
-- `shipment-of-silos-to-Limassol-2.webp` -> `src/assets/projects/silos-shipping-2.webp`
-- `shipment-of-silos-to-Limassol-3.webp` -> `src/assets/projects/silos-shipping-3.webp`
-- `shipment-of-silos-to-Limassol-4.webp` -> `src/assets/projects/silos-shipping-4.webp`
-- `shipment-of-silos-to-Limassol-5.webp` -> `src/assets/projects/silos-shipping-5.webp`
+## Solution
 
-### 2. Update `src/data/projects.ts`
-- Add 5 image imports
-- Add new project entry:
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-```text
-slug: "silos-shipping"
-title: "Silos Shipping"
-subtitle: "Shipment of out of gauge Silos from Netherlands to Cyprus"
-description: "Shipment of out of gauge Silos from Netherlands to Cyprus."
-fullDescription:
-  - "In 2017 we organised a shipment of three out of gauge silos from Netherlands to door delivery to our client in Cyprus."
-  - "The shipment was effected on a RO/RO vessel."
-  - "The scope of work was to collect the silos from Netherlands, transport to the port of loading, load on a RO/RO vessel and ship to Limassol."
-  - "The cargo was cleared and delivered to the final destination in Cyprus."
-year: "2017"
-location: "Netherlands -> Limassol, Cyprus"
-category: "Breakbulk"
-images: [silosShipping1..5]
-```
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### 3. No other changes needed
-The project will automatically appear under 2017 on `/project-cargo` and link to `/project-cargo/silos-shipping`.
+This handles all 40 existing posts AND any future posts automatically.
+
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
