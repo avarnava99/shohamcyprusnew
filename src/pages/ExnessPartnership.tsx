@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Users, PackageOpen, Monitor, Plane, CalendarCheck, Send, Clock, ShieldCheck, Truck } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import exnessLogo from "@/assets/exness-logo.webp";
+import imgRelocations from "@/assets/exness/employee-relocations.jpg";
+import imgPacking from "@/assets/exness/packing-removals.jpg";
+import imgIT from "@/assets/exness/it-equipment.jpg";
+import imgTravel from "@/assets/exness/corporate-travel.jpg";
+import imgEvent from "@/assets/exness/event-logistics.jpg";
+import imgParcel from "@/assets/exness/parcel-forwarding.jpg";
 
 const services = [
   {
