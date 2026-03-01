@@ -1,36 +1,39 @@
 
 
-# Add "Oil & Gas Casing Joints" Project
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-Add a new project for the 2017 casing joints shipping from Karachi to Limassol, with 3 uploaded images.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## Steps
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-### 1. Copy 3 uploaded images to project assets
-- `user-uploads://casing-joints-2_0.webp` -> `src/assets/projects/casing-joints-1.webp`
-- `user-uploads://casing-joints00.webp` -> `src/assets/projects/casing-joints-2.webp`
-- `user-uploads://unloading-oil-gas-equipment-pipes.webp` -> `src/assets/projects/casing-joints-3.webp`
+## Solution
 
-### 2. Update `src/data/projects.ts`
-- Add 3 image imports at the top
-- Add new project entry to the array:
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-```text
-slug: "casing-joints"
-title: "Oil & Gas Casing Joints"
-subtitle: "Shipping of 160 casing joints (pipes) from Karachi, Pakistan to Limassol, Cyprus"
-description: "Shipping of 160 casing joints (pipes) from Karachi, Pakistan to Limassol, Cyprus."
-fullDescription:
-  - "In November 2017 we chartered a vessel for our client and successfully shipped 160 casing joints (pipes) to Limassol, Cyprus from Karachi, Pakistan in time for a drilling exploration offshore Cyprus."
-  - "These casings were used during ENI's drilling exploration in December 2017."
-  - "Discharged at DP World terminal West side quay."
-year: "2017"
-location: "Karachi, Pakistan -> Limassol, Cyprus"
-category: "Oil & Gas"
-images: [casingJoints1, casingJoints2, casingJoints3]
-```
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### 3. No other changes needed
-The project will automatically appear under the 2017 year group on `/project-cargo` and link to `/project-cargo/casing-joints`.
+This handles all 40 existing posts AND any future posts automatically.
+
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 

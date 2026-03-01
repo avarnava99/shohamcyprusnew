@@ -143,6 +143,9 @@ import mobileCrane2 from "@/assets/projects/mobile-crane-2.webp";
 import mobileCrane3 from "@/assets/projects/mobile-crane-3.webp";
 import mobileCrane4 from "@/assets/projects/mobile-crane-4.webp";
 import mobileCrane5 from "@/assets/projects/mobile-crane-5.webp";
+import casingJoints1 from "@/assets/projects/casing-joints-1.webp";
+import casingJoints2 from "@/assets/projects/casing-joints-2.webp";
+import casingJoints3 from "@/assets/projects/casing-joints-3.webp";
 
 export interface Project {
   slug: string;
@@ -345,6 +348,21 @@ export const projects: Project[] = [
     location: "Limassol → Sines, Portugal",
     category: "Chartering",
     images: [mobileCrane1, mobileCrane2, mobileCrane3, mobileCrane4, mobileCrane5],
+  },
+  {
+    slug: "casing-joints",
+    title: "Oil & Gas Casing Joints",
+    subtitle: "Shipping of 160 casing joints (pipes) from Karachi, Pakistan to Limassol, Cyprus",
+    description: "Shipping of 160 casing joints (pipes) from Karachi, Pakistan to Limassol, Cyprus.",
+    fullDescription: [
+      "In November 2017 we chartered a vessel for our client and successfully shipped 160 casing joints (pipes) to Limassol, Cyprus from Karachi, Pakistan in time for a drilling exploration offshore Cyprus.",
+      "These casings were used during ENI's drilling exploration in December 2017.",
+      "Discharged at DP World terminal West side quay."
+    ],
+    year: "2017",
+    location: "Karachi, Pakistan → Limassol, Cyprus",
+    category: "Oil & Gas",
+    images: [casingJoints1, casingJoints2, casingJoints3],
   },
   {
     slug: "vassilikos-desalination-plant",
