@@ -138,6 +138,11 @@ import mudPlantDischarge1 from "@/assets/projects/mud-plant-discharge-1.webp";
 import mudPlantDischarge2 from "@/assets/projects/mud-plant-discharge-2.webp";
 import mudPlantDischarge3 from "@/assets/projects/mud-plant-discharge-3.webp";
 import mudPlantDischarge4 from "@/assets/projects/mud-plant-discharge-4.webp";
+import mobileCrane1 from "@/assets/projects/mobile-crane-1.webp";
+import mobileCrane2 from "@/assets/projects/mobile-crane-2.webp";
+import mobileCrane3 from "@/assets/projects/mobile-crane-3.webp";
+import mobileCrane4 from "@/assets/projects/mobile-crane-4.webp";
+import mobileCrane5 from "@/assets/projects/mobile-crane-5.webp";
 
 export interface Project {
   slug: string;
@@ -327,6 +332,19 @@ export const projects: Project[] = [
     location: "Limassol Port",
     category: "Oil & Gas",
     images: [mudPlantDischarge1, mudPlantDischarge2, mudPlantDischarge3, mudPlantDischarge4],
+  },
+  {
+    slug: "mobile-crane-shipping",
+    title: "Mobile Crane Shipping",
+    subtitle: "Chartering of vessel for shipping Mobile Crane and Containers for an oil & gas project",
+    description: "Chartering of vessel for shipping Mobile Crane and Containers for an oil & gas project. We chartered a vessel on behalf of our client Medserv to ship their Mobile Crane and other equipment to Sines, Portugal.",
+    fullDescription: [
+      "In 2016, we chartered a vessel on behalf of our client Medserv to ship their Mobile Crane and other equipment to Sines, Portugal for an oil & gas project."
+    ],
+    year: "2016",
+    location: "Limassol → Sines, Portugal",
+    category: "Chartering",
+    images: [mobileCrane1, mobileCrane2, mobileCrane3, mobileCrane4, mobileCrane5],
   },
   {
     slug: "vassilikos-desalination-plant",
