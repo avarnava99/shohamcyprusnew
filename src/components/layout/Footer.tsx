@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Instagram, Phone, Mail, MapPin, Printer } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { CONTACT } from "@/constants/contact";
 
