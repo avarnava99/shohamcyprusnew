@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ChevronLeft, ChevronRight, Briefcase, Clock, Layers } from "lucide-react";
 import { useState, useMemo } from "react";
 import { projects, Project } from "@/data/projects";
+import SEO from "@/components/SEO";
 
 const ProjectImageCarousel = ({ images }: { images: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
