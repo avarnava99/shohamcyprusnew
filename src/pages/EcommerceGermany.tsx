@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Package, Truck, Shield, Clock, Euro, CheckCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const EcommerceGermany = () => {
   const benefits = [
