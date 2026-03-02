@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 const PrivacyPolicy = () => {
   return (
