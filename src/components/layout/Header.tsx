@@ -164,6 +164,7 @@ const Header = () => {
       { label: "MOU with Customs", href: "/about-us/general-information/mou-with-customs" },
       { label: "FONASBA", href: "/about-us/general-information/fonasba" },
       { label: "CYMEPA", href: "/about-us/general-information/cymepa" },
+      { label: "ICS", href: "/about-us/general-information/ics-branch-cyprus" },
     ]},
     { label: "ZIM Agency", href: "/zim-agency-in-cyprus", megaMenu: zimMegaMenu },
     { label: "Port Agency", href: "/port-agency", megaMenu: portAgencyMegaMenu },
