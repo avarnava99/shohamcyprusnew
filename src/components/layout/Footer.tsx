@@ -75,7 +75,7 @@ const Footer = () => {
               />
             </Link>
             <h3 className="font-heading font-semibold text-lg mb-4 text-white">Follow Us</h3>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <a href={CONTACT.socials.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="Facebook">
                 <Facebook className="h-5 w-5 text-white" />
               </a>
