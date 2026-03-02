@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import zimShip from "@/assets/zim-samy-ofer.png";
+import SEO from "@/components/SEO";
 
 const stats = [
   { value: "180+", label: "Agents Worldwide" },
