@@ -231,6 +231,28 @@ const Header = () => {
                     <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full" />
                   )}
 
+                  {/* Simple Dropdown */}
+                  {item.children && !item.megaMenu && activeMenu === item.label && (
+                    <div
+                      className="absolute top-full left-0 pt-2 z-50"
+                      onMouseEnter={() => setActiveMenu(item.label)}
+                      onMouseLeave={() => setActiveMenu(null)}
+                    >
+                      <div className="bg-white rounded-lg shadow-xl border border-border/50 py-2 animate-fade-in min-w-[220px]">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.label}
+                            to={child.href}
+                            className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-secondary/30 transition-colors"
+                            onClick={() => setActiveMenu(null)}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Mega Menu Dropdown */}
                   {item.megaMenu && activeMenu === item.label && (
                     <div 
