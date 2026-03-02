@@ -61,6 +61,14 @@ const BlogPost = () => {
 
   return (
     <Layout>
+      <SEO
+        title={post.title}
+        description={post.excerpt || `${post.title} - Shoham Shipping & Logistics blog`}
+        path={`/blog/${post.slug}`}
+        image={post.featured_image || undefined}
+        type="article"
+        jsonLd={blogPostJsonLd(post)}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <Link to="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-4 transition-colors">
