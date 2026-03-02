@@ -38,7 +38,7 @@ const services = [
   {
     title: "Project Cargo",
     description: "Have a look at our projects listed in chronological order.",
-    image: portAgencyImg,
+    image: projectCargoImg,
     href: "/project-cargo",
   },
   {
