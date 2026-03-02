@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Ship, Globe, Users, Clock } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 const Chartering = () => {
   return (
