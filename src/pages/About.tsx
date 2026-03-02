@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
 import famagustaPainting from "@/assets/famagusta-painting.jpg";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 const About = () => {
   return <Layout>
       <div className="bg-primary py-16">
