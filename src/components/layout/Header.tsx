@@ -216,7 +216,7 @@ const Header = () => {
                     )}
                   >
                     {item.label}
-                    {item.megaMenu && (
+                    {(item.megaMenu || item.children) && (
                       <ChevronDown 
                         className={cn(
                           "h-4 w-4 transition-transform duration-200",
