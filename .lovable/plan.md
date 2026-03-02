@@ -1,39 +1,29 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Add Change of Ownership Page
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+## Overview
+Replace the current redirect at `/port-agency/change-of-ownership` with a dedicated page featuring the user's custom content and the uploaded vessel image.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. Copy uploaded image
+- Copy `user-uploads://combi-dock-iii-change-of-vessel-ownership.webp` to `src/assets/combi-dock-iii.webp`
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+### 2. Create `src/pages/ChangeOfOwnership.tsx`
+- Layout matching other port-agency subpages (navy hero with back link, two-column content with sidebar)
+- Hero with FileText icon, title "Change of Ownership", subtitle "Vessel Ownership Transfer at Limassol"
+- Content: the provided text about Limassol anchorage advantages, available classes (DNV GL, Lloyds, Dromon), diving inspections, repairs, crew regulations, provisions, and the Combi Dock III example
+- The uploaded vessel photo displayed with caption
+- Sidebar with ContactBox
+- SEO component with path `/port-agency/change-of-ownership`
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
+### 3. Update `src/App.tsx`
+- Import the new `ChangeOfOwnership` component
+- Replace the redirect on line 163 (`/port-agency/change-of-ownership` -> `/port-agency`) with the actual page route
 
-This handles all 40 existing posts AND any future posts automatically.
+### 4. Update `public/sitemap.xml`
+- Add entry for `/port-agency/change-of-ownership`
 
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+No header/footer changes needed -- the link already exists in both navigation menus.
 
