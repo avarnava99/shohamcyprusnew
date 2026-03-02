@@ -47,6 +47,7 @@ import ExnessPartnership from "./pages/ExnessPartnership";
 import CyprusShippingAssociation from "./pages/CyprusShippingAssociation";
 import MouWithCustoms from "./pages/MouWithCustoms";
 import Fonasba from "./pages/Fonasba";
+import Cymepa from "./pages/Cymepa";
 
 const queryClient = new QueryClient();
 
