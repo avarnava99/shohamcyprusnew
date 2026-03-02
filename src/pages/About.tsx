@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
-import famagustaPainting from "@/assets/famagusta-painting.jpg";
+import shohamPainting from "@/assets/shoham-cyprus-painting.webp";
 import { CONTACT } from "@/constants/contact";
 import SEO from "@/components/SEO";
 const About = () => {
