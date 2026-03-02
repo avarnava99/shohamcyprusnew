@@ -4,6 +4,7 @@ import { Calendar, ArrowRight } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import SEO from "@/components/SEO";
 
 const Blog = () => {
   const { data: posts, isLoading } = useQuery({
