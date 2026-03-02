@@ -10,6 +10,7 @@ import imgIT from "@/assets/exness/it-equipment.jpg";
 import imgTravel from "@/assets/exness/corporate-travel.jpg";
 import imgEvent from "@/assets/exness/event-logistics.jpg";
 import imgParcel from "@/assets/exness/parcel-forwarding.jpg";
+import SEO from "@/components/SEO";
 
 const services = [
   {
