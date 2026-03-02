@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Pages -->
+  <url><loc>https://www.shoham.com.cy/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.shoham.com.cy/about-us</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/contact-us</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/frequently-asked-questions</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- ZIM Agency -->
+  <url><loc>https://www.shoham.com.cy/zim-agency-in-cyprus</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/zim-agency-in-cyprus/zim-worldwide</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/zim-agency-in-cyprus/zim-container-types</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/zim-agency-in-cyprus/sailing-schedules</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/zim-agency-in-cyprus/track-your-container</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Port Agency -->
+  <url><loc>https://www.shoham.com.cy/port-agency</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/oil-gas-agency</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/crew-changes</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/sts-operations</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/drydock-service</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/yacht-agency</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Ports -->
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/limassol-port</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/limassol-container-terminal</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/limassol-port-schedule</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/larnaca-port</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/vassiliko-port</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/vassiliko-oil-terminal</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus/vttv-vassiliko-terminal</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Services -->
+  <url><loc>https://www.shoham.com.cy/services</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/freight-forwarding</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/customs-clearing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/customs-clearing/duty-calculator-for-cyprus</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/haulage-container-transport</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/air-freight</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/car-shipping</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/car-shipping-from-uk-to-cyprus</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/parcel-forwarding</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/sea-freight</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/warehousing</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/marine-insurance</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/container-tracking</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/services/used-containers</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/iso-tank</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Standalone Pages -->
+  <url><loc>https://www.shoham.com.cy/chartering</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/project-cargo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shoham.com.cy/container-types</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/container-homes</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/travel-agency</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/online-purchases-shipped-to-cyprus-from-amazon-uk</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/ecommerce-purchases-from-germany</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shoham.com.cy/ecommerce-purchases-from-usa</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Legal -->
+  <url><loc>https://www.shoham.com.cy/about-us/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.shoham.com.cy/about-us/terms-of-service</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

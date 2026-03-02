@@ -43,9 +43,12 @@ const vesselTypes = [
   { icon: Flame, title: "LPG / LNG", description: "Gas carrier services" },
 ];
 
+import SEO from "@/components/SEO";
+
 const PortAgency = () => {
   return (
     <Layout>
+      <SEO title="Port Agency" description="Ship agency for Limassol, Larnaca, Vassiliko ports and oil terminals. All vessel types serviced." path="/port-agency" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

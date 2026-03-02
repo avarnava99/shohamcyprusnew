@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SEO, { faqJsonLd } from "@/components/SEO";
 
 const FAQ = () => {
   const faqCategories = [
@@ -92,8 +93,16 @@ const FAQ = () => {
     }
   ];
 
+  const allFaqs = faqCategories.flatMap(c => c.faqs);
+
   return (
     <Layout>
+      <SEO
+        title="Frequently Asked Questions"
+        description="Find answers about shipping, customs duties, tracking, and port agency services in Cyprus."
+        path="/frequently-asked-questions"
+        jsonLd={faqJsonLd(allFaqs)}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

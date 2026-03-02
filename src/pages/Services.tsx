@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Ship, Truck, Package, Plane, Car, Shield, Container, RefreshCw, Boxes, FileCheck, Anchor, Warehouse } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const services = [
   { title: "Freight Forwarding", icon: Package, href: "/services/freight-forwarding", description: "Complete import and export freight forwarding" },
@@ -20,6 +21,7 @@ const services = [
 const Services = () => {
   return (
     <Layout>
+      <SEO title="Our Services" description="Comprehensive shipping and logistics solutions: freight forwarding, customs clearing, haulage, air freight, car shipping, and more." path="/services" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

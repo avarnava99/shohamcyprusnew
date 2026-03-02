@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { Lock, Unlock, Phone, Mail, MapPin, Clock, CheckCircle, Package, Truck, ShoppingCart } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
 import ContainerOrderForm from "@/components/containers/ContainerOrderForm";
+import SEO from "@/components/SEO";
 
 const VAT_RATE = 0.19;
 
@@ -167,6 +168,7 @@ const UsedContainers = () => {
 
   return (
     <Layout>
+      <SEO title="Used Container Sales" description="Buy new and used shipping containers in Cyprus. 20ft, 40ft, and high cube containers available." path="/services/used-containers" />
       {/* Hero Section */}
       <section className="relative bg-primary text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80" />

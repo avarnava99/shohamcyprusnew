@@ -1,10 +1,12 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 const PrivacyPolicy = () => {
   return (
     <Layout>
+      <SEO title="Privacy Policy" description="How Shoham Shipping & Logistics collects, uses, and protects your personal information." path="/about-us/privacy-policy" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

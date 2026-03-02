@@ -4,6 +4,7 @@ import { Calendar, ArrowRight } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import SEO from "@/components/SEO";
 
 const Blog = () => {
   const { data: posts, isLoading } = useQuery({
@@ -22,6 +23,7 @@ const Blog = () => {
 
   return (
     <Layout>
+      <SEO title="News & Blog" description="Latest news from the shipping and logistics industry in Cyprus." path="/blog" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

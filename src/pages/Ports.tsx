@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Anchor, Ship, Fuel, Container } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const ports = [
   {
@@ -40,6 +41,7 @@ const ports = [
 const Ports = () => {
   return (
     <Layout>
+      <SEO title="Ports of Cyprus" description="Port agency services at Limassol, Larnaca, Vassiliko and all Cyprus ports." path="/port-agency/ports-in-cyprus" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SEO from "@/components/SEO";
 
 const ContainerHomes = () => {
   const features = [
@@ -61,6 +62,7 @@ const ContainerHomes = () => {
 
   return (
     <Layout>
+      <SEO title="Container Homes in Cyprus" description="Affordable container homes for €78,000 fully furnished. Ideal for country home, Airbnb or normal residence." path="/container-homes" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

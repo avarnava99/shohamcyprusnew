@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Package, Truck, Shield, Clock, DollarSign, CheckCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const EcommerceUSA = () => {
   const benefits = [
@@ -52,6 +53,7 @@ const EcommerceUSA = () => {
 
   return (
     <Layout>
+      <SEO title="E-commerce from USA to Cyprus" description="Shop from American online retailers and have purchases shipped to Cyprus with our forwarding service." path="/ecommerce-purchases-from-usa" />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-shoham-navy to-shoham-dark-blue text-white py-16">
         <div className="container-shoham">

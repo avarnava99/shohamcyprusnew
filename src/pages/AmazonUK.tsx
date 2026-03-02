@@ -2,10 +2,12 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Package, Truck, Clock, CreditCard, ShoppingCart, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 
 const AmazonUK = () => {
   return (
     <Layout>
+      <SEO title="Amazon UK to Cyprus" description="Shop from Amazon UK and have purchases delivered to Cyprus with our parcel forwarding service." path="/online-purchases-shipped-to-cyprus-from-amazon-uk" />
       {/* Hero Section */}
       <div className="bg-primary py-16">
         <div className="container-shoham">

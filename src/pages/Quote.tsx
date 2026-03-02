@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 const Quote = () => {
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,7 @@ const Quote = () => {
 
   return (
     <Layout>
+      <SEO title="Request A Quote" description="Get competitive rates for shipping, freight forwarding, customs clearing, and logistics services in Cyprus." path="/quote" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

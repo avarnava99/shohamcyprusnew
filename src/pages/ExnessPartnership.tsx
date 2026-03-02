@@ -10,6 +10,7 @@ import imgIT from "@/assets/exness/it-equipment.jpg";
 import imgTravel from "@/assets/exness/corporate-travel.jpg";
 import imgEvent from "@/assets/exness/event-logistics.jpg";
 import imgParcel from "@/assets/exness/parcel-forwarding.jpg";
+import SEO from "@/components/SEO";
 
 const services = [
   {
@@ -86,6 +87,7 @@ const facts = [
 const ExnessPartnership = () => {
   return (
     <Layout hideBreadcrumbs>
+      <SEO title="Exness Cyprus Logistics" description="Dedicated logistics services for Exness Cyprus - employee relocations, packing, IT equipment, corporate travel." path="/exness" noindex />
       {/* Hero */}
       <section className="bg-primary py-20">
         <div className="container-shoham">

@@ -5,6 +5,8 @@ import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import DOMPurify from "dompurify";
+import SEO, { blogPostJsonLd } from "@/components/SEO";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -59,6 +61,14 @@ const BlogPost = () => {
 
   return (
     <Layout>
+      <SEO
+        title={post.title}
+        description={post.excerpt || `${post.title} - Shoham Shipping & Logistics blog`}
+        path={`/blog/${post.slug}`}
+        image={post.featured_image || undefined}
+        type="article"
+        jsonLd={blogPostJsonLd(post)}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <Link to="/blog" className="inline-flex items-center text-white/80 hover:text-white mb-4 transition-colors">
@@ -121,7 +131,7 @@ const BlogPost = () => {
               prose-blockquote:border-primary
               prose-blockquote:pl-4
               prose-blockquote:italic"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
           />
         </div>
       </div>

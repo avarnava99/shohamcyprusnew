@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ChevronLeft, ChevronRight, Briefcase, Clock, Layers } from "lucide-react";
 import { useState, useMemo } from "react";
 import { projects, Project } from "@/data/projects";
+import SEO from "@/components/SEO";
 
 const ProjectImageCarousel = ({ images }: { images: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -99,6 +100,7 @@ const Projects = () => {
 
   return (
     <Layout>
+      <SEO title="Project Cargo" description="Complex logistics projects across Cyprus - heavy lift operations, transformer transport, offshore support." path="/project-cargo" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

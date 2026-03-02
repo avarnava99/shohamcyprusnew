@@ -2,10 +2,12 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Plane, Hotel, Car, Globe, ExternalLink, CheckCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const TravelAgency = () => {
   return (
     <Layout>
+      <SEO title="Travel Agency" description="IATA authorized travel agent in Cyprus. Flight bookings, hotel reservations, car hire, and corporate travel." path="/travel-agency" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

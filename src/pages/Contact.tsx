@@ -8,6 +8,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,7 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEO title="Contact Us" description="Get in touch with Shoham Shipping & Logistics. Phone: +357-25-208700. Limassol, Cyprus." path="/contact-us" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
