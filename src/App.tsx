@@ -50,6 +50,7 @@ import Fonasba from "./pages/Fonasba";
 import Cymepa from "./pages/Cymepa";
 import IcsBranchCyprus from "./pages/IcsBranchCyprus";
 import YoungShipCyprus from "./pages/YoungShipCyprus";
+import ChangeOfOwnership from "./pages/ChangeOfOwnership";
 
 const queryClient = new QueryClient();
 
