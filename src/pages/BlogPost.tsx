@@ -131,7 +131,7 @@ const BlogPost = () => {
               prose-blockquote:border-primary
               prose-blockquote:pl-4
               prose-blockquote:italic"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
           />
         </div>
       </div>
