@@ -203,7 +203,7 @@ const Header = () => {
                 <li 
                   key={item.label}
                   className="relative"
-                  onMouseEnter={() => item.megaMenu && setActiveMenu(item.label)}
+                  onMouseEnter={() => (item.megaMenu || item.children) && setActiveMenu(item.label)}
                   onMouseLeave={() => setActiveMenu(null)}
                 >
                   <Link
