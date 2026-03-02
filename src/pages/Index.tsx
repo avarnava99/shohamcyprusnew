@@ -10,7 +10,7 @@ import SEO, { organizationJsonLd } from "@/components/SEO";
 const Index = () => {
   return (
     <Layout hideBreadcrumbs>
-      <Hero />
+      <SEO path="/" jsonLd={organizationJsonLd} />
       <MainServices />
       <ZimSection />
       <MoreServices />

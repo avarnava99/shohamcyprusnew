@@ -21,7 +21,7 @@ const services = [
 const Services = () => {
   return (
     <Layout>
-      <div className="bg-primary py-16">
+      <SEO title="Our Services" description="Comprehensive shipping and logistics solutions: freight forwarding, customs clearing, haulage, air freight, car shipping, and more." path="/services" />
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             Our Services

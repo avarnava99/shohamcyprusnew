@@ -7,7 +7,7 @@ import { CONTACT } from "@/constants/contact";
 import SEO from "@/components/SEO";
 const About = () => {
   return <Layout>
-      <div className="bg-primary py-16">
+      <SEO title="About Us" description="Shipping and freight forwarding agent in Cyprus since 1951. Over 60 staff members serving all major ports." path="/about-us" />
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">About us</h1>
           <p className="text-white/90 text-lg max-w-2xl">
