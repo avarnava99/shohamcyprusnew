@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Anchor, Ship, Fuel, Container } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const ports = [
   {
