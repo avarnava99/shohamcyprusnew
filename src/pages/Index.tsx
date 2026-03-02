@@ -11,6 +11,7 @@ const Index = () => {
   return (
     <Layout hideBreadcrumbs>
       <SEO path="/" jsonLd={organizationJsonLd} />
+      <Hero />
       <MainServices />
       <ZimSection />
       <MoreServices />
