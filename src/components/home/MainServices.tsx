@@ -50,7 +50,7 @@ const services = [
   {
     title: "Customs Clearing",
     description: "Experienced staff delivering to your warehouse anywhere in Cyprus.",
-    image: freightImg,
+    image: customsImg,
     href: "/services/customs-clearing",
   },
   {
