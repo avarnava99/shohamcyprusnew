@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
 const TermsOfService = () => {
   return (
     <Layout>
-      {/* Hero Section */}
+      <SEO title="Terms of Service" description="Standard trading conditions for Shoham Shipping & Logistics - Cyprus Shipping Association recommended terms." path="/about-us/terms-of-service" />
       <section className="relative h-[300px] md:h-[350px] flex items-center">
         {/* Background Image */}
         <div 

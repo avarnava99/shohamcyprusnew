@@ -110,6 +110,7 @@ const containerTypes = [
 const ContainerTypes = () => {
   return (
     <Layout>
+      <SEO title="Container Types" description="Complete specifications for 20ft, 40ft, reefer, open top and flat rack shipping containers." path="/container-types" />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

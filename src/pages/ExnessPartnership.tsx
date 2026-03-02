@@ -87,6 +87,7 @@ const facts = [
 const ExnessPartnership = () => {
   return (
     <Layout hideBreadcrumbs>
+      <SEO title="Exness Cyprus Logistics" description="Dedicated logistics services for Exness Cyprus - employee relocations, packing, IT equipment, corporate travel." path="/exness" noindex />
       {/* Hero */}
       <section className="bg-primary py-20">
         <div className="container-shoham">

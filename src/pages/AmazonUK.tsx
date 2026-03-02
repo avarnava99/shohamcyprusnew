@@ -7,7 +7,8 @@ import SEO from "@/components/SEO";
 const AmazonUK = () => {
   return (
     <Layout>
-      {/* Hero Section */}
+      <SEO title="Amazon UK to Cyprus" description="Shop from Amazon UK and have purchases delivered to Cyprus with our parcel forwarding service." path="/online-purchases-shipped-to-cyprus-from-amazon-uk" />
+      <div className="bg-primary py-16">
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

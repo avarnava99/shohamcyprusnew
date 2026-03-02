@@ -59,6 +59,7 @@ const Register = () => {
 
   return (
     <Layout>
+      <SEO title="Register" description="Create your Shoham Shipping account." path="/register" noindex />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">

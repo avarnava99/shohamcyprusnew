@@ -53,6 +53,7 @@ const EcommerceGermany = () => {
 
   return (
     <Layout>
+      <SEO title="E-commerce from Germany to Cyprus" description="Shop from German online stores and have purchases shipped to Cyprus with our forwarding service." path="/ecommerce-purchases-from-germany" />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-shoham-navy to-shoham-dark-blue text-white py-16">
         <div className="container-shoham">
