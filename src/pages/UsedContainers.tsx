@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { Lock, Unlock, Phone, Mail, MapPin, Clock, CheckCircle, Package, Truck, ShoppingCart } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
 import ContainerOrderForm from "@/components/containers/ContainerOrderForm";
+import SEO from "@/components/SEO";
 
 const VAT_RATE = 0.19;
 
