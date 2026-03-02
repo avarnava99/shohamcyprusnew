@@ -28,6 +28,7 @@
   <url><loc>https://www.shoham.com.cy/port-agency/sts-operations</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.shoham.com.cy/port-agency/drydock-service</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.shoham.com.cy/port-agency/yacht-agency</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.shoham.com.cy/port-agency/change-of-ownership</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 
   <!-- Ports -->
   <url><loc>https://www.shoham.com.cy/port-agency/ports-in-cyprus</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>

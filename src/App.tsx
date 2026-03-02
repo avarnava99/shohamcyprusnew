@@ -50,6 +50,7 @@ import Fonasba from "./pages/Fonasba";
 import Cymepa from "./pages/Cymepa";
 import IcsBranchCyprus from "./pages/IcsBranchCyprus";
 import YoungShipCyprus from "./pages/YoungShipCyprus";
+import ChangeOfOwnership from "./pages/ChangeOfOwnership";
 
 const queryClient = new QueryClient();
 
@@ -160,7 +161,7 @@ const App = () => (
           <Route path="/port-agency/ports-in-cyprus/raf-akrotiri-oil-terminal" element={<Navigate to="/port-agency/ports-in-cyprus" replace />} />
           <Route path="/port-agency/yacht-agency/*" element={<Navigate to="/port-agency" replace />} />
           <Route path="/port-agency/vessel-repairs" element={<Navigate to="/port-agency" replace />} />
-          <Route path="/port-agency/change-of-ownership" element={<Navigate to="/port-agency" replace />} />
+          <Route path="/port-agency/change-of-ownership" element={<ChangeOfOwnership />} />
           <Route path="/port-agency/owners-protecting-agency" element={<Navigate to="/port-agency" replace />} />
 
           {/* About & ZIM redirects */}
