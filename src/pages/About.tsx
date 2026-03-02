@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Award, Users, Globe, Ship, Anchor, FileText } from "lucide-react";
-import famagustaPainting from "@/assets/famagusta-painting.jpg";
+import shohamPainting from "@/assets/shoham-cyprus-painting.webp";
 import { CONTACT } from "@/constants/contact";
 import SEO from "@/components/SEO";
 const About = () => {
@@ -23,7 +23,7 @@ const About = () => {
             <section>
               <h2 className="section-title">Our History</h2>
               <div className="mb-6">
-                <img src={famagustaPainting} alt="Historic Port of Famagusta - Painting" className="rounded-lg shadow-lg w-full max-w-md float-right ml-6 mb-4" />
+                <img src={shohamPainting} alt="Shoham (Cyprus) Limited - Main office in Limassol, painting circa 1950" className="rounded-lg shadow-lg w-full max-w-md float-right ml-6 mb-4" />
                 <p className="text-muted-foreground mb-4">
                   Established in Famagusta in 1951, SHOHAM (CYPRUS) LTD is one of the main liner and 
                   tramp shipping agents in Cyprus. With our vast experience in every aspect of ship 
@@ -36,7 +36,7 @@ const About = () => {
                   all major ports of Cyprus: Limassol, Larnaca, Vassiliko and Dhekelia.
                 </p>
                 <p className="text-sm text-muted-foreground italic clear-both">
-                  Image: Historic Port of Famagusta
+                  Shoham (Cyprus) Limited — Main office in Limassol
                 </p>
               </div>
             </section>
