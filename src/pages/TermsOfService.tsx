@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { CONTACT } from "@/constants/contact";
 import portAgencyHero from "@/assets/port-agency.jpg";
+import SEO from "@/components/SEO";
 
 const TermsOfService = () => {
   return (
