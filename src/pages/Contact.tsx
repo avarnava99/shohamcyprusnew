@@ -8,6 +8,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
