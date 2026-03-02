@@ -163,6 +163,7 @@ const App = () => (
           {/* About & ZIM redirects */}
           <Route path="/about-us/general-information/cyprus-shipping-association" element={<CyprusShippingAssociation />} />
           <Route path="/about-us/general-information/mou-with-customs" element={<MouWithCustoms />} />
+          <Route path="/about-us/general-information/fonasba" element={<Fonasba />} />
           <Route path="/about-us/general-information/*" element={<Navigate to="/about-us" replace />} />
           <Route path="/zim-agency-in-cyprus/zim-sailing-schedules/*" element={<Navigate to="/zim-agency-in-cyprus/zim-sailing-schedules" replace />} />
           <Route path="/zim-agency-in-cyprus/track-your-cargo" element={<Navigate to="/services/container-tracking" replace />} />
