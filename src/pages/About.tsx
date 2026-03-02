@@ -88,6 +88,13 @@ const About = () => {
                 The main objectives of YoungShip Cyprus are to promote dialogue and exchange of ideas 
                 and experiences, cooperation among its members, and with the wider maritime community.
               </p>
+              <p className="text-muted-foreground">
+                Shoham is also a proud member of the{" "}
+                <Link to="/about-us/general-information/cyprus-shipping-association" className="text-accent hover:underline font-medium">
+                  Cyprus Shipping Association (CSA)
+                </Link>
+                , operating under the high professional standards set by the Association since 1945.
+              </p>
             </section>
 
             <section>
