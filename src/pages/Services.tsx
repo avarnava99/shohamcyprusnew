@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Ship, Truck, Package, Plane, Car, Shield, Container, RefreshCw, Boxes, FileCheck, Anchor, Warehouse } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const services = [
   { title: "Freight Forwarding", icon: Package, href: "/services/freight-forwarding", description: "Complete import and export freight forwarding" },
