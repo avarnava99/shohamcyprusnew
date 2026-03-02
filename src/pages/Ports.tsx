@@ -42,6 +42,7 @@ const Ports = () => {
   return (
     <Layout>
       <SEO title="Ports of Cyprus" description="Port agency services at Limassol, Larnaca, Vassiliko and all Cyprus ports." path="/port-agency/ports-in-cyprus" />
+      <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">
             <Link to="/port-agency" className="text-white/70 hover:text-white text-sm">

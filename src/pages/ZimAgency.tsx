@@ -15,6 +15,7 @@ const ZimAgency = () => {
   return (
     <Layout>
       <SEO title="ZIM Agency in Cyprus" description="Official representative of ZIM Integrated Shipping Services Ltd in Cyprus. Export and import containerized services." path="/zim-agency-in-cyprus" />
+      <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             ZIM Agency in Cyprus

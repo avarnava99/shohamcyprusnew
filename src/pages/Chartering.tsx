@@ -9,6 +9,7 @@ const Chartering = () => {
   return (
     <Layout>
       <SEO title="Chartering" description="Full and part vessel chartering for cargo. Extensive network of fleet owners for the best routes and prices." path="/chartering" />
+      <div className="bg-primary py-16">
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             Chartering
