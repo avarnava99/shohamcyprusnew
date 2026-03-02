@@ -5,6 +5,7 @@ import ZimSection from "@/components/home/ZimSection";
 import MoreServices from "@/components/home/MoreServices";
 import BlogPreview from "@/components/home/BlogPreview";
 import ContactCTA from "@/components/home/ContactCTA";
+import SEO, { organizationJsonLd } from "@/components/SEO";
 
 const Index = () => {
   return (
