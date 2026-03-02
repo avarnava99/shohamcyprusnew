@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SEO, { faqJsonLd } from "@/components/SEO";
 
 const FAQ = () => {
   const faqCategories = [

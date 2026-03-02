@@ -49,7 +49,7 @@ const Quote = () => {
 
   return (
     <Layout>
-      <div className="bg-primary py-16">
+      <SEO title="Request A Quote" description="Get competitive rates for shipping, freight forwarding, customs clearing, and logistics services in Cyprus." path="/quote" />
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             Request A Quote

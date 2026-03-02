@@ -23,7 +23,7 @@ const Blog = () => {
 
   return (
     <Layout>
-      <div className="bg-primary py-16">
+      <SEO title="News & Blog" description="Latest news from the shipping and logistics industry in Cyprus." path="/blog" />
         <div className="container-shoham">
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             News & Blog
