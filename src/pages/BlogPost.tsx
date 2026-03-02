@@ -5,6 +5,8 @@ import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import DOMPurify from "dompurify";
+import SEO, { blogPostJsonLd } from "@/components/SEO";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
