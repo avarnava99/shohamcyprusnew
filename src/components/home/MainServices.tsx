@@ -7,6 +7,8 @@ import freightImg from "@/assets/service-freight.jpg";
 import haulageImg from "@/assets/container-transport.png";
 import oilGasImg from "@/assets/oil-gas.jpg";
 import charteringImg from "@/assets/chartering.png";
+import customsImg from "@/assets/service-customs.jpg";
+import projectCargoImg from "@/assets/projects/vassilikos-power-1.jpg";
 
 const services = [
   {
