@@ -49,6 +49,7 @@ import MouWithCustoms from "./pages/MouWithCustoms";
 import Fonasba from "./pages/Fonasba";
 import Cymepa from "./pages/Cymepa";
 import IcsBranchCyprus from "./pages/IcsBranchCyprus";
+import YoungShipCyprus from "./pages/YoungShipCyprus";
 
 const queryClient = new QueryClient();
 
@@ -168,6 +169,7 @@ const App = () => (
           <Route path="/about-us/general-information/fonasba" element={<Fonasba />} />
           <Route path="/about-us/general-information/cymepa" element={<Cymepa />} />
           <Route path="/about-us/general-information/ics-branch-cyprus" element={<IcsBranchCyprus />} />
+          <Route path="/about-us/general-information/youngship-cyprus" element={<YoungShipCyprus />} />
           <Route path="/about-us/general-information/*" element={<Navigate to="/about-us" replace />} />
           <Route path="/zim-agency-in-cyprus/zim-sailing-schedules/*" element={<Navigate to="/zim-agency-in-cyprus/zim-sailing-schedules" replace />} />
           <Route path="/zim-agency-in-cyprus/track-your-cargo" element={<Navigate to="/services/container-tracking" replace />} />
