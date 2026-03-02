@@ -1,28 +1,39 @@
 
 
-# Add "MOU with Customs" Page and Menu Item
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-## Overview
-Create a new page at `/about-us/general-information/mou-with-customs` following the exact same pattern as the existing CSA page, and add it to the header dropdown under "About Us".
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-## Changes
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-### 1. Copy uploaded image
-- Copy `user-uploads://CUSTOMS-CYPRUS-MOU-WITH-AGENTS.webp` to `src/assets/customs-cyprus-mou.webp`
+## Solution
 
-### 2. New page: `src/pages/MouWithCustoms.tsx`
-- Mirror the layout of `CyprusShippingAssociation.tsx` (navy hero, back link, content + sidebar)
-- Display the uploaded Cyprus coat of arms image
-- Include the MOU text about the agreement between CSA and Cyprus Customs for prevention of illegal substance trade
-- SEO component with appropriate title, description, and canonical path
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-### 3. Update `src/App.tsx`
-- Import `MouWithCustoms` component
-- Add route `/about-us/general-information/mou-with-customs` before the existing wildcard redirect
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### 4. Update `src/components/layout/Header.tsx`
-- Add `{ label: "MOU with Customs", href: "/about-us/general-information/mou-with-customs" }` to the `children` array of the "About Us" nav item
+This handles all 40 existing posts AND any future posts automatically.
 
-### 5. Update `public/sitemap.xml`
-- Add entry for the new URL
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 

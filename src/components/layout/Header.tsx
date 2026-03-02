@@ -161,6 +161,7 @@ const Header = () => {
   const navItems: NavItem[] = [
     { label: "About Us", href: "/about-us", children: [
       { label: "Ship. Association", href: "/about-us/general-information/cyprus-shipping-association" },
+      { label: "MOU with Customs", href: "/about-us/general-information/mou-with-customs" },
     ]},
     { label: "ZIM Agency", href: "/zim-agency-in-cyprus", megaMenu: zimMegaMenu },
     { label: "Port Agency", href: "/port-agency", megaMenu: portAgencyMegaMenu },
