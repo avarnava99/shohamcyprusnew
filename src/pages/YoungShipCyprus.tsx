@@ -33,6 +33,14 @@ const YoungShipCyprus = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <section>
+              <div className="mb-6">
+                <img
+                  src={youngshipLogo}
+                  alt="YoungShip Cyprus"
+                  className="h-24 w-auto"
+                />
+              </div>
+
               <h2 className="section-title">Members & Supporters</h2>
               <p className="text-muted-foreground mb-4">
                 Young staff of our company and our company are members and supporters of YoungShip Cyprus.
