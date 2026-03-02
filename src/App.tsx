@@ -49,6 +49,7 @@ import MouWithCustoms from "./pages/MouWithCustoms";
 import Fonasba from "./pages/Fonasba";
 import Cymepa from "./pages/Cymepa";
 import IcsBranchCyprus from "./pages/IcsBranchCyprus";
+import YoungShipCyprus from "./pages/YoungShipCyprus";
 
 const queryClient = new QueryClient();
 
