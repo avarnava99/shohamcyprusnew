@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
 import SEO from "@/components/SEO";
+import youngshipLogo from "@/assets/youngship-logo.webp";
 
 const YoungShipCyprus = () => {
   return (
