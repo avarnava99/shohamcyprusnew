@@ -190,7 +190,7 @@ const Footer = () => {
             <p className="text-sm text-white/60">
               &copy; {new Date().getFullYear()} Shoham Shipping and Logistics. All rights reserved.
             </p>
-            <div className="flex gap-6 text-sm text-white/60 items-center">
+            <div className="flex flex-wrap gap-6 text-sm text-white/60 items-center">
               <Link to="/frequently-asked-questions" className="hover:text-[#f59e0b] transition-colors">
                 FAQ
               </Link>
@@ -200,9 +200,6 @@ const Footer = () => {
               <Link to="/about-us/terms-of-service" className="hover:text-[#f59e0b] transition-colors">
                 Terms of Service
               </Link>
-              <Link to="/contact-us" className="hover:text-[#f59e0b] transition-colors">
-                Contact
-              </Link>
               <button
                 onClick={() => setShowCookiePrefs(true)}
                 className="hover:text-[#f59e0b] transition-colors inline-flex items-center gap-1"
@@ -211,6 +208,9 @@ const Footer = () => {
                 <Cookie className="h-3.5 w-3.5" />
                 Cookies
               </button>
+              <Link to="/contact-us" className="hover:text-[#f59e0b] transition-colors">
+                Contact
+              </Link>
             </div>
           </div>
         </div>
