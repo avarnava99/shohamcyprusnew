@@ -97,8 +97,29 @@ const AdminDashboard = () => {
           <p className="text-muted-foreground mt-1">Welcome to the Shoham admin dashboard</p>
         </div>
 
-        {/* Analytics Section */}
-        <AnalyticsDashboard />
+        {/* Google Analytics Link */}
+        <Card className="border-primary/20 bg-primary/5">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <BarChart3 className="h-5 w-5 text-primary" />
+                Visitor Analytics
+              </CardTitle>
+              <CardDescription>
+                View detailed visitor analytics, audience insights, and conversion tracking
+              </CardDescription>
+            </div>
+            <a
+              href="https://analytics.google.com/analytics/web/#/p471498498/reports/intelligenthome"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              Open Google Analytics
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </CardHeader>
+        </Card>
 
         {/* Quick Actions */}
         <div>
