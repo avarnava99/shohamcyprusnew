@@ -60,6 +60,7 @@ export function useAnalytics(days: number = 30) {
       }
 
       const result = await response.json();
+      setData(parseAnalyticsResponse(result));
     } catch (err: any) {
       console.error("Analytics fetch error:", err);
       setError(err.message || "Failed to fetch analytics");
