@@ -39,27 +39,27 @@ export function useAnalytics(days: number = 30) {
     setError(null);
 
     try {
-      const { data: result, error: fnError } = await supabase.functions.invoke(
-        "get-site-analytics",
-        { body: null, headers: {} }
-      );
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const url = `https://${projectId}.supabase.co/functions/v1/get-site-analytics?days=${days}`;
+      
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
 
-      // If edge function fails, try parsing anyway or use the URL approach
-      if (fnError) {
-        console.error("Edge function error:", fnError);
-        setError("Failed to fetch analytics data");
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || "Failed to fetch analytics");
         setLoading(false);
         return;
       }
 
-      if (result?.error) {
-        setError(result.error);
-        setLoading(false);
-        return;
-      }
-
-      // Parse the response data
-      setData(parseAnalyticsResponse(result));
+      const result = await response.json();
     } catch (err: any) {
       console.error("Analytics fetch error:", err);
       setError(err.message || "Failed to fetch analytics");
