@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer, Cookie } from "lucide-react";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { CONTACT } from "@/constants/contact";
+import CookiePreferencesModal from "@/components/CookiePreferencesModal";
 
 const Footer = () => {
+  const [showCookiePrefs, setShowCookiePrefs] = useState(false);
   const zimAgencyLinks = [
     { label: "Marketing and Sales", href: "/zim-agency-in-cyprus/marketing-and-sales" },
     { label: "Container Types", href: "/zim-agency-in-cyprus/zim-container-types" },
@@ -187,7 +190,7 @@ const Footer = () => {
             <p className="text-sm text-white/60">
               &copy; {new Date().getFullYear()} Shoham Shipping and Logistics. All rights reserved.
             </p>
-            <div className="flex gap-6 text-sm text-white/60">
+            <div className="flex gap-6 text-sm text-white/60 items-center">
               <Link to="/frequently-asked-questions" className="hover:text-[#f59e0b] transition-colors">
                 FAQ
               </Link>
@@ -200,10 +203,18 @@ const Footer = () => {
               <Link to="/contact-us" className="hover:text-[#f59e0b] transition-colors">
                 Contact
               </Link>
+              <button
+                onClick={() => setShowCookiePrefs(true)}
+                className="p-1.5 hover:bg-white/10 rounded transition-colors"
+                aria-label="Cookie Preferences"
+              >
+                <Cookie className="h-4 w-4 text-[#f59e0b]" />
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <CookiePreferencesModal open={showCookiePrefs} onOpenChange={setShowCookiePrefs} />
     </footer>
   );
 };
