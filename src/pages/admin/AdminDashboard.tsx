@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Mail, Package, Calculator, MessageCircle, ExternalLink, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAdminChat } from "@/hooks/useChat";
+import AnalyticsDashboard from "@/components/admin/analytics/AnalyticsDashboard";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -97,16 +98,19 @@ const AdminDashboard = () => {
           <p className="text-muted-foreground mt-1">Welcome to the Shoham admin dashboard</p>
         </div>
 
+        {/* Built-in Analytics */}
+        <AnalyticsDashboard />
+
         {/* Google Analytics Link */}
         <Card className="border-primary/20 bg-primary/5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <BarChart3 className="h-5 w-5 text-primary" />
-                Visitor Analytics
+                Advanced Analytics
               </CardTitle>
               <CardDescription>
-                View detailed visitor analytics, audience insights, and conversion tracking
+                View detailed audience insights, conversion tracking, and more in Google Analytics
               </CardDescription>
             </div>
             <a

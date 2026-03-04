@@ -1,33 +1,39 @@
 
 
-## Add Built-in Analytics to Admin Dashboard
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-Analytics data is available and confirmed working (117 visitors, 311 pageviews last month). I'll build an analytics section directly into the admin dashboard that fetches this data via an edge function.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-### Architecture
-1. **New edge function `get-site-analytics`** -- Calls the internal analytics API using the project ID and Lovable API key (already stored as `LOVABLE_API_KEY` secret). Returns visitors, pageviews, bounce rate, session duration, and breakdowns (top pages, sources, devices, countries).
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-2. **New `AnalyticsDashboard` component** -- Displays:
-   - 4 summary cards: Visitors, Pageviews, Bounce Rate, Avg Session Duration
-   - A daily visitors/pageviews line chart (using Recharts, already installed)
-   - Breakdown panels: Top Pages, Traffic Sources, Devices, Countries
-   - Time range selector (7d / 30d / 90d)
+## Solution
 
-3. **Update `AdminDashboard.tsx`** -- Add the analytics section between the Google Analytics link card and Quick Actions.
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-### Files to Create/Modify
-- **`supabase/functions/get-site-analytics/index.ts`** -- Edge function that proxies the analytics API
-- **`supabase/config.toml`** -- Add `[functions.get-site-analytics]` with `verify_jwt = false`
-- **`src/components/admin/analytics/AnalyticsDashboard.tsx`** -- Main analytics component with cards, chart, and breakdowns
-- **`src/hooks/useAnalytics.ts`** -- Hook to fetch analytics data from the edge function
-- **`src/pages/admin/AdminDashboard.tsx`** -- Import and render `<AnalyticsDashboard />` above Quick Actions
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### Data Flow
-```text
-AdminDashboard -> useAnalytics hook -> supabase.functions.invoke('get-site-analytics')
-  -> Edge Function -> Lovable Analytics API (using LOVABLE_API_KEY)
-  -> Returns { visitors, pageviews, bounceRate, sessionDuration, breakdowns }
-```
+This handles all 40 existing posts AND any future posts automatically.
 
-The edge function will validate the admin's JWT before returning data. The hook will support switching between 7/30/90 day ranges.
+### 2. Add missing redirect in `src/App.tsx`
+
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
