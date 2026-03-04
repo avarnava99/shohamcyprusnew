@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Breadcrumbs from "./Breadcrumbs";
 import ChatWidget from "@/components/chat/ChatWidget";
+import CookieConsent from "@/components/CookieConsent";
 
 interface LayoutProps {
   children: ReactNode;
