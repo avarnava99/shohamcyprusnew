@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Mail, Package, Calculator, MessageCircle, ExternalLink, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAdminChat } from "@/hooks/useChat";
+import AnalyticsDashboard from "@/components/admin/analytics/AnalyticsDashboard";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
