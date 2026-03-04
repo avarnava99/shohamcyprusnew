@@ -41,6 +41,16 @@ function loadAlbacross() {
   document.head.appendChild(s);
 }
 
+function loadAhrefs() {
+  if (document.getElementById('ahrefs-analytics')) return;
+  const s = document.createElement('script');
+  s.id = 'ahrefs-analytics';
+  s.async = true;
+  s.src = 'https://analytics.ahrefs.com/analytics.js';
+  s.setAttribute('data-key', 'zmhjHwtMhVC/sv3Mi4QmPg');
+  document.head.appendChild(s);
+}
+
 function updateConsent(consent: ConsentState) {
   window.gtag?.('consent', 'update', {
     analytics_storage: consent.analytics ? 'granted' : 'denied',
