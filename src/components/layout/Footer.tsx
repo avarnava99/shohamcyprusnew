@@ -205,10 +205,11 @@ const Footer = () => {
               </Link>
               <button
                 onClick={() => setShowCookiePrefs(true)}
-                className="p-1.5 hover:bg-white/10 rounded transition-colors"
+                className="hover:text-[#f59e0b] transition-colors inline-flex items-center gap-1"
                 aria-label="Cookie Preferences"
               >
-                <Cookie className="h-4 w-4 text-[#f59e0b]" />
+                <Cookie className="h-3.5 w-3.5" />
+                Cookies
               </button>
             </div>
           </div>
