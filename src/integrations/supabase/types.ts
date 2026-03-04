@@ -492,6 +492,69 @@ export type Database = {
         }
         Relationships: []
       }
+      site_analytics_breakdowns: {
+        Row: {
+          breakdown_type: string
+          created_at: string | null
+          id: string
+          name: string
+          period_end: string
+          period_start: string
+          value: number
+        }
+        Insert: {
+          breakdown_type: string
+          created_at?: string | null
+          id?: string
+          name: string
+          period_end: string
+          period_start: string
+          value?: number
+        }
+        Update: {
+          breakdown_type?: string
+          created_at?: string | null
+          id?: string
+          name?: string
+          period_end?: string
+          period_start?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      site_analytics_daily: {
+        Row: {
+          bounce_rate: number | null
+          created_at: string | null
+          date: string
+          id: string
+          pageviews: number
+          pageviews_per_visit: number | null
+          session_duration: number | null
+          visitors: number
+        }
+        Insert: {
+          bounce_rate?: number | null
+          created_at?: string | null
+          date: string
+          id?: string
+          pageviews?: number
+          pageviews_per_visit?: number | null
+          session_duration?: number | null
+          visitors?: number
+        }
+        Update: {
+          bounce_rate?: number | null
+          created_at?: string | null
+          date?: string
+          id?: string
+          pageviews?: number
+          pageviews_per_visit?: number | null
+          session_duration?: number | null
+          visitors?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
