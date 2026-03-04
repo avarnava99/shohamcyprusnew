@@ -1,39 +1,27 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+## Why the Analytics Dashboard Shows No Data
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+The admin analytics dashboard calls a backend function (`get-analytics`) that tries to fetch data from `https://api.lovable.dev/v1/projects/.../analytics` -- but this API endpoint returns **404 Not Found**. That's why all metrics show zero.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+Your published site **does** have real visitor data (I verified: 117 visitors, 311 pageviews in February alone, with 77 visitors today). The data exists, but the backend function can't reach it because the API URL it uses doesn't work.
 
-## Solution
+### Root Cause
+The edge function `get-analytics` was built assuming a Lovable analytics API at `api.lovable.dev` that doesn't exist as a public endpoint.
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+### Recommended Fix
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
+Since you now have **Google Analytics (G-RWD1S131V7)** integrated, which provides far more detailed data (audience segments, conversion tracking, real-time reports, Search Console integration), the best approach is:
 
-This handles all 40 existing posts AND any future posts automatically.
+1. **Remove the broken Visitor Analytics section** from the admin dashboard (the cards, chart, and breakdown panels that all show zeros)
+2. **Replace it with a link/card** pointing to your Google Analytics dashboard for real analytics
+3. Keep the Quick Actions section (Contact Submissions, Container Orders, etc.) which works correctly
 
-### 2. Add missing redirect in `src/App.tsx`
+This avoids maintaining a redundant, broken analytics system when GA4 already provides superior data.
 
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### Files to Change
+- **`src/pages/admin/AdminDashboard.tsx`** -- Remove the `<AnalyticsDashboard />` component, replace with a simple card linking to Google Analytics
+- **`src/components/admin/analytics/AnalyticsDashboard.tsx`** -- Can be removed (along with AnalyticsCard, AnalyticsBreakdown, AnalyticsChart)
+- **`src/hooks/useAnalytics.ts`** -- Can be removed
+- **`supabase/functions/get-analytics/index.ts`** -- Can be deleted
 
