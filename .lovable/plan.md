@@ -1,39 +1,30 @@
 
+## Add Google Analytics 4 to Website
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+### Current State
+- Albacross B2B tracking is already integrated
+- Custom analytics dashboard exists (pulls from edge function)
+- No Google Analytics (GA4) is currently configured
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+### What Google Analytics provides
+- Detailed audience insights and behavior tracking
+- Conversion tracking and goal measurement
+- Real-time reporting and audience segmentation
+- Integration with Google Search Console and Google Ads
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+### Implementation Approach
+Add Google Analytics 4 measurement ID to `index.html` using the standard GA4 script tag pattern. This provides:
+1. Out-of-the-box page view tracking
+2. Automatic event tracking
+3. User behavior analytics
+4. No impact on existing Albacross tracking (both run independently)
 
-## Solution
+### Files to Modify
+**`index.html`** (after Albacross scripts):
+- Add GA4 script tags with measurement ID (GA-XXXXXXXXX format)
+- Includes both the gtag inline script and async tag script
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
-
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
-
-This handles all 40 existing posts AND any future posts automatically.
-
-### 2. Add missing redirect in `src/App.tsx`
-
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
-
-## Technical Details
-
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
-
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
-
+### Next Steps After Implementation
+- User provides their GA4 measurement ID or creates a new property
+- Verify tracking is active in Google Analytics real-time report
+- Optionally customize events or cross-domain tracking
