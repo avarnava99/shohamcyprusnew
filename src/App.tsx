@@ -135,7 +135,7 @@ const App = () => (
           <Route path="/services/air-freight-cyprus" element={<Navigate to="/services/air-freight" replace />} />
           <Route path="/services/travel-agency" element={<Navigate to="/travel-agency" replace />} />
           <Route path="/services/marine-logistics" element={<Navigate to="/port-agency" replace />} />
-          <Route path="/services/marine-insurance" element={<Navigate to="/services" replace />} />
+          
           <Route path="/services/cross-shipments-and-dropshipping" element={<Navigate to="/services" replace />} />
           <Route path="/services/freight-forwarder-cyprus" element={<Navigate to="/services/freight-forwarding" replace />} />
           <Route path="/services/sea-freight-cyprus" element={<Navigate to="/services/sea-freight" replace />} />
