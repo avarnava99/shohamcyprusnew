@@ -85,7 +85,7 @@ const CookiePreferencesModal = ({ open, onOpenChange }: CookiePreferencesModalPr
               onChange={(e) => setAnalytics(e.target.checked)}
               className="accent-primary h-4 w-4"
             />
-            <span>Analytics <span className="text-xs text-muted-foreground">(Google Analytics)</span></span>
+            <span>Analytics <span className="text-xs text-muted-foreground">(Google Analytics, Ahrefs)</span></span>
           </label>
 
           <label className="flex items-center gap-2 text-sm cursor-pointer">

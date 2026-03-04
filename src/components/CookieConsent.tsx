@@ -41,6 +41,16 @@ function loadAlbacross() {
   document.head.appendChild(s);
 }
 
+function loadAhrefs() {
+  if (document.getElementById('ahrefs-analytics')) return;
+  const s = document.createElement('script');
+  s.id = 'ahrefs-analytics';
+  s.async = true;
+  s.src = 'https://analytics.ahrefs.com/analytics.js';
+  s.setAttribute('data-key', 'zmhjHwtMhVC/sv3Mi4QmPg');
+  document.head.appendChild(s);
+}
+
 function updateConsent(consent: ConsentState) {
   window.gtag?.('consent', 'update', {
     analytics_storage: consent.analytics ? 'granted' : 'denied',
@@ -49,7 +59,7 @@ function updateConsent(consent: ConsentState) {
     ad_personalization: consent.marketing ? 'granted' : 'denied',
   });
 
-  if (consent.analytics) loadGA();
+  if (consent.analytics) { loadGA(); loadAhrefs(); }
   if (consent.marketing) loadAlbacross();
 }
 
@@ -123,7 +133,7 @@ const CookieConsent = () => {
                   onChange={(e) => setAnalytics(e.target.checked)}
                   className="accent-primary h-4 w-4"
                 />
-                <span>Analytics <span className="text-xs text-muted-foreground">(Google Analytics)</span></span>
+                <span>Analytics <span className="text-xs text-muted-foreground">(Google Analytics, Ahrefs)</span></span>
               </label>
               <label className="flex items-center gap-2 text-sm cursor-pointer">
                 <input
