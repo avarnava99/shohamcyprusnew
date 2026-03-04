@@ -1,36 +1,39 @@
 
 
-## Cookie Consent Banner (GDPR/Google Compliance)
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-### What It Does
-A bottom banner that blocks Google Analytics and Albacross tracking scripts until the user explicitly accepts cookies. This satisfies Google's consent mode requirements and EU/GDPR regulations.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-### How It Works
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-**1. Move tracking scripts from `index.html` into React control**
-- Remove the GA4 and Albacross `<script>` tags from `index.html`
-- Instead, load them dynamically in JavaScript only after consent is granted
+## Solution
 
-**2. Create `src/components/CookieConsent.tsx`**
-- A fixed bottom banner with "Accept All", "Reject All", and "Manage Preferences" options
-- Categories: Essential (always on), Analytics (GA4), Marketing (Albacross)
-- Stores consent in `localStorage` as a JSON object
-- On accept: dynamically injects GA4 and Albacross scripts + sets `gtag('consent', 'update', ...)` with Google Consent Mode v2
-- On reject: scripts never load; sets consent mode to `denied`
-- Banner only shows if no prior consent decision exists
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-**3. Google Consent Mode v2 integration**
-- Add a default consent snippet in `index.html` that sets all consent signals to `denied` before any tags fire
-- On user acceptance, update consent signals to `granted` -- GA4 respects this natively
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-**4. Add to `Layout.tsx`**
-- Render `<CookieConsent />` alongside the existing `<ChatWidget />`
+This handles all 40 existing posts AND any future posts automatically.
 
-**5. Privacy Policy link**
-- Banner includes a link to `/about-us/privacy-policy` (already exists)
+### 2. Add missing redirect in `src/App.tsx`
 
-### Files to Modify
-- **`index.html`** -- Replace tracking scripts with Google Consent Mode v2 default snippet
-- **`src/components/CookieConsent.tsx`** -- New component (banner UI + script injection logic)
-- **`src/components/layout/Layout.tsx`** -- Import and render `<CookieConsent />`
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+
+## Technical Details
+
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
+
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 
