@@ -26,6 +26,7 @@ const Layout = ({ children, hideBreadcrumbs = false }: LayoutProps) => {
       <main className="flex-1">{children}</main>
       <Footer />
       <ChatWidget />
+      <CookieConsent />
     </div>
   );
 };

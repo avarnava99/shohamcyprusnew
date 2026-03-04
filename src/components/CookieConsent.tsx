@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 import { Cookie, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+    dataLayer: any[];
+  }
+}
 interface ConsentState {
   analytics: boolean;
   marketing: boolean;
