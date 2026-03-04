@@ -6,6 +6,7 @@ import { CONTACT } from "@/constants/contact";
 import CookiePreferencesModal from "@/components/CookiePreferencesModal";
 
 const Footer = () => {
+  const [showCookiePrefs, setShowCookiePrefs] = useState(false);
   const zimAgencyLinks = [
     { label: "Marketing and Sales", href: "/zim-agency-in-cyprus/marketing-and-sales" },
     { label: "Container Types", href: "/zim-agency-in-cyprus/zim-container-types" },
