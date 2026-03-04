@@ -59,7 +59,7 @@ function updateConsent(consent: ConsentState) {
     ad_personalization: consent.marketing ? 'granted' : 'denied',
   });
 
-  if (consent.analytics) loadGA();
+  if (consent.analytics) { loadGA(); loadAhrefs(); }
   if (consent.marketing) loadAlbacross();
 }
 
