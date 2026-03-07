@@ -117,6 +117,7 @@ const App = () => (
           <Route path="/admin/contacts" element={<ContactSubmissions />} />
           <Route path="/admin/container-orders" element={<ContainerOrders />} />
           <Route path="/admin/duty-leads" element={<DutyCalculatorLeads />} />
+          <Route path="/admin/news-crawler" element={<NewsCrawler />} />
 
           {/* ============================================= */}
           {/* SEO REDIRECTS - WordPress URL preservation     */}

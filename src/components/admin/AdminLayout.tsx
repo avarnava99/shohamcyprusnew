@@ -70,6 +70,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin/contacts", icon: Mail, label: "Contact Submissions" },
     { href: "/admin/container-orders", icon: Package, label: "Container Orders" },
     { href: "/admin/duty-leads", icon: Calculator, label: "Duty Calculator Leads" },
+    { href: "/admin/news-crawler", icon: Newspaper, label: "News Crawler" },
   ];
 
   return (
