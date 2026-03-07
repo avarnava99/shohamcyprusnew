@@ -3,7 +3,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { LayoutDashboard, Mail, LogOut, Home, Package, Calculator, MessageCircle } from "lucide-react";
+import { LayoutDashboard, Mail, LogOut, Home, Package, Calculator, MessageCircle, Newspaper } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminChat } from "@/hooks/useChat";
 
@@ -70,6 +70,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { href: "/admin/contacts", icon: Mail, label: "Contact Submissions" },
     { href: "/admin/container-orders", icon: Package, label: "Container Orders" },
     { href: "/admin/duty-leads", icon: Calculator, label: "Duty Calculator Leads" },
+    { href: "/admin/news-crawler", icon: Newspaper, label: "News Crawler" },
   ];
 
   return (

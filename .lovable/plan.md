@@ -1,82 +1,39 @@
 
 
-## Auto-Publishing Shipping News Pipeline
+# Smart 404: Auto-Redirect Legacy Blog URLs
 
-Build a daily automated pipeline: crawl 4 shipping news sites, rewrite articles with AI, generate featured images, and auto-publish to the blog.
+## What's Already Done
+All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
 
-### Architecture
+## What's Needed
+Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
 
-```text
-Daily Cron Job (pg_cron)
-        │
-        ▼
-┌─────────────────────┐
-│ crawl-shipping-news  │  Edge Function
-│                     │
-│ 1. Firecrawl scrape │──► 4 news sources
-│ 2. Deduplicate      │──► Check blog_posts by source_url
-│ 3. AI Rewrite       │──► Lovable AI (Gemini Flash)
-│ 4. AI Image Gen     │──► Lovable AI (Gemini Flash Image)
-│ 5. Upload image     │──► blog-images bucket
-│ 6. Insert post      │──► blog_posts (published=true)
-└─────────────────────┘
-```
+## Solution
 
-### Database Changes
+### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
 
-**Migration**: Add columns to `blog_posts` for source tracking:
-- `source_url TEXT` -- original article URL (for deduplication)
-- `source_site TEXT` -- e.g. "splash247", "hellenicshippingnews"
-- `is_ai_generated BOOLEAN DEFAULT false`
+When a user hits a 404:
+1. Extract the last path segment as a potential blog slug
+2. Query the `blog_posts` table for a matching published post
+3. If found, auto-redirect to `/blog/{slug}`
+4. If not found, show the existing 404 page with suggestions
 
-### Edge Function: `crawl-shipping-news`
+This handles all 40 existing posts AND any future posts automatically.
 
-Single function that:
+### 2. Add missing redirect in `src/App.tsx`
 
-1. **Crawls** each source using Firecrawl (already connected) to scrape the homepage/news feed
-2. **Extracts** article links and titles from the scraped content
-3. **Deduplicates** by checking `source_url` in `blog_posts`
-4. **Rewrites** each article using Lovable AI (`google/gemini-3-flash-preview`):
-   - Fetches the full article via Firecrawl
-   - Prompt: rewrite for Shoham's audience, professional maritime tone, 300-500 words, generate excerpt, suggest category
-5. **Generates featured image** using Lovable AI (`google/gemini-2.5-flash-image`) with a shipping-themed prompt derived from the title
-6. **Uploads** image to `blog-images` bucket
-7. **Inserts** into `blog_posts` with `published=true`, `is_ai_generated=true`
+Add redirect for the current broken URL:
+- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
 
-Processes max 2-3 articles per run to stay within rate limits and CPU time.
+## Technical Details
 
-### News Sources Configuration
+### `src/pages/NotFound.tsx` changes:
+- Import `useNavigate` from react-router-dom and `supabase` client
+- Add `useState` for loading state
+- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
+- Show a brief "Checking..." state while the query runs
+- Fall through to the existing 404 UI if no match
 
-Hardcoded in the edge function:
-- `https://splash247.com` -- main news page
-- `https://www.hellenicshippingnews.com` -- latest news
-- `https://www.seatrade-maritime.com/news` -- news section
-- `https://www.tradewindsnews.com` -- front page
-
-### Scheduling
-
-Set up a `pg_cron` job to invoke the function daily at 6:00 AM UTC.
-
-### Admin Visibility
-
-Add a "News Crawler" section to the admin dashboard showing:
-- Link to `/admin/blog` (existing blog management)
-- Button to manually trigger a crawl
-- Badge showing AI-generated post count
-
-### Files to Create/Modify
-
-1. **Migration** -- add `source_url`, `source_site`, `is_ai_generated` to `blog_posts`
-2. **`supabase/functions/crawl-shipping-news/index.ts`** -- main pipeline
-3. **`supabase/config.toml`** -- register new function with `verify_jwt = false`
-4. **`src/components/admin/AdminLayout.tsx`** -- add Blog/News nav item
-5. **`src/pages/admin/BlogManager.tsx`** -- admin page with blog list + manual crawl trigger
-6. **`src/App.tsx`** -- add `/admin/blog` route
-7. **pg_cron SQL** -- daily schedule (via insert tool, not migration)
-
-### Dependencies
-
-- **Firecrawl** connector (already connected with `FIRECRAWL_API_KEY`)
-- **Lovable AI** (`LOVABLE_API_KEY` already available)
-- No new secrets needed
+### `src/App.tsx` changes:
+- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
 

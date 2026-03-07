@@ -41,6 +41,7 @@ import ContactSubmissions from "./pages/admin/ContactSubmissions";
 import ContainerOrders from "./pages/admin/ContainerOrders";
 import DutyCalculatorLeads from "./pages/admin/DutyCalculatorLeads";
 import LiveChat from "./pages/admin/LiveChat";
+import NewsCrawler from "./pages/admin/NewsCrawler";
 import UsedContainers from "./pages/UsedContainers";
 import Account from "./pages/Account";
 import ExnessPartnership from "./pages/ExnessPartnership";
@@ -116,6 +117,7 @@ const App = () => (
           <Route path="/admin/contacts" element={<ContactSubmissions />} />
           <Route path="/admin/container-orders" element={<ContainerOrders />} />
           <Route path="/admin/duty-leads" element={<DutyCalculatorLeads />} />
+          <Route path="/admin/news-crawler" element={<NewsCrawler />} />
 
           {/* ============================================= */}
           {/* SEO REDIRECTS - WordPress URL preservation     */}
