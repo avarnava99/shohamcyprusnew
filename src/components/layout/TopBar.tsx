@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Phone, Mail, Clock, LogOut, Settings, UserCircle, Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, Clock, LogOut, Settings, UserCircle, Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
+import XIcon from "@/components/icons/XIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer, Cookie } from "lucide-react";
+import { Facebook, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer, Cookie } from "lucide-react";
+import XIcon from "@/components/icons/XIcon";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { CONTACT } from "@/constants/contact";
 import CookiePreferencesModal from "@/components/CookiePreferencesModal";
