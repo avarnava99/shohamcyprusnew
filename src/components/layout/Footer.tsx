@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer, Cookie } from "lucide-react";
+import { Facebook, Linkedin, Instagram, Youtube, Phone, Mail, MapPin, Printer, Cookie } from "lucide-react";
+import XIcon from "@/components/icons/XIcon";
 import shohamLogo from "@/assets/shoham-logo.png";
 import { CONTACT } from "@/constants/contact";
 import CookiePreferencesModal from "@/components/CookiePreferencesModal";
@@ -83,7 +84,7 @@ const Footer = () => {
                 <Facebook className="h-5 w-5 text-white" />
               </a>
               <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="X (Twitter)">
-                <Twitter className="h-5 w-5 text-white" />
+                <XIcon className="h-5 w-5 text-white" />
               </a>
               <a href={CONTACT.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5 text-white" />

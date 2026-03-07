@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Phone, Mail, Clock, LogOut, Settings, UserCircle, Facebook, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, Clock, LogOut, Settings, UserCircle, Facebook, Linkedin, Instagram, Youtube } from "lucide-react";
+import XIcon from "@/components/icons/XIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -68,7 +69,7 @@ const TopBar = () => {
           </span>
           <div className="hidden md:flex items-center gap-2 ml-2">
             <a href={CONTACT.socials.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="Facebook"><Facebook className="h-3.5 w-3.5" /></a>
-            <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="X"><Twitter className="h-3.5 w-3.5" /></a>
+            <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="X"><XIcon className="h-3.5 w-3.5" /></a>
             <a href={CONTACT.socials.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="LinkedIn"><Linkedin className="h-3.5 w-3.5" /></a>
             <a href={CONTACT.socials.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="Instagram"><Instagram className="h-3.5 w-3.5" /></a>
             <a href={CONTACT.socials.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-[#f59e0b] transition-colors" aria-label="YouTube"><Youtube className="h-3.5 w-3.5" /></a>
