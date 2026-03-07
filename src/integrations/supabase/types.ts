@@ -107,9 +107,12 @@ export type Database = {
           excerpt: string | null
           featured_image: string | null
           id: string
+          is_ai_generated: boolean | null
           published: boolean
           published_at: string | null
           slug: string
+          source_site: string | null
+          source_url: string | null
           title: string
           updated_at: string
         }
@@ -121,9 +124,12 @@ export type Database = {
           excerpt?: string | null
           featured_image?: string | null
           id?: string
+          is_ai_generated?: boolean | null
           published?: boolean
           published_at?: string | null
           slug: string
+          source_site?: string | null
+          source_url?: string | null
           title: string
           updated_at?: string
         }
@@ -135,9 +141,12 @@ export type Database = {
           excerpt?: string | null
           featured_image?: string | null
           id?: string
+          is_ai_generated?: boolean | null
           published?: boolean
           published_at?: string | null
           slug?: string
+          source_site?: string | null
+          source_url?: string | null
           title?: string
           updated_at?: string
         }
