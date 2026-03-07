@@ -84,7 +84,7 @@ const Footer = () => {
                 <Facebook className="h-5 w-5 text-white" />
               </a>
               <a href={CONTACT.socials.x} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="X (Twitter)">
-                <Twitter className="h-5 w-5 text-white" />
+                <XIcon className="h-5 w-5 text-white" />
               </a>
               <a href={CONTACT.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 rounded hover:bg-[#f59e0b] transition-colors" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5 text-white" />
