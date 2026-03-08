@@ -1,39 +1,35 @@
 
 
-# Smart 404: Auto-Redirect Legacy Blog URLs
+# Advanced Blog Search & SEO
 
-## What's Already Done
-All 40 blog posts from the WordPress XML are already in the database with content and featured images. No new blog posts need to be created.
+Enhance the blog listing page with search, category filtering, and add a related posts widget to individual blog posts.
 
-## What's Needed
-Old WordPress blog URLs live at the root (e.g., `/zim-vessel-operation-with-3-gantry-cranes/`), but the new site expects `/blog/zim-vessel-operation-with-3-gantry-cranes`. Visitors from Google hitting old URLs will get a 404.
+## Changes
 
-## Solution
+### 1. `src/pages/Blog.tsx` -- Search + Category Filter
 
-### 1. Update `src/pages/NotFound.tsx` with Smart 404 Logic
+- Add a search bar (text input with Search icon) that filters posts client-side by title and excerpt
+- Add a row of category filter badges fetched from `blog_categories` table; clicking one filters posts; "All" resets
+- Support URL query params (`?category=shipping-news&q=vessel`) for shareable filtered views
+- Add pagination (12 posts per page) since post count will grow with the crawler
 
-When a user hits a 404:
-1. Extract the last path segment as a potential blog slug
-2. Query the `blog_posts` table for a matching published post
-3. If found, auto-redirect to `/blog/{slug}`
-4. If not found, show the existing 404 page with suggestions
+### 2. `src/pages/BlogPost.tsx` -- Related Posts Widget
 
-This handles all 40 existing posts AND any future posts automatically.
+- After the article content, add a "Related Articles" section
+- Query 3 posts from the same `category_id`, excluding current post, ordered by `published_at` desc
+- If fewer than 3 in same category, fill with latest posts from any category
+- Display as horizontal cards with thumbnail, title, date
 
-### 2. Add missing redirect in `src/App.tsx`
+### 3. `src/pages/BlogPost.tsx` -- SEO Enhancements
 
-Add redirect for the current broken URL:
-- `/port-agency/ports-in-cyprus/limassol-port-schedule` --> `/port-agency/ports-in-cyprus/limassol-port`
+- Add prev/next navigation links at bottom of post (query adjacent posts by published_at)
+- Add `<link rel="canonical">` is already handled by SEO component -- no change needed
 
-## Technical Details
+### No database changes needed
 
-### `src/pages/NotFound.tsx` changes:
-- Import `useNavigate` from react-router-dom and `supabase` client
-- Add `useState` for loading state
-- Add `useEffect` that extracts the slug from `location.pathname`, queries `blog_posts` for a match, and calls `navigate("/blog/" + slug, { replace: true })` if found
-- Show a brief "Checking..." state while the query runs
-- Fall through to the existing 404 UI if no match
+All filtering is done client-side or with existing Supabase queries on existing columns (`category_id`, `title`, `excerpt`, `published_at`). The `blog_categories` table already has `name` and `slug`.
 
-### `src/App.tsx` changes:
-- Add one `<Route>` for the limassol-port-schedule redirect before the catch-all
+### Files to modify
+1. **`src/pages/Blog.tsx`** -- add search input, category filter bar, pagination
+2. **`src/pages/BlogPost.tsx`** -- add related posts section and prev/next navigation
 
