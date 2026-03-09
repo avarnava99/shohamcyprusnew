@@ -140,14 +140,13 @@ const App = () => (
           <Route path="/drydock-service" element={<Navigate to="/port-agency" replace />} />
 
           {/* Service page redirects */}
-          <Route path="/services/air-freight-cyprus" element={<Navigate to="/services/air-freight" replace />} />
+          <Route path="/services/air-freight" element={<Navigate to="/services/air-freight-cyprus" replace />} />
           <Route path="/services/travel-agency" element={<Navigate to="/travel-agency" replace />} />
           <Route path="/services/marine-logistics" element={<Navigate to="/port-agency" replace />} />
           
           <Route path="/services/cross-shipments-and-dropshipping" element={<Navigate to="/services" replace />} />
           <Route path="/services/freight-forwarder-cyprus" element={<Navigate to="/services/freight-forwarding" replace />} />
           <Route path="/services/sea-freight-cyprus" element={<Navigate to="/services/sea-freight" replace />} />
-          <Route path="/services/car-shipping-from-uk-to-cyprus/*" element={<Navigate to="/services/car-shipping-from-uk-to-cyprus" replace />} />
           <Route path="/services/find-online-shipping-rates-cyprus" element={<Navigate to="/quote" replace />} />
           <Route path="/services/ship-parcel-to-cyprus" element={<Navigate to="/services/parcel-forwarding" replace />} />
           <Route path="/services/customs-clearing/transfer-of-normal-residence-to-cyprus" element={<Navigate to="/services/customs-clearing" replace />} />
