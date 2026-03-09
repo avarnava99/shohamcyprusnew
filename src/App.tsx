@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import FreightForwarderCyprus from "./pages/services/FreightForwarderCyprus";
 import CarShippingUK from "./pages/services/CarShippingUK";
 import AirFreightCyprus from "./pages/services/AirFreightCyprus";
+import ParcelForwardingCyprus from "./pages/services/ParcelForwardingCyprus";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -88,6 +89,7 @@ const App = () => (
           <Route path="/services/freight-forwarding" element={<FreightForwarderCyprus />} />
           <Route path="/services/car-shipping-from-uk-to-cyprus" element={<CarShippingUK />} />
           <Route path="/services/air-freight-cyprus" element={<AirFreightCyprus />} />
+          <Route path="/services/parcel-forwarding" element={<ParcelForwardingCyprus />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/services/customs-clearing/duty-calculator-for-cyprus" element={<DutyCalculator />} />
           <Route path="/services/customs-clearing/:subpage" element={<CustomsSubpage />} />

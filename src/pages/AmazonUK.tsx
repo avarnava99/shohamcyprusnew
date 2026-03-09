@@ -1,13 +1,46 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
-import { Package, Truck, Clock, CreditCard, ShoppingCart, Globe } from "lucide-react";
+import { Package, Truck, Clock, CreditCard, ShoppingCart, Globe, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SEO from "@/components/SEO";
+import SEO, { faqJsonLd } from "@/components/SEO";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+const faqData = [
+  {
+    question: "Does Amazon deliver to Cyprus?",
+    answer: "Some Amazon UK sellers ship directly to Cyprus, but many products are restricted from international delivery. Our parcel forwarding service gives you a UK address so you can order any product from Amazon UK and have it shipped to Cyprus via our warehouse."
+  },
+  {
+    question: "How to order from Amazon UK to Cyprus?",
+    answer: "Register with Shoham to receive your personal UK warehouse address. Shop on Amazon UK using that address as the delivery destination. We receive your parcels, consolidate them if you wish, and forward everything to your Cyprus address with full customs clearance."
+  },
+  {
+    question: "How long does Amazon UK delivery to Cyprus take?",
+    answer: "After your parcel arrives at our UK warehouse, air freight delivery to Cyprus typically takes 5-7 working days. Sea freight is more economical and takes 2-3 weeks. We also offer express options for urgent shipments."
+  },
+  {
+    question: "Is there Amazon Prime in Cyprus?",
+    answer: "Amazon Prime is not available in Cyprus. However, you can still benefit from Prime deals by using a UK delivery address through our service. You'll get Prime's fast UK delivery to our warehouse, and we'll forward it to Cyprus."
+  },
+  {
+    question: "How much does it cost to ship from Amazon UK to Cyprus?",
+    answer: "Shipping costs depend on the weight and dimensions of your package. We offer competitive rates starting from a few pounds per kilogram. You can save further by consolidating multiple orders into one shipment. Contact us for a personalised quote."
+  },
+  {
+    question: "Do I have to pay customs duty on Amazon UK orders to Cyprus?",
+    answer: "Yes, since Brexit, goods from the UK are subject to EU customs duties and VAT when imported to Cyprus. We handle all customs formalities on your behalf. Use our duty calculator to estimate costs before ordering."
+  }
+];
 
 const AmazonUK = () => {
   return (
     <Layout>
-      <SEO title="Amazon UK to Cyprus" description="Shop from Amazon UK and have purchases delivered to Cyprus with our parcel forwarding service." path="/online-purchases-shipped-to-cyprus-from-amazon-uk" />
+      <SEO
+        title="Amazon Cyprus Delivery | Shop Amazon UK & Ship to Cyprus"
+        description="Does Amazon deliver to Cyprus? Shop from Amazon UK and get your purchases shipped to Cyprus with our door-to-door parcel forwarding service. Fast delivery, customs handled."
+        path="/online-purchases-shipped-to-cyprus-from-amazon-uk"
+        jsonLd={faqJsonLd(faqData)}
+      />
       {/* Hero Section */}
       <div className="bg-primary py-16">
         <div className="container-shoham">
@@ -17,10 +50,10 @@ const AmazonUK = () => {
             </Link>
           </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-            Online Purchases Shipped to Cyprus from Amazon UK
+            Amazon Cyprus Delivery — Shop & Ship from Amazon UK
           </h1>
           <p className="text-white/90 text-lg max-w-3xl">
-            Get your Amazon UK purchases delivered to Cyprus with our reliable parcel forwarding service
+            Does Amazon deliver to Cyprus? With our parcel forwarding service, you can shop from Amazon UK and have everything delivered to your door in Cyprus.
           </p>
         </div>
       </div>
@@ -237,8 +270,30 @@ const AmazonUK = () => {
                   </Link>
                 </li>
               </ul>
-            </div>
+           </div>
           </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="container-shoham py-12">
+          <h2 className="font-heading text-2xl font-bold text-primary mb-6">
+            Frequently Asked Questions About Amazon Delivery to Cyprus
+          </h2>
+          <Accordion type="single" collapsible className="w-full max-w-3xl">
+            {faqData.map((faq, index) => (
+              <AccordionItem key={index} value={`faq-${index}`}>
+                <AccordionTrigger className="text-left">
+                  <span className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                    {faq.question}
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </Layout>
