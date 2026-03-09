@@ -89,6 +89,7 @@ const App = () => (
           <Route path="/services/freight-forwarding" element={<FreightForwarderCyprus />} />
           <Route path="/services/car-shipping-from-uk-to-cyprus" element={<CarShippingUK />} />
           <Route path="/services/air-freight-cyprus" element={<AirFreightCyprus />} />
+          <Route path="/services/parcel-forwarding" element={<ParcelForwardingCyprus />} />
           <Route path="/services/:slug" element={<ServicePage />} />
           <Route path="/services/customs-clearing/duty-calculator-for-cyprus" element={<DutyCalculator />} />
           <Route path="/services/customs-clearing/:subpage" element={<CustomsSubpage />} />

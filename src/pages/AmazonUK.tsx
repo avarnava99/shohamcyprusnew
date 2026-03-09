@@ -270,8 +270,30 @@ const AmazonUK = () => {
                   </Link>
                 </li>
               </ul>
-            </div>
+           </div>
           </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="container-shoham py-12">
+          <h2 className="font-heading text-2xl font-bold text-primary mb-6">
+            Frequently Asked Questions About Amazon Delivery to Cyprus
+          </h2>
+          <Accordion type="single" collapsible className="w-full max-w-3xl">
+            {faqData.map((faq, index) => (
+              <AccordionItem key={index} value={`faq-${index}`}>
+                <AccordionTrigger className="text-left">
+                  <span className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                    {faq.question}
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </Layout>

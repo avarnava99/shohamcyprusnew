@@ -168,7 +168,7 @@ const UsedContainers = () => {
 
   return (
     <Layout>
-      <SEO title="Used Container Sales" description="Buy new and used shipping containers in Cyprus. 20ft, 40ft, and high cube containers available." path="/services/used-containers" />
+      <SEO title="Shipping Containers for Sale in Cyprus | New & Used" description="Buy new and used shipping containers in Cyprus. 20ft and 40ft containers available for sale, storage, and conversion. Competitive prices with island-wide delivery." path="/services/used-containers" />
       {/* Hero Section */}
       <section className="relative bg-primary text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80" />
