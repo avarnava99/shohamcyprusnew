@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import FreightForwarderCyprus from "./pages/services/FreightForwarderCyprus";
 import CarShippingUK from "./pages/services/CarShippingUK";
 import AirFreightCyprus from "./pages/services/AirFreightCyprus";
+import ParcelForwardingCyprus from "./pages/services/ParcelForwardingCyprus";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
