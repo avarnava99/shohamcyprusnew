@@ -10,6 +10,13 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const escapeHtml = (s: string): string =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
 interface ContainerOfferRequest {
   orderId: string;
   recipientEmail: string;
@@ -27,6 +34,51 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // --- Auth: require a valid admin session ---
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await supabaseAuth.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const userId = claimsData.claims.sub;
+
+    // Check admin role using service role client
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+    const { data: roleData } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!roleData) {
+      return new Response(JSON.stringify({ error: "Forbidden: admin role required" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+    // --- End auth ---
+
     const {
       orderId,
       recipientEmail,
@@ -45,16 +97,19 @@ const handler = async (req: Request): Promise<Response> => {
       quantity,
     });
 
-    // Convert plain text message to HTML with proper formatting
-    const htmlMessage = message
-      .replace(/\n/g, "<br>")
-      .replace(/€/g, "&euro;");
+    // Escape all user-controlled values before inserting into HTML
+    const safeRecipientName = escapeHtml(recipientName);
+    const safeSubject = escapeHtml(subject);
+    const safeContainerType = escapeHtml(containerType);
+    const safeOfferPrice = offerPrice ? escapeHtml(offerPrice) : undefined;
+    const safeOrderId = escapeHtml(orderId.substring(0, 8).toUpperCase());
+    const htmlMessage = escapeHtml(message).replace(/\n/g, "<br>");
 
     const emailResponse = await resend.emails.send({
       from: "Shoham Shipping <onboarding@resend.dev>",
       reply_to: "avarnava@shoham.com.cy",
       to: [recipientEmail],
-      subject: subject,
+      subject: safeSubject,
       html: `
         <!DOCTYPE html>
         <html>
@@ -72,23 +127,23 @@ const handler = async (req: Request): Promise<Response> => {
             <div style="background: white; padding: 25px; border-radius: 8px; border: 1px solid #e2e8f0;">
               <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0;">
                 <p style="margin: 0; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Order Reference</p>
-                <p style="margin: 5px 0 0 0; font-size: 14px; font-weight: bold; color: #1a365d;">${orderId.substring(0, 8).toUpperCase()}</p>
+                <p style="margin: 5px 0 0 0; font-size: 14px; font-weight: bold; color: #1a365d;">${safeOrderId}</p>
               </div>
               
               <div style="background: #f1f5f9; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
                 <table style="width: 100%; border-collapse: collapse;">
                   <tr>
                     <td style="padding: 5px 0; color: #64748b; font-size: 14px;">Container Type:</td>
-                    <td style="padding: 5px 0; font-weight: bold; text-align: right;">${containerType}</td>
+                    <td style="padding: 5px 0; font-weight: bold; text-align: right;">${safeContainerType}</td>
                   </tr>
                   <tr>
                     <td style="padding: 5px 0; color: #64748b; font-size: 14px;">Quantity:</td>
                     <td style="padding: 5px 0; font-weight: bold; text-align: right;">${quantity}</td>
                   </tr>
-                  ${offerPrice ? `
+                  ${safeOfferPrice ? `
                   <tr>
                     <td style="padding: 5px 0; color: #64748b; font-size: 14px;">Quoted Price:</td>
-                    <td style="padding: 5px 0; font-weight: bold; text-align: right; color: #16a34a;">&euro;${offerPrice}</td>
+                    <td style="padding: 5px 0; font-weight: bold; text-align: right; color: #16a34a;">&euro;${safeOfferPrice}</td>
                   </tr>
                   ` : ""}
                 </table>
@@ -118,11 +173,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Email sent successfully:", emailResponse);
 
     // Update order status to 'quoted' after successful email
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from("container_orders")
       .update({ status: "quoted" })
       .eq("id", orderId);
@@ -140,7 +191,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-container-offer function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "An internal error occurred" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },

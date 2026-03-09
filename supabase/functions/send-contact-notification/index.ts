@@ -9,6 +9,13 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const escapeHtml = (s: string): string =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
 interface ContactNotificationRequest {
   name: string;
   email: string;
@@ -20,7 +27,6 @@ interface ContactNotificationRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -28,22 +34,28 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { name, email, phone, company, subject, message, submissionType }: ContactNotificationRequest = await req.json();
 
-    console.log("Sending contact notification email for:", { name, email, submissionType });
+    console.log("Sending contact notification email for:", { name, email: email.substring(0, 3) + "***", submissionType });
 
-    // Determine form type for email template
+    // Escape all user-supplied values
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safePhone = phone ? escapeHtml(phone) : undefined;
+    const safeCompany = company ? escapeHtml(company) : undefined;
+    const safeSubject = subject ? escapeHtml(subject) : undefined;
+    const safeMessage = escapeHtml(message);
+
     let formType = "Contact Form";
     if (submissionType === "quote") formType = "Quote Request";
     else if (submissionType === "container_order") formType = "Container Order";
     else if (submissionType === "container_pricing") formType = "Container Pricing Request";
 
-    const emailSubject = subject 
-      ? `[Shoham ${formType}] ${subject}` 
-      : `[Shoham ${formType}] New submission from ${name}`;
+    const emailSubject = safeSubject 
+      ? `[Shoham ${formType}] ${safeSubject}` 
+      : `[Shoham ${formType}] New submission from ${safeName}`;
 
-    // Build email content with appropriate styling
     const emailContent = submissionType === "container_order" 
-      ? buildContainerOrderEmail(name, email, phone, company, message)
-      : buildStandardEmail(name, email, phone, company, subject, message, formType);
+      ? buildContainerOrderEmail(safeName, safeEmail, safePhone, safeCompany, safeMessage)
+      : buildStandardEmail(safeName, safeEmail, safePhone, safeCompany, safeSubject, safeMessage, formType);
 
     const emailResponse = await resend.emails.send({
       from: "Shoham Website <notifications@shoham.com.cy>",
@@ -52,6 +64,24 @@ const handler = async (req: Request): Promise<Response> => {
       subject: emailSubject,
       html: emailContent,
     });
+
+    console.log("Email sent successfully:", emailResponse);
+
+    return new Response(JSON.stringify({ success: true, data: emailResponse.data }), {
+      status: 200,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
+  } catch (error: any) {
+    console.error("Error in send-contact-notification function:", error);
+    return new Response(
+      JSON.stringify({ error: "An internal error occurred" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      }
+    );
+  }
+};
 
 function buildStandardEmail(name: string, email: string, phone: string | undefined, company: string | undefined, subject: string | undefined, message: string, formType: string): string {
   return `
@@ -133,7 +163,6 @@ function buildContainerOrderEmail(name: string, email: string, phone: string | u
         .field { margin-bottom: 8px; }
         .label { font-weight: bold; color: #666; font-size: 12px; }
         .value { color: #333; }
-        .map-link { display: inline-block; background: #003366; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
         .message-box { background: #fff; padding: 15px; border-left: 4px solid #F97316; margin-top: 10px; white-space: pre-line; }
         .footer { padding: 15px; text-align: center; font-size: 12px; color: #666; }
       </style>
@@ -141,12 +170,12 @@ function buildContainerOrderEmail(name: string, email: string, phone: string | u
     <body>
       <div class="container">
         <div class="header">
-          <h1>🚢 New Container Order</h1>
+          <h1>New Container Order</h1>
           <span class="badge">Requires Follow-up</span>
         </div>
         <div class="content">
           <div class="section">
-            <div class="section-title">📞 Contact Information</div>
+            <div class="section-title">Contact Information</div>
             <div class="field">
               <span class="label">Name:</span> <span class="value">${name}</span>
             </div>
@@ -158,7 +187,7 @@ function buildContainerOrderEmail(name: string, email: string, phone: string | u
           </div>
           
           <div class="section">
-            <div class="section-title">📋 Order Details</div>
+            <div class="section-title">Order Details</div>
             <div class="message-box">${message.replace(/\n/g, '<br>')}</div>
           </div>
         </div>
@@ -170,23 +199,5 @@ function buildContainerOrderEmail(name: string, email: string, phone: string | u
     </html>
   `;
 }
-
-    console.log("Email sent successfully:", emailResponse);
-
-    return new Response(JSON.stringify({ success: true, data: emailResponse.data }), {
-      status: 200,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
-  } catch (error: any) {
-    console.error("Error in send-contact-notification function:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
-    );
-  }
-};
 
 serve(handler);
