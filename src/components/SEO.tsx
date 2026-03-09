@@ -116,6 +116,35 @@ export const faqJsonLd = (faqs: { question: string; answer: string }[]) => ({
   })),
 });
 
+export const serviceJsonLd = (service: {
+  name: string;
+  description: string;
+  url: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: service.name,
+  description: service.description,
+  url: `${SITE_URL}${service.url}`,
+  provider: {
+    "@type": "LocalBusiness",
+    name: "Shoham (Cyprus) Ltd",
+    url: SITE_URL,
+    telephone: "+357-25-208700",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "3 Anexartisias Street",
+      addressLocality: "Limassol",
+      postalCode: "3600",
+      addressCountry: "CY",
+    },
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Cyprus",
+  },
+});
+
 export const blogPostJsonLd = (post: {
   title: string;
   slug: string;
