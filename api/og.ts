@@ -4,9 +4,12 @@ const DEFAULT_TITLE = "Shoham Shipping & Logistics | Cyprus Shipping and Forward
 const DEFAULT_DESCRIPTION =
   "Leading shipping agency in Cyprus offering port agency, freight forwarding, customs clearing, ZIM container services, and comprehensive maritime solutions.";
 
-const SUPABASE_URL =
-  process.env.VITE_SUPABASE_URL || "https://yobppwbtiqzsplifrtoz.supabase.co";
-const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || "";
+// These are public/anon keys — already visible in the client-side bundle.
+// Hardcoded here because VITE_ env vars are build-time only and not
+// available as runtime env vars in Vercel serverless functions.
+const SUPABASE_URL = "https://yobppwbtiqzsplifrtoz.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvYnBwd2J0aXF6c3BsaWZydG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNjY5NjMsImV4cCI6MjA4MzY0Mjk2M30.8RGeldNrfWHA8qaycRM_Tbf3uOEjgqqwv2HD4rrRlBU";
 
 // Static page metadata
 const STATIC_PAGES: Record<string, { title: string; description: string }> = {
