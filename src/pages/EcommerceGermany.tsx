@@ -2,6 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Package, Truck, Shield, Clock, Euro, CheckCircle } from "lucide-react";
+import Forward2MeBanner from "@/components/Forward2MeBanner";
 import SEO from "@/components/SEO";
 
 const EcommerceGermany = () => {
@@ -163,6 +164,13 @@ const EcommerceGermany = () => {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Affiliate Banner */}
+      <section className="py-8 bg-white">
+        <div className="container-shoham max-w-2xl">
+          <Forward2MeBanner />
         </div>
       </section>
 

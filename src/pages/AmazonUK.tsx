@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Package, Truck, Clock, CreditCard, ShoppingCart, Globe, HelpCircle } from "lucide-react";
+import Forward2MeBanner from "@/components/Forward2MeBanner";
 import { Button } from "@/components/ui/button";
 import SEO, { faqJsonLd } from "@/components/SEO";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -250,6 +251,8 @@ const AmazonUK = () => {
                 </Button>
               </Link>
             </div>
+
+            <Forward2MeBanner />
 
             <div className="bg-card border p-6 rounded-lg">
               <h3 className="font-heading font-semibold text-lg mb-3">Related Services</h3>
