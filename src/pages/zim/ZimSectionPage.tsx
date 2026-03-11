@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, Package, Calendar, MapPin, Globe, Thermometer, ChevronDown, ChevronUp, Box, Layers, Ship } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
 import { useState } from "react";
+import SEO from "@/components/SEO";
 interface SectionData {
   title: string;
   subtitle: string;
@@ -742,6 +743,11 @@ const ZimSectionPage = () => {
       </Layout>;
   }
   return <Layout>
+      <SEO
+        title={sectionData.title}
+        description={sectionData.subtitle}
+        path={`/zim-agency-in-cyprus/${section}`}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

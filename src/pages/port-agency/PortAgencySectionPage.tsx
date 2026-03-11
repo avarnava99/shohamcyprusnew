@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Fuel, Users, Ship, Shield, Wrench, FileText, Anchor, Phone, Mail } from "lucide-react";
 import LimassolMarinaSection from "@/components/port-agency/LimassolMarinaSection";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 interface SectionData {
   title: string;
@@ -205,6 +206,11 @@ const PortAgencySectionPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title={sectionData.title}
+        description={sectionData.description}
+        path={`/port-agency/${section}`}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

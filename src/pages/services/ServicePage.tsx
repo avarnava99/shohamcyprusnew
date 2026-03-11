@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone, Mail } from "lucide-react";
 import { CONTACT } from "@/constants/contact";
+import SEO, { serviceJsonLd } from "@/components/SEO";
 
 // Service data with original URL slugs
 const servicesData: Record<string, { title: string; description: string; content: string[]; subpages?: { label: string; href: string }[] }> = {
@@ -187,8 +188,16 @@ const ServicePage = () => {
     );
   }
 
+  const servicePath = location.pathname === "/iso-tank" ? "/iso-tank" : `/services/${effectiveSlug}`;
+
   return (
     <Layout>
+      <SEO
+        title={service.title}
+        description={service.description}
+        path={servicePath}
+        jsonLd={serviceJsonLd({ name: service.title, description: service.description, url: servicePath })}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

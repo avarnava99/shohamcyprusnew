@@ -8,6 +8,7 @@ import EurogatePortDetails from "@/components/port/EurogatePortDetails";
 import VassilikoPortDetails from "@/components/port/VassilikoPortDetails";
 import VTTVTerminalDetails from "@/components/port/VTTVTerminalDetails";
 import { CONTACT } from "@/constants/contact";
+import SEO from "@/components/SEO";
 
 interface PortData {
   title: string;
@@ -267,6 +268,11 @@ const PortPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title={port.title}
+        description={port.description}
+        path={`/port-agency/ports-in-cyprus/${slug}`}
+      />
       <div className="bg-primary py-16">
         <div className="container-shoham">
           <div className="mb-2">

@@ -1,0 +1,91 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/car-import-duty-calculation", "destination": "/services/customs-clearing/duty-calculator-for-cyprus", "statusCode": 301 },
+    { "source": "/car-registration", "destination": "/services/customs-clearing", "statusCode": 301 },
+    { "source": "/about-us/contact-us/careers", "destination": "/contact-us", "statusCode": 301 },
+    { "source": "/about-us/contact-us", "destination": "/contact-us", "statusCode": 301 },
+    { "source": "/home-2", "destination": "/", "statusCode": 301 },
+    { "source": "/tracking", "destination": "/services/container-tracking", "statusCode": 301 },
+    { "source": "/container-tracking-platform", "destination": "/services/container-tracking", "statusCode": 301 },
+    { "source": "/drydock-service", "destination": "/port-agency", "statusCode": 301 },
+    { "source": "/services/air-freight", "destination": "/services/air-freight-cyprus", "statusCode": 301 },
+    { "source": "/services/travel-agency", "destination": "/travel-agency", "statusCode": 301 },
+    { "source": "/services/marine-logistics", "destination": "/port-agency", "statusCode": 301 },
+    { "source": "/services/cross-shipments-and-dropshipping", "destination": "/services", "statusCode": 301 },
+    { "source": "/services/freight-forwarder-cyprus", "destination": "/services/freight-forwarding", "statusCode": 301 },
+    { "source": "/services/sea-freight-cyprus", "destination": "/services/sea-freight", "statusCode": 301 },
+    { "source": "/services/find-online-shipping-rates-cyprus", "destination": "/quote", "statusCode": 301 },
+    { "source": "/services/ship-parcel-to-cyprus", "destination": "/services/parcel-forwarding", "statusCode": 301 },
+    { "source": "/services/customs-clearing/transfer-of-normal-residence-to-cyprus", "destination": "/services/customs-clearing", "statusCode": 301 },
+    { "source": "/services/container-tracking-for-multiple-shipping-lines", "destination": "/services/container-tracking", "statusCode": 301 },
+    { "source": "/services/parcel-forwarding/online-purchases-from-uk", "destination": "/online-purchases-shipped-to-cyprus-from-amazon-uk", "statusCode": 301 },
+    { "source": "/services/parcel-forwarding/e-commerce-purchases-from-germany-amazon-de", "destination": "/ecommerce-purchases-from-germany", "statusCode": 301 },
+    { "source": "/services/parcel-forwarding/online-purchases-shipped-from-usa-to-cyprus", "destination": "/ecommerce-purchases-from-usa", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/limassol-port/limassol-port-eurogate-schedule", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/limassol-port-cruise-terminal", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/limassol-port-anchorage", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/dhekelia-oil-terminal", "destination": "/port-agency/ports-in-cyprus/vassiliko-oil-terminal", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/larnaca-oil-terminal", "destination": "/port-agency/ports-in-cyprus/larnaca-port", "statusCode": 301 },
+    { "source": "/port-agency/ports-in-cyprus/raf-akrotiri-oil-terminal", "destination": "/port-agency/ports-in-cyprus", "statusCode": 301 },
+    { "source": "/port-agency/vessel-repairs", "destination": "/port-agency", "statusCode": 301 },
+    { "source": "/port-agency/owners-protecting-agency", "destination": "/port-agency", "statusCode": 301 },
+    { "source": "/about-us/general-information/:path*", "destination": "/about-us", "statusCode": 301 },
+    { "source": "/zim-agency-in-cyprus/zim-sailing-schedules/:path*", "destination": "/zim-agency-in-cyprus/zim-sailing-schedules", "statusCode": 301 },
+    { "source": "/zim-agency-in-cyprus/track-your-cargo", "destination": "/services/container-tracking", "statusCode": 301 },
+    { "source": "/why-ispm-15-certification-matters-for-your-cargo", "destination": "/blog", "statusCode": 301 },
+    { "source": "/moving-to-cyprus-reliefs-for-transferring-your-normal-residence", "destination": "/services/customs-clearing", "statusCode": 301 },
+    { "source": "/what-is-an-eur1-certificate", "destination": "/services/customs-clearing", "statusCode": 301 },
+    { "source": "/zim-agency-in-cyprus/track-container-eurogate-limassol-cyprus", "destination": "/services/container-tracking", "statusCode": 301 },
+    { "source": "/direct-container-service-from-uk-and-europe-to-limassol-port-zim", "destination": "/zim-agency-in-cyprus", "statusCode": 301 },
+    { "source": "/shipping-rates-from-germany-to-cyprus", "destination": "/ecommerce-purchases-from-germany", "statusCode": 301 },
+    { "source": "/list-of-vessels-calling-limassol", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/pallet-load-calculator", "destination": "/quote", "statusCode": 301 },
+    { "source": "/ship-a-parcel-to-cyprus", "destination": "/services/parcel-forwarding", "statusCode": 301 },
+    { "source": "/flight-schedule-larnaca-to-athens", "destination": "/travel-agency", "statusCode": 301 },
+    { "source": "/services/customs-clearing/transfer-of-normal-residence-from-a-country-outside-the-european-union-to-cyprus", "destination": "/services/customs-clearing", "statusCode": 301 },
+    { "source": "/ecommerce-shopify-cyprus-store", "destination": "/services", "statusCode": 301 },
+    { "source": "/shipping-rates-for-pallets-to-cyprus", "destination": "/quote", "statusCode": 301 },
+    { "source": "/40-foot-container-dimensions", "destination": "/container-types", "statusCode": 301 },
+    { "source": "/20-foot-container-dimensions", "destination": "/container-types", "statusCode": 301 },
+    { "source": "/airline-representation", "destination": "/travel-agency", "statusCode": 301 },
+    { "source": "/container-equipment", "destination": "/container-types", "statusCode": 301 },
+    { "source": "/warehousing", "destination": "/services", "statusCode": 301 },
+    { "source": "/car-rates", "destination": "/services/car-shipping-from-uk-to-cyprus", "statusCode": 301 },
+    { "source": "/searates", "destination": "/quote", "statusCode": 301 },
+    { "source": "/location", "destination": "/contact-us", "statusCode": 301 },
+    { "source": "/moni-anchorage", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/limassol-anchorage", "destination": "/port-agency/ports-in-cyprus/limassol-port", "statusCode": 301 },
+    { "source": "/sea-freight-import-to-cyprus", "destination": "/services/sea-freight", "statusCode": 301 },
+    { "source": "/sea-freight-exports-from-cyprus", "destination": "/services/sea-freight", "statusCode": 301 },
+    { "source": "/container-shipping-from-cyprus", "destination": "/services/sea-freight", "statusCode": 301 },
+    { "source": "/car-export-from-cyprus", "destination": "/services/car-shipping-from-uk-to-cyprus", "statusCode": 301 },
+    { "source": "/exporting-from-cyprus", "destination": "/services", "statusCode": 301 },
+    { "source": "/tag/:path*", "destination": "/blog", "statusCode": 301 },
+    { "source": "/category/:path*", "destination": "/blog", "statusCode": 301 },
+    { "source": "/product-tag/:path*", "destination": "/services", "statusCode": 301 },
+    { "source": "/product-category/:path*", "destination": "/services", "statusCode": 301 },
+    { "source": "/news/:path*", "destination": "/blog", "statusCode": 301 },
+    { "source": "/shop/:path*", "destination": "/services/used-containers", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

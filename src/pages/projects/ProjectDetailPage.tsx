@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ChevronLeft, ChevronRight, X, ArrowLeft } from "lucide-react";
 import { projects, getProjectBySlug } from "@/data/projects";
+import SEO from "@/components/SEO";
 
 const ProjectDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -41,6 +42,11 @@ const ProjectDetailPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title={project.title}
+        description={project.description}
+        path={`/project-cargo/${project.slug}`}
+      />
       {/* Hero Section */}
       <div className="bg-primary py-12">
         <div className="container-shoham">
