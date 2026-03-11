@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Package, Truck, Clock, Shield, Globe, Plane, Ship, HelpCircle, ArrowRight } from "lucide-react";
+import Forward2MeBanner from "@/components/Forward2MeBanner";
 import { Button } from "@/components/ui/button";
 import SEO, { faqJsonLd, serviceJsonLd } from "@/components/SEO";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";

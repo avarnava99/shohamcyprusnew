@@ -252,6 +252,8 @@ const AmazonUK = () => {
               </Link>
             </div>
 
+            <Forward2MeBanner />
+
             <div className="bg-card border p-6 rounded-lg">
               <h3 className="font-heading font-semibold text-lg mb-3">Related Services</h3>
               <ul className="space-y-2">

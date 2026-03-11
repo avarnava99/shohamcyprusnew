@@ -167,6 +167,13 @@ const EcommerceGermany = () => {
         </div>
       </section>
 
+      {/* Affiliate Banner */}
+      <section className="py-8 bg-white">
+        <div className="container-shoham max-w-2xl">
+          <Forward2MeBanner />
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 bg-shoham-navy text-white">
         <div className="container-shoham text-center">
