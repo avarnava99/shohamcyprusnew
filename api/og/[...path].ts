@@ -1,26 +1,10 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const SITE_URL = "https://www.shoham.com.cy";
 const DEFAULT_TITLE = "Shoham Shipping & Logistics | Cyprus Shipping and Forwarding Agency";
 const DEFAULT_DESCRIPTION = "Leading shipping agency in Cyprus offering port agency, freight forwarding, customs clearing, ZIM container services, and comprehensive maritime solutions.";
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://yobppwbtiqzsplifrtoz.supabase.co";
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || "";
-
-// Social media bot user agents
-const BOT_USER_AGENTS = [
-  "facebookexternalhit",
-  "Facebot",
-  "Twitterbot",
-  "LinkedInBot",
-  "Slackbot",
-  "WhatsApp",
-  "TelegramBot",
-  "Discordbot",
-  "Pinterest",
-  "Googlebot",
-];
 
 // Static page metadata mapping
 const STATIC_PAGES: Record<string, { title: string; description: string }> = {
@@ -36,7 +20,7 @@ const STATIC_PAGES: Record<string, { title: string; description: string }> = {
   "/project-cargo": { title: "Project Cargo | Shoham Shipping & Logistics", description: "Complex logistics projects across Cyprus - heavy lift operations, transformer transport, offshore support." },
   "/container-types": { title: "Container Types | Shoham Shipping & Logistics", description: "Complete specifications for 20ft, 40ft, reefer, open top and flat rack shipping containers." },
   "/travel-agency": { title: "Travel Agency | Shoham Shipping & Logistics", description: "IATA authorized travel agent in Cyprus. Flight bookings, hotel reservations." },
-  "/container-homes": { title: "Container Homes in Cyprus | Shoham Shipping & Logistics", description: "Affordable container homes for €78,000 fully furnished." },
+  "/container-homes": { title: "Container Homes in Cyprus | Shoham Shipping & Logistics", description: "Affordable container homes fully furnished." },
   "/services/freight-forwarding": { title: "Freight Forwarding Cyprus | Shoham Shipping & Logistics", description: "Professional freight forwarding services in Cyprus for imports and exports." },
   "/services/car-shipping-from-uk-to-cyprus": { title: "Car Shipping from UK to Cyprus | Shoham Shipping & Logistics", description: "Ship your car from the UK to Cyprus with reliable vehicle shipping services." },
   "/services/air-freight-cyprus": { title: "Air Freight Cyprus | Shoham Shipping & Logistics", description: "Express air freight services for time-sensitive cargo to and from Cyprus." },
@@ -45,9 +29,10 @@ const STATIC_PAGES: Record<string, { title: string; description: string }> = {
   "/frequently-asked-questions": { title: "FAQ | Shoham Shipping & Logistics", description: "Frequently asked questions about shipping, freight forwarding, and logistics services in Cyprus." },
 };
 
-function isBot(userAgent: string): boolean {
-  const ua = userAgent.toLowerCase();
-  return BOT_USER_AGENTS.some((bot) => ua.includes(bot.toLowerCase()));
+function getSiteUrl(req: VercelRequest): string {
+  const proto = req.headers["x-forwarded-proto"] || "https";
+  const host = req.headers["x-forwarded-host"] || req.headers.host || "shohamcyprusnew.vercel.app";
+  return `${proto}://${host}`;
 }
 
 function buildHtml(title: string, description: string, url: string, image: string): string {
@@ -55,28 +40,31 @@ function buildHtml(title: string, description: string, url: string, image: strin
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>${escapeHtml(title)}</title>
-  <meta name="description" content="${escapeHtml(description)}">
-  <meta property="og:title" content="${escapeHtml(title)}">
-  <meta property="og:description" content="${escapeHtml(description)}">
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(description)}">
+  <meta property="og:title" content="${esc(title)}">
+  <meta property="og:description" content="${esc(description)}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="${escapeHtml(url)}">
-  <meta property="og:image" content="${escapeHtml(image)}">
-  <meta property="og:site_name" content="Shoham Shipping & Logistics">
+  <meta property="og:url" content="${esc(url)}">
+  <meta property="og:image" content="${esc(image)}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Shoham Shipping &amp; Logistics">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(title)}">
-  <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="twitter:image" content="${escapeHtml(image)}">
-  <link rel="canonical" href="${escapeHtml(url)}">
+  <meta name="twitter:title" content="${esc(title)}">
+  <meta name="twitter:description" content="${esc(description)}">
+  <meta name="twitter:image" content="${esc(image)}">
+  <link rel="canonical" href="${esc(url)}">
 </head>
 <body>
-  <p>${escapeHtml(description)}</p>
-  <a href="${escapeHtml(url)}">Visit ${escapeHtml(title)}</a>
+  <h1>${esc(title)}</h1>
+  <p>${esc(description)}</p>
+  <a href="${esc(url)}">Visit page</a>
 </body>
 </html>`;
 }
 
-function escapeHtml(str: string): string {
+function esc(str: string): string {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -85,7 +73,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, "&#039;");
 }
 
-async function fetchBlogPost(slug: string): Promise<{ title: string; description: string; image: string } | null> {
+async function fetchBlogPost(slug: string, siteUrl: string): Promise<{ title: string; description: string; image: string } | null> {
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/blog_posts?slug=eq.${encodeURIComponent(slug)}&published=eq.true&select=title,excerpt,featured_image`,
@@ -103,7 +91,7 @@ async function fetchBlogPost(slug: string): Promise<{ title: string; description
     return {
       title: `${post.title} | Shoham Shipping & Logistics`,
       description: post.excerpt || DEFAULT_DESCRIPTION,
-      image: post.featured_image || DEFAULT_IMAGE,
+      image: post.featured_image || `${siteUrl}/og-image.png`,
     };
   } catch {
     return null;
@@ -111,35 +99,34 @@ async function fetchBlogPost(slug: string): Promise<{ title: string; description
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const userAgent = req.headers["user-agent"] || "";
+  // Bot detection is handled by vercel.json conditional rewrite
+  // This function only receives requests from social media crawlers
 
-  // Only intercept bot requests
-  if (!isBot(userAgent)) {
-    // Let Vercel serve the SPA for normal users
-    res.setHeader("x-middleware-rewrite", "/index.html");
-    res.status(200).end();
-    return;
-  }
+  const siteUrl = getSiteUrl(req);
+  const pathSegments = req.query.path;
+  const path = "/" + (Array.isArray(pathSegments) ? pathSegments.join("/") : pathSegments || "");
+  const fullUrl = `${siteUrl}${path}`;
+  const defaultImage = `${siteUrl}/og-image.png`;
 
-  const path = "/" + ((req.query.path as string[]) || []).join("/");
-  const fullUrl = `${SITE_URL}${path}`;
   let title = DEFAULT_TITLE;
   let description = DEFAULT_DESCRIPTION;
-  let image = DEFAULT_IMAGE;
+  let image = defaultImage;
 
   // Check static pages first
   if (STATIC_PAGES[path]) {
     title = STATIC_PAGES[path].title;
     description = STATIC_PAGES[path].description;
   }
-  // Check blog post
+  // Check blog post — fetch title, excerpt, and featured image from Supabase
   else if (path.startsWith("/blog/")) {
     const slug = path.replace("/blog/", "");
-    const post = await fetchBlogPost(slug);
-    if (post) {
-      title = post.title;
-      description = post.description;
-      image = post.image;
+    if (slug) {
+      const post = await fetchBlogPost(slug, siteUrl);
+      if (post) {
+        title = post.title;
+        description = post.description;
+        image = post.image;
+      }
     }
   }
 

@@ -70,6 +70,17 @@
     { "source": "/shop/:path*", "destination": "/services/used-containers", "statusCode": 301 }
   ],
   "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest).*"
+        }
+      ],
+      "destination": "/api/og/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
