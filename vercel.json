@@ -71,15 +71,15 @@
   ],
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest).*"
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest).*"
         }
       ],
-      "destination": "/api/og/:path*"
+      "destination": "/api/og?path=$1"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
